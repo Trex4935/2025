@@ -4,27 +4,29 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.extensions.LimelightHelpers;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
-  public Vision() {
-  }
+  public Vision() {}
 
   public double[] getPose() {
-    double[] poseArray = new double[] {
-        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow").pose.getX(),
-        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow").pose.getY(),
-        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow").pose.getRotation().getRadians()
-    };
+    double[] poseArray =
+        new double[] {
+          LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow").pose.getX(),
+          LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow").pose.getY(),
+          LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow")
+              .pose
+              .getRotation()
+              .getRadians()
+        };
     return poseArray;
-  };
+  }
+  ;
+
+  public void autonomous() {}
 
   @Override
   public void initSendable(SendableBuilder builder) {
