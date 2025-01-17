@@ -52,7 +52,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
-  Elevator m_Elevator = new Elevator();
+  Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -106,7 +106,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
-     SmartDashboard.putData(m_Elevator);
+    SmartDashboard.putData(m_elevator);
   }
 
 
@@ -129,8 +129,8 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_Elevator.cm_movementUp());
-    m_driverController.y().whileTrue(m_Elevator.cm_movementDown());
+    m_driverController.x().whileTrue(m_elevator.cm_movementUp());
+    m_driverController.y().whileTrue(m_elevator.cm_movementDown());
   }
 
   /**

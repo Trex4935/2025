@@ -31,19 +31,19 @@ public class Elevator extends SubsystemBase {
 
 
 
-
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty(
-        "Left Climber Encoder Position", () -> moveElevator.getPosition().getValueAsDouble(), null);
-  }
-
-
   public Command cm_movementUp() {
     return startEnd(() -> elevatorMoveUp(), () -> stopElevator());
   }
 
   public Command cm_movementDown() {
     return startEnd(() -> elevatorMoveDown(), () -> stopElevator());
+  }
+
+
+
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty(
+        "Left Climber Encoder Position", () -> moveElevator.getPosition().getValueAsDouble(), null);
   }
 
 
