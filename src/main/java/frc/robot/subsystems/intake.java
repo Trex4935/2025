@@ -4,48 +4,42 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-
-public class intake extends SubsystemBase {
-    public final TalonFX intakeMotor1;
-    public final TalonFX intakeMotor2;
-
+public class Intake extends SubsystemBase {
+  public final TalonFX intakeMotor1;
+  public final TalonFX intakeMotor2;
 
   /** Creates a new ExampleSubsystem. */
-  public intake() {
+  public Intake() {
     intakeMotor1 = new TalonFX(3);
     intakeMotor2 = new TalonFX(4);
+
+    intakeMotor2.setControl(new Follower(intakeMotor1.getDeviceID(), true));
   }
 
+  public void pickUp() {
+    intakeMotor1.set(.1);
+  }
 
-public void pickUp(){
-    intakeMotor1.set(.76);
-    intakeMotor1.set(.76);
-}
-
-public void stop(){
+  public void stop() {
     intakeMotor1.stopMotor();
-    intakeMotor2.stopMotor();
-}
-public void drop(){
-    intakeMotor1.set(-.65);
-    intakeMotor2.set(-.65);
-}
+  }
 
-public Command intakeGo(){
+  public void drop() {
+    intakeMotor1.set(-.1);
+  }
+
+  public Command intakeGo() {
     return runEnd(() -> pickUp(), () -> stop());
-}
-public Command intakeDrop(){
+  }
+
+  public Command intakeDrop() {
     return runEnd(() -> drop(), () -> stop());
-}
-
-
-
+  }
 
   /**
    * Example command factory method.

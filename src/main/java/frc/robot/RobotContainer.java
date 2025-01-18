@@ -20,6 +20,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -51,6 +52,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
+  Intake m_Intake = new Intake();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -101,6 +103,11 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    // Intake test code
+    m_driverController.a().whileTrue(m_Intake.intakeGo());
+    m_driverController.b().whileTrue(m_Intake.intakeDrop());
+
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
@@ -123,7 +130,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
