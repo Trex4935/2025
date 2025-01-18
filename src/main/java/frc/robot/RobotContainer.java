@@ -78,7 +78,7 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
+                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                                                                                                   // negative Y
                                                                                                   // (forward)
                         .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
@@ -103,6 +103,10 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        m_driverController.povUp().onTrue(pathPlannerCommand1());
+        m_driverController.povDown().onTrue(pathPlannerCommand2());
+
         // Configure the trigger bindings
         configureBindings();
         SmartDashboard.putData(m_vision);
@@ -123,6 +127,7 @@ public class RobotContainer {
      * joysticks}.
      */
     public Command pathPlannerCommand1(){
+    System.out.println("pathPlannerCommand1");
 try{
     PathPlannerPath pathfindtoAprilTag1 = PathPlannerPath.fromPathFile("Forward");
    return AutoBuilder.followPath(pathfindtoAprilTag1);
@@ -133,6 +138,7 @@ try{
 
     }
     public Command pathPlannerCommand2(){
+        System.out.println("pathPlannerCommand2");
         try{
             PathPlannerPath pathfindtoAprilTag2 = PathPlannerPath.fromPathFile("Backward");
            return AutoBuilder.followPath(pathfindtoAprilTag2);
@@ -149,8 +155,6 @@ try{
         // Schedule `exampleMethodCommand` when the Xbox controller's B button is
         // pressed,
         // cancelling on release.
-        m_driverController.leftBumper().whileTrue(pathPlannerCommand1());
-        m_driverController.rightBumper().whileTrue(pathPlannerCommand2());
     }
 
     /**
@@ -159,17 +163,11 @@ try{
      * @return the command to run in autonomous
      */
 
-  public Command getAutonomousCommand() {
-    try{
-        // Load the path you want to follow using its name in the GUI
-        PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
-
-        // Create a path following command using AutoBuilder. This will also trigger event markers.
-        return AutoBuilder.followPath(path);
-    } catch (Exception e) {
-        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-        return Commands.none();
-    }
+    public Command getAutonomousCommand() {
+    // This method loads the auto when it is called, however, it is recommended
+    // to first load your paths/autos when code starts, then return the
+    // pre-loaded auto/path
+    return new PathPlannerAuto("Forward Backward Left Right");
   }
 }
 
