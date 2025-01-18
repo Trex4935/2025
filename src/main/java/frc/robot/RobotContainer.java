@@ -15,9 +15,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import frc.robot.subsystems.Vision;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -118,15 +122,35 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
+    public Command pathPlannerCommand1(){
+try{
+    PathPlannerPath pathfindtoAprilTag1 = PathPlannerPath.fromPathFile("Forward");
+   return AutoBuilder.followPath(pathfindtoAprilTag1);
+} catch (Exception e) {
+    DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+    return Commands.none();
+}
+
+    }
+    public Command pathPlannerCommand2(){
+        try{
+            PathPlannerPath pathfindtoAprilTag2 = PathPlannerPath.fromPathFile("Backward");
+           return AutoBuilder.followPath(pathfindtoAprilTag2);
+        } catch (Exception e) {
+            DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+            return Commands.none();
+        }
+
+            }
+
     private void configureBindings() {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        new Trigger(m_exampleSubsystem::exampleCondition)
-                .onTrue(new ExampleCommand(m_exampleSubsystem));
 
         // Schedule `exampleMethodCommand` when the Xbox controller's B button is
         // pressed,
         // cancelling on release.
-        m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+        m_driverController.leftBumper().whileTrue(pathPlannerCommand1());
+        m_driverController.rightBumper().whileTrue(pathPlannerCommand2());
     }
 
     /**
@@ -134,7 +158,18 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+
+  public Command getAutonomousCommand() {
+    try{
+        // Load the path you want to follow using its name in the GUI
+        PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
+
+        // Create a path following command using AutoBuilder. This will also trigger event markers.
+        return AutoBuilder.followPath(path);
+    } catch (Exception e) {
+        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+        return Commands.none();
     }
+  }
 }
+
