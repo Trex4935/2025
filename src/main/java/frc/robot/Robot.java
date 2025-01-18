@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
-
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,9 +29,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
   }
-
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -45,8 +41,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -77,7 +71,8 @@ public class Robot extends TimedRobot {
     LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
     var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
     if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-      m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+      m_robotContainer.drivetrain.addVisionMeasurement(
+          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
   }
 
