@@ -9,12 +9,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
+public class intake extends SubsystemBase {
   public final TalonFX intakeMotor1;
   public final TalonFX intakeMotor2;
 
   /** Creates a new ExampleSubsystem. */
-  public Intake() {
+  public intake() {
     intakeMotor1 = new TalonFX(3);
     intakeMotor2 = new TalonFX(4);
 

@@ -20,8 +20,9 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.intake;
 import frc.robot.subsystems.Vision;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,7 +53,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
-  Intake m_Intake = new Intake();
+  intake m_Intake = new intake();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -131,6 +132,9 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.a().whileTrue(m_Intake.intakeGo());
+    m_driverController.b().whileTrue(m_Intake.intakeDrop());
+
   }
 
   /**
