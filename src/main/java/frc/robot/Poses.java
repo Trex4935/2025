@@ -96,10 +96,10 @@ public class Poses {
     public static AlignmentPose processor = new AlignmentPose(aprilTagLayout.getTagPose(3).get().toPose2d(), null, aprilTagLayout.getTagPose(16).get().toPose2d(), null);
     public static AlignmentPose bargeOpposingView = new AlignmentPose(aprilTagLayout.getTagPose(4).get().toPose2d(), null, aprilTagLayout.getTagPose(15).get().toPose2d(), null);
     public static AlignmentPose bargeAllianceView = new AlignmentPose(aprilTagLayout.getTagPose(14).get().toPose2d(), null, aprilTagLayout.getTagPose(5).get().toPose2d(), null);
-    public static AlignmentPose cageCloseLeft = new AlignmentPose(aprilTagLayout.getTagPose(19).get().toPose2d(), null, aprilTagLayout.getTagPose(6).get().toPose2d(), null);
-    public static AlignmentPose cageCloseMid = new AlignmentPose(aprilTagLayout.getTagPose(18).get().toPose2d(), null, aprilTagLayout.getTagPose(7).get().toPose2d(), null);
-    public static AlignmentPose cageCloseRight = new AlignmentPose(aprilTagLayout.getTagPose(17).get().toPose2d(), null, aprilTagLayout.getTagPose(8).get().toPose2d(), null);
-    public static AlignmentPose cageFarRight = new AlignmentPose(aprilTagLayout.getTagPose(22).get().toPose2d(), null, aprilTagLayout.getTagPose(9).get().toPose2d(), null);
-    public static AlignmentPose cageFarMid = new AlignmentPose(aprilTagLayout.getTagPose(21).get().toPose2d(), null, aprilTagLayout.getTagPose(10).get().toPose2d(), null);
-    public static AlignmentPose cageFarLeft = new AlignmentPose(aprilTagLayout.getTagPose(20).get().toPose2d(), null, aprilTagLayout.getTagPose(11).get().toPose2d(), null);
+    public static AlignmentPose reefCloseLeft = new AlignmentPose(aprilTagLayout.getTagPose(19).get().toPose2d(), null, aprilTagLayout.getTagPose(6).get().toPose2d(), null);
+    public static AlignmentPose reefCloseMid = new AlignmentPose(aprilTagLayout.getTagPose(18).get().toPose2d(), null, aprilTagLayout.getTagPose(7).get().toPose2d(), null);
+    public static AlignmentPose reefCloseRight = new AlignmentPose(aprilTagLayout.getTagPose(17).get().toPose2d(), null, aprilTagLayout.getTagPose(8).get().toPose2d(), null);
+    public static AlignmentPose reefFarRight = new AlignmentPose(aprilTagLayout.getTagPose(22).get().toPose2d(), null, aprilTagLayout.getTagPose(9).get().toPose2d(), null);
+    public static AlignmentPose reefFarMid = new AlignmentPose(aprilTagLayout.getTagPose(21).get().toPose2d(), null, aprilTagLayout.getTagPose(10).get().toPose2d(), null);
+    public static AlignmentPose reefFarLeft = new AlignmentPose(aprilTagLayout.getTagPose(20).get().toPose2d(), null, aprilTagLayout.getTagPose(11).get().toPose2d(), null);
 }
