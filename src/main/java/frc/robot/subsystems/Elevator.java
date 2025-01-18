@@ -14,7 +14,7 @@ public class Elevator extends SubsystemBase {
   public final TalonFX moveElevator;
 
   public Elevator() {
-    moveElevator = new TalonFX(9);
+    moveElevator = new TalonFX(11);
   }
 
   public void elevatorMoveUp() {
