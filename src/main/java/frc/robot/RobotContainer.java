@@ -124,6 +124,17 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    // Auto-drive commands
+    m_driverController.back().and(m_driverController.povUpLeft()).whileTrue(drivetrain.ppAutoDrive(Locations.reefFarLeft));
+    m_driverController.back().and(m_driverController.povUp()).whileTrue(drivetrain.ppAutoDrive(Locations.reefFarMid));
+    m_driverController.back().and(m_driverController.povUpRight()).whileTrue(drivetrain.ppAutoDrive(Locations.reefFarRight));
+    m_driverController.back().and(m_driverController.povDownLeft()).whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseLeft));
+    m_driverController.back().and(m_driverController.povDown()).whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseMid));
+    m_driverController.back().and(m_driverController.povDownRight()).whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseRight));
+
+    m_driverController.back().and(m_driverController.povLeft()).whileTrue(drivetrain.ppAutoDrive(Locations.processor));
+    m_driverController.back().and(m_driverController.povRight()).whileTrue(drivetrain.ppAutoDrive(Locations.coralStationRight));
   }
 
   /**
