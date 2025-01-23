@@ -270,6 +270,29 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(0.5, 0.5, 0.5, 0.5), 0);
   }
 
+  /**
+   * Automatically drives to a pose
+   *
+   * @param pose The desired location to drive to
+   * @param theSillyNumber A number to make this different from the above method, does nothing
+   * @return A command that drives to a location using PathPlanner
+   */
+  public Command ppAutoDrive(AlignmentPose pose, double theSillyNumber) {
+
+    // Determine necessary tag pose
+    Pose2d tagPose = pose.aprilTagPose;
+
+    // Gets target values from the tag poses and the offset
+    double targetX = tagPose.getX() + pose.offsetX;
+    double targetY = tagPose.getY() + pose.offsetY;
+
+    // Create the target pose with the target translation and offset theta
+    Pose2d targetPose = new Pose2d(targetX, targetY, pose.offsetTheta);
+
+    // Create and return the auto-generated pathfinding command
+    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(0.5, 0.5, 0.5, 0.5), 0);
+  }
+
   @Override
   public void periodic() {
     /*

@@ -159,6 +159,11 @@ public class RobotContainer {
         .back()
         .and(m_driverController.povRight())
         .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationRight));
+
+    m_driverController
+        .start()
+        .and(m_driverController.povUp())
+        .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationRight));
   }
 
   /**
