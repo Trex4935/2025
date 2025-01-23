@@ -34,24 +34,23 @@ public class Locations {
 
     AlignmentPose(Pose2d blueTagPose, Pose2d redTagPose, double[] offsetArray) {
       this.aprilTagPoseBlue = blueTagPose;
+      this.aprilTagPoseRed = redTagPose;
       this.offset = offsetArray;
 
-      this.aprilTagPoseRed = redTagPose;
+      this.blueTagPoseX = blueTagPose.getX();
+      this.blueTagPoseY = blueTagPose.getY();
+      this.blueTagPoseThetaDegrees = blueTagPose.getRotation().getDegrees();
+      this.blueTagPoseTheta = blueTagPose.getRotation();
 
-      this.redTagPoseX = blueTagPose.getX();
-      this.redTagPoseY = blueTagPose.getY();
-      this.redTagPoseThetaDegrees = blueTagPose.getRotation().getDegrees();
-      this.redTagPoseTheta = blueTagPose.getRotation();
+      this.redTagPoseX = redTagPose.getX();
+      this.redTagPoseY = redTagPose.getY();
+      this.redTagPoseThetaDegrees = redTagPose.getRotation().getDegrees();
+      this.redTagPoseTheta = redTagPose.getRotation();
 
       this.offsetX = offsetArray[0];
       this.offsetY = offsetArray[1];
       this.offsetThetaDegrees = offsetArray[2];
       this.offsetTheta = Rotation2d.fromDegrees(offsetArray[2]);
-
-      this.redTagPoseY = redTagPose.getY();
-      this.redTagPoseThetaDegrees = redTagPose.getRotation().getDegrees();
-      this.redTagPoseTheta = redTagPose.getRotation();
-      this.redTagPoseX = redTagPose.getX();
     }
   }
 
