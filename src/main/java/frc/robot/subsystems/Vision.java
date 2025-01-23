@@ -26,8 +26,6 @@ public class Vision extends SubsystemBase {
   }
   ;
 
-  public void autonomous() {}
-
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleArrayProperty("Pose", () -> getPose(), null);
