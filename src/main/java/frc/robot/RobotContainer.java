@@ -19,6 +19,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.intake;
@@ -53,6 +54,7 @@ public class RobotContainer {
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
   intake m_Intake = new intake();
+  Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -111,6 +113,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_elevator);
   }
 
   /**
@@ -131,6 +134,9 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_driverController.x().whileTrue(m_elevator.cm_movementUp());
+    m_driverController.y().whileTrue(m_elevator.cm_movementDown());
     m_driverController.a().whileTrue(m_Intake.intakeGo());
     m_driverController.b().whileTrue(m_Intake.intakeDrop());
   }
