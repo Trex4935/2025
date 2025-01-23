@@ -154,7 +154,7 @@ public class RobotContainer {
     m_driverController
         .back()
         .and(m_driverController.povLeft())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.processor));
+        .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationLeft));
     m_driverController
         .back()
         .and(m_driverController.povRight())
