@@ -22,6 +22,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,6 +53,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
+  intake m_Intake = new intake();
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -103,6 +105,11 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    // Intake test code
+    m_driverController.a().whileTrue(m_Intake.intakeGo());
+    m_driverController.b().whileTrue(m_Intake.intakeDrop());
+
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
@@ -126,10 +133,12 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     m_driverController.x().whileTrue(m_elevator.cm_movementUp());
     m_driverController.y().whileTrue(m_elevator.cm_movementDown());
+    m_driverController.a().whileTrue(m_Intake.intakeGo());
+    m_driverController.b().whileTrue(m_Intake.intakeDrop());
   }
 
   /**
@@ -138,9 +147,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-        // This method loads the auto when it is called, however, it is recommended
-        // to first load your paths/autos when code starts, then return the
-        // pre-loaded auto/path
-        return new PathPlannerAuto("Forward Backward Left Right");
-      }
-    }
+    // This method loads the auto when it is called, however, it is recommended
+    // to first load your paths/autos when code starts, then return the
+    // pre-loaded auto/path
+    return new PathPlannerAuto("Forward Backward Left Right");
+  }
+}
