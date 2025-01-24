@@ -12,6 +12,7 @@ import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N4;
 import java.util.List;
 
@@ -21,61 +22,14 @@ public class Locations {
   private static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
-  private static double[] at1tm = {
-    -1,
-    -1.2246467991473532e-16,
-    0,
-    3.073,
-    1.2246467991473532e-16,
-    -1,
-    0,
-    1.6096,
-    0,
-    0,
-    1,
-    1.1684,
-    0,
-    0,
-    0,
-    1
-  };
 
-  private static double[] at2tm = {
-    1,
-    -1.6081226496766364e-16,
-    9.211731732618967e-33,
-    0,
-    1.6081226496766364e-16,
-    1,
-    -1.2325951644078308e-32,
-    -1.5875,
-    -9.211731732618965e-33,
-    1.232595164407831e-32,
-    1,
-    1.254931318712569,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1
-  };
 
-  private static double[] at3tm = {1, 0, 0, 0, 0, 1, 0, 1.5875, 0, 0, 1, 1.2319, 0, 0, 0, 1};
+  private static Pose3d at1p3d = new Pose3d(3.073, 1.6096, 1.1684, new Rotation3d(0, 0, Math.PI));
+  private static Pose3d at2p3d = new Pose3d(0, -1.5875, 1.2549, new Rotation3d());
+  private static Pose3d at3p3d = new Pose3d(0, 1.5875, 1.2319, new Rotation3d());
+  private static Pose3d at4p3d = new Pose3d(0, 0, 1.2319, new Rotation3d());
 
-  private static double[] at4tm = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.2319, 0, 0, 0, 1};
-
-  private static Matrix<N4, N4> at1m = new Matrix<>(Nat.N4(), Nat.N4(), at1tm);
-  private static Matrix<N4, N4> at2m = new Matrix<>(Nat.N4(), Nat.N4(), at2tm);
-  private static Matrix<N4, N4> at3m = new Matrix<>(Nat.N4(), Nat.N4(), at3tm);
-  private static Matrix<N4, N4> at4m = new Matrix<>(Nat.N4(), Nat.N4(), at4tm);
-
-  private static Pose3d at1p3d = new Pose3d(at1m);
-  private static Pose3d at2p3d = new Pose3d(at2m);
-  private static Pose3d at3p3d = new Pose3d(at3m);
-  private static Pose3d at4p3d = new Pose3d(at4m);
-
-  private static AprilTag at1 = new AprilTag(1, at1p3d);
+  public static AprilTag at1 = new AprilTag(1, at1p3d);
   private static AprilTag at2 = new AprilTag(2, at2p3d);
   private static AprilTag at3 = new AprilTag(3, at3p3d);
   private static AprilTag at4 = new AprilTag(4, at4p3d);
@@ -129,7 +83,7 @@ public class Locations {
     }
 
     AlignmentPose(Pose2d tagPose, double[] offsetArray) {
-      this.aprilTagPoseBlue = tagPose;
+      this.aprilTagPose = tagPose;
       this.offset = offsetArray;
 
       this.tagPoseX = tagPose.getX();
