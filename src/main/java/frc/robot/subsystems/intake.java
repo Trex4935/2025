@@ -18,7 +18,7 @@ public class intake extends SubsystemBase {
   }
 
   public void pickUp() {
-    intakeMotor1.set(4);
+    intakeMotor1.set(.8);
   }
 
   public void stop() {
@@ -26,7 +26,7 @@ public class intake extends SubsystemBase {
   }
 
   public void drop() {
-    intakeMotor1.set(-4);
+    intakeMotor1.set(-.8);
   }
 
   public Command intakeGo() {
