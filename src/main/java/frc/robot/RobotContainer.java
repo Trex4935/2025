@@ -21,7 +21,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-//import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.intake;
 
 /**
@@ -52,7 +52,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  //Vision m_vision = new Vision();
+  Vision m_vision = new Vision();
   intake m_Intake = new intake();
   Elevator m_elevator = new Elevator();
 
@@ -112,7 +112,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-    //SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
   }
 
