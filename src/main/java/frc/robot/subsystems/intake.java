@@ -11,18 +11,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class intake extends SubsystemBase {
   public final TalonFX intakeMotor1;
-  public final TalonFX intakeMotor2;
 
   /** Creates a new ExampleSubsystem. */
   public intake() {
-    intakeMotor1 = new TalonFX(3);
-    intakeMotor2 = new TalonFX(4);
-
-    intakeMotor2.setControl(new Follower(intakeMotor1.getDeviceID(), true));
+    intakeMotor1 = new TalonFX(0);
   }
 
   public void pickUp() {
-    intakeMotor1.set(.1);
+    intakeMotor1.set(.8);
   }
 
   public void stop() {
@@ -30,7 +26,7 @@ public class intake extends SubsystemBase {
   }
 
   public void drop() {
-    intakeMotor1.set(-.1);
+    intakeMotor1.set(-.8);
   }
 
   public Command intakeGo() {
