@@ -24,7 +24,9 @@ public class Locations {
   private static Pose3d at3p3d = new Pose3d(0, 1.5875, 1.2319, new Rotation3d());
   private static Pose3d at4p3d = new Pose3d(0, 0, 1.2319, new Rotation3d());
 
-  public static AprilTag at1 = new AprilTag(1, at1p3d);
+  private static Pose3d at11p3d = new Pose3d(11, 3.5, 1.2319, new Rotation3d());
+
+  public static AprilTag at1 = new AprilTag(1, at11p3d);
   private static AprilTag at2 = new AprilTag(2, at2p3d);
   private static AprilTag at3 = new AprilTag(3, at3p3d);
   private static AprilTag at4 = new AprilTag(4, at4p3d);
@@ -151,6 +153,7 @@ public class Locations {
           new double[] {0.35, 0.35 * Math.tan(Math.toRadians(-120)), -120});
 
   public static AlignmentPose halltag1 =
-      new AlignmentPose(
-          testAprilTagFieldLayout.getTagPose(1).get().toPose2d(), new double[] {-1, 0, 0});
+  new AlignmentPose(at11p3d.toPose2d(),new double[] {-1, 0, 0});
+      //new AlignmentPose(
+        //  testAprilTagFieldLayout.getTagPose(1).get().toPose2d(), new double[] {-1, 0, 0});
 }

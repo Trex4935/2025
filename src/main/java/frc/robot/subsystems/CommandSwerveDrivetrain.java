@@ -290,7 +290,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     Pose2d targetPose = new Pose2d(targetX, targetY, pose.offsetTheta);
 
     // Create and return the auto-generated pathfinding command
-    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(2, 2, 2, 2), 0);
+    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
   }
 
   @Override
