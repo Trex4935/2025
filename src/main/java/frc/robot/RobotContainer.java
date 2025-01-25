@@ -21,8 +21,8 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,8 +52,13 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
+<<<<<<< HEAD
   // Vision m_vision = new Vision();
   intake m_Intake = new intake();
+=======
+  Vision m_vision = new Vision();
+  Intake m_intake = new Intake();
+>>>>>>> develop
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -107,13 +112,14 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
 
     // Intake test code
-    m_driverController.a().whileTrue(m_Intake.intakeGo());
-    m_driverController.b().whileTrue(m_Intake.intakeDrop());
+    m_driverController.a().whileTrue(m_intake.intakeGo());
+    m_driverController.b().whileTrue(m_intake.intakeDrop());
 
     // Configure the trigger bindings
     configureBindings();
     // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
+    SmartDashboard.putData(m_intake);
   }
 
   /**
@@ -137,8 +143,8 @@ public class RobotContainer {
 
     m_driverController.x().whileTrue(m_elevator.cm_movementUp());
     m_driverController.y().whileTrue(m_elevator.cm_movementDown());
-    m_driverController.a().whileTrue(m_Intake.intakeGo());
-    m_driverController.b().whileTrue(m_Intake.intakeDrop());
+    m_driverController.a().whileTrue(m_intake.intakeGo());
+    m_driverController.b().whileTrue(m_intake.intakeDrop());
   }
 
   /**
