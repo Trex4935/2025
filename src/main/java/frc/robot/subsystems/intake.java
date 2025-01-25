@@ -51,11 +51,12 @@ public class Intake extends SubsystemBase {
         });
   }
 
-
-  public void initSendable(SendableBuilder builder){
-    builder.addDoubleProperty("Intake motor 1 speed", () -> intakeMotor1.get(), null);
-    builder.addDoubleProperty("Intake motor 1 velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("Intake motor speed", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty(
+        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
