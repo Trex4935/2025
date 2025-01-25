@@ -17,24 +17,24 @@ public class intake extends SubsystemBase {
     intakeMotor1 = new TalonFX(0);
   }
 
-  public void pickUp() {
-    intakeMotor1.set(.8);
+  public void pickUp(double speed) {
+    intakeMotor1.set(speed);
   }
 
   public void stop() {
     intakeMotor1.stopMotor();
   }
 
-  public void drop() {
-    intakeMotor1.set(-.8);
+  public void drop(double speed) {
+    intakeMotor1.set(-speed);
   }
 
   public Command intakeGo() {
-    return runEnd(() -> pickUp(), () -> stop());
+    return runEnd(() -> pickUp(0.8), () -> stop());
   }
 
   public Command intakeDrop() {
-    return runEnd(() -> drop(), () -> stop());
+    return runEnd(() -> drop(0.8), () -> stop());
   }
 
   /**

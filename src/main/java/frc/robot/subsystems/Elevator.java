@@ -17,12 +17,12 @@ public class Elevator extends SubsystemBase {
     moveElevator = new TalonFX(9);
   }
 
-  public void elevatorMoveUp() {
-    moveElevator.set(0.3);
+  public void elevatorMoveUp(double speed) {
+    moveElevator.set(speed);
   }
 
-  public void elevatorMoveDown() {
-    moveElevator.set(-0.3);
+  public void elevatorMoveDown(double speed) {
+    moveElevator.set(-speed);
   }
 
   public void stopElevator() {
@@ -32,11 +32,11 @@ public class Elevator extends SubsystemBase {
 
 
   public Command cm_movementUp() {
-    return startEnd(() -> elevatorMoveUp(), () -> stopElevator());
+    return startEnd(() -> elevatorMoveUp(0.3), () -> stopElevator());
   }
 
   public Command cm_movementDown() {
-    return startEnd(() -> elevatorMoveDown(), () -> stopElevator());
+    return startEnd(() -> elevatorMoveDown(0.3), () -> stopElevator());
   }
 
 
