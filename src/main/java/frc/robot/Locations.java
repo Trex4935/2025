@@ -7,13 +7,10 @@ package frc.robot;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.numbers.N4;
 import java.util.List;
 
 /** Add your docs here. */
@@ -21,8 +18,6 @@ public class Locations {
 
   private static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
-
-
 
   private static Pose3d at1p3d = new Pose3d(3.073, 1.6096, 1.1684, new Rotation3d(0, 0, Math.PI));
   private static Pose3d at2p3d = new Pose3d(0, -1.5875, 1.2549, new Rotation3d());
