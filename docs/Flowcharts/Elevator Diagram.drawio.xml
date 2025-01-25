@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.7">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0" version="26.0.8">
   <diagram name="Page-1" id="vX1XKZ78U6n9zcANlU9t">
-    <mxGraphModel dx="1050" dy="603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1010" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1500" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -16,8 +15,8 @@
         <mxCell id="IorvXz3BjkLuXUcxzgwF-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IorvXz3BjkLuXUcxzgwF-5" target="IorvXz3BjkLuXUcxzgwF-9" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="360" y="250" />
-              <mxPoint x="440" y="250" />
+              <mxPoint x="540" y="250" />
+              <mxPoint x="620" y="250" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -27,22 +26,22 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-5" value="Is up button held" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="300" y="190" width="120" height="40" as="geometry" />
+          <mxGeometry x="480" y="190" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-6" value="Elevator" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
-          <mxGeometry x="390" y="130" width="100" height="30" as="geometry" />
+          <mxGeometry x="560" y="70" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-7" value="Elevator motors turn on and move up" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="220" y="270" width="120" height="40" as="geometry" />
+          <mxGeometry x="400" y="270" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="IorvXz3BjkLuXUcxzgwF-9" value="Elevator motors turn off" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="380" y="270" width="120" height="40" as="geometry" />
+        <mxCell id="IorvXz3BjkLuXUcxzgwF-9" value="Elevator motors remain off" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="560" y="270" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IorvXz3BjkLuXUcxzgwF-13" target="IorvXz3BjkLuXUcxzgwF-9" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="520" y="250" />
-              <mxPoint x="440" y="250" />
+              <mxPoint x="700" y="250" />
+              <mxPoint x="620" y="250" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -54,8 +53,8 @@
         <mxCell id="IorvXz3BjkLuXUcxzgwF-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IorvXz3BjkLuXUcxzgwF-13" target="IorvXz3BjkLuXUcxzgwF-15" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="520" y="250" />
-              <mxPoint x="600" y="250" />
+              <mxPoint x="700" y="250" />
+              <mxPoint x="780" y="250" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -65,10 +64,112 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-13" value="Is down button held" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="460" y="190" width="120" height="40" as="geometry" />
+          <mxGeometry x="640" y="190" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="IorvXz3BjkLuXUcxzgwF-15" value="Elevator motors turn on and move down" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="540" y="270" width="120" height="40" as="geometry" />
+          <mxGeometry x="720" y="270" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1" target="Ipaw-4_axsUOfQ5ESiZo-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-1" value="State Machine" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2" target="IorvXz3BjkLuXUcxzgwF-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-2" value="Manual Control" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-5" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="390" as="sourcePoint" />
+            <mxPoint x="480" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-7" value="Control state" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="360" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="980" y="460" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="880" y="440" />
+              <mxPoint x="981" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-8" value="Shooting state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="760" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-9" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="389.5" as="sourcePoint" />
+            <mxPoint x="760" y="389.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-14" value="Current position of robot&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="460" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-16" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Elevator motors disabled to prevent movement&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="680" y="620" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1115" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-18" value="Align with apriltag&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="540" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-20" value="Elevator moves based on button pressed" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="640" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-23">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-23" value="Stashed state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="440" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-27" value="Elevator in default position" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="200" y="460" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-29" value="Elevator back down to default position" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="440" y="720" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-32">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-32" value="Climbing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="680" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-34" target="Ipaw-4_axsUOfQ5ESiZo-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-34" value="Sensors detect gamepiece" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="440" y="620" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.589;entryY=-0.042;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2" target="IorvXz3BjkLuXUcxzgwF-5">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
