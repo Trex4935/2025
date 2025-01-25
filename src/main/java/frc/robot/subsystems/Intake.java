@@ -14,11 +14,11 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public Intake() {
-    intakeMotor1 = new TalonFX(0);
+    intakeMotor1 = new TalonFX(10);
   }
 
   public void pickUp() {
-    intakeMotor1.set(.8);
+    intakeMotor1.set(.05);
   }
 
   public void stop() {
@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void drop() {
-    intakeMotor1.set(-.8);
+    intakeMotor1.set(-.05);
   }
 
   public Command intakeGo() {

@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -176,10 +178,14 @@ public class RobotContainer {
         .and(m_driverController.povRight())
         .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationRight));
 
+        /*
     m_driverController
         .start()
         .and(m_driverController.povUp())
         .whileTrue(drivetrain.ppAutoDrive(Locations.halltag1, 49));
+        */
+    m_driverController
+    .start().and(m_driverController.povUp()).whileTrue(drivetrain.ppSimple(new Pose2d(10, 3.6,new Rotation2d(-179))));
   }
 
   /**
