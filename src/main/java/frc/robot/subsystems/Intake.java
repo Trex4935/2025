@@ -4,16 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class intake extends SubsystemBase {
+public class Intake extends SubsystemBase {
   public final TalonFX intakeMotor1;
 
   /** Creates a new ExampleSubsystem. */
-  public intake() {
+  public Intake() {
     intakeMotor1 = new TalonFX(0);
   }
 
@@ -49,6 +49,12 @@ public class intake extends SubsystemBase {
         () -> {
           /* one-time action goes here */
         });
+  }
+
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("Intake motor speed", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty(
+        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
 
   /**

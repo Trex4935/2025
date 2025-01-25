@@ -4,9 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.extensions.LimelightHelpers;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
@@ -24,11 +28,19 @@ public class Vision extends SubsystemBase {
         };
     return poseArray;
   }
-  ;
+
+
+
+
+
 
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleArrayProperty("Pose", () -> getPose(), null);
+    builder.addDoubleProperty("tx", () -> LimelightHelpers.getTX("limelight-bow"), null);
+    builder.addDoubleProperty("ty", () -> LimelightHelpers.getTY("limelight-bow"), null);
+    builder.addDoubleProperty("ta", () -> LimelightHelpers.getTA("limelight-bow"), null);
+    builder.addBooleanProperty("tv", () -> LimelightHelpers.getTV("limelight-bow"), null);
   }
 
   @Override

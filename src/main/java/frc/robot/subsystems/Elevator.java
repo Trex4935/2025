@@ -5,9 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -29,8 +29,6 @@ public class Elevator extends SubsystemBase {
     moveElevator.stopMotor();
   }
 
-
-
   public Command cm_movementUp() {
     return startEnd(() -> elevatorMoveUp(0.3), () -> stopElevator());
   }
@@ -39,13 +37,10 @@ public class Elevator extends SubsystemBase {
     return startEnd(() -> elevatorMoveDown(0.3), () -> stopElevator());
   }
 
-
-
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Left Climber Encoder Position", () -> moveElevator.getPosition().getValueAsDouble(), null);
   }
-
 
   @Override
   public void periodic() {
