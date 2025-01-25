@@ -52,13 +52,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-<<<<<<< HEAD
-  // Vision m_vision = new Vision();
-  intake m_Intake = new intake();
-=======
   Vision m_vision = new Vision();
   Intake m_intake = new Intake();
->>>>>>> develop
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -117,7 +112,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-    // SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
