@@ -25,17 +25,12 @@ public class Intake extends SubsystemBase {
     intakeMotor1.stopMotor();
   }
 
-  public void drop(double speed) {
-    intakeMotor1.set(-speed);
+
+
+  public Command cm_intakeMove(double speed) {
+    return runEnd(() -> pickUp(speed), () -> stop());
   }
 
-  public Command intakeGo() {
-    return runEnd(() -> pickUp(0.8), () -> stop());
-  }
-
-  public Command intakeDrop() {
-    return runEnd(() -> drop(0.8), () -> stop());
-  }
 
   /**
    * Example command factory method.

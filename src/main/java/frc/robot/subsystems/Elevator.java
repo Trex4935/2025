@@ -21,21 +21,16 @@ public class Elevator extends SubsystemBase {
     moveElevator.set(speed);
   }
 
-  public void elevatorMoveDown(double speed) {
-    moveElevator.set(-speed);
-  }
 
   public void stopElevator() {
     moveElevator.stopMotor();
   }
 
-  public Command cm_movementUp() {
-    return startEnd(() -> elevatorMoveUp(0.3), () -> stopElevator());
+  public Command cm_elevatorMovement(double speed) {
+    return startEnd(() -> elevatorMoveUp(speed), () -> stopElevator());
   }
 
-  public Command cm_movementDown() {
-    return startEnd(() -> elevatorMoveDown(0.3), () -> stopElevator());
-  }
+
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
