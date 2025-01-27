@@ -27,8 +27,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -55,8 +59,10 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
-    Vision m_vision = new Vision();
+  private final Telemetry logger = new Telemetry(MaxSpeed);
+  Vision m_vision = new Vision();
+  Intake m_intake = new Intake();
+  Elevator m_elevator = new Elevator();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -100,11 +106,18 @@ public class RobotContainer {
         // speed limiter button that slows the speed down if needed
         joystick.rightBumper().whileTrue(Commands.startEnd(() -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25, () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
-        // Configure the trigger bindings
-        configureBindings();
-        SmartDashboard.putData(m_vision);
-    }
+    drivetrain.registerTelemetry(logger::telemeterize);
+
+    // Intake test code
+    m_driverController.a().whileTrue(m_intake.intakeGo());
+    m_driverController.b().whileTrue(m_intake.intakeDrop());
+
+    // Configure the trigger bindings
+    configureBindings();
+    SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_elevator);
+    SmartDashboard.putData(m_intake);
+  }
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be
@@ -125,11 +138,16 @@ public class RobotContainer {
         new Trigger(m_exampleSubsystem::exampleCondition)
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-        // pressed,
-        // cancelling on release.
-        m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    }
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
+    // pressed,
+    // cancelling on release.
+    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_driverController.x().whileTrue(m_elevator.cm_movementUp());
+    m_driverController.y().whileTrue(m_elevator.cm_movementDown());
+    m_driverController.a().whileTrue(m_intake.intakeGo());
+    m_driverController.b().whileTrue(m_intake.intakeDrop());
+  }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
