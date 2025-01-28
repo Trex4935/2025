@@ -41,13 +41,13 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-      m_led = new AddressableLED(3);
+    m_led = new AddressableLED(3);
 
-      m_ledBuffer = new AddressableLEDBuffer(60);
-      m_led.setLength(m_ledBuffer.getLength());
+    m_ledBuffer = new AddressableLEDBuffer(60);
+    m_led.setLength(m_ledBuffer.getLength());
 
-      m_led.setData(m_ledBuffer);
-      m_led.start();
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

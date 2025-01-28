@@ -22,7 +22,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.LEDControl;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,9 +52,10 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  //Vision m_vision = new Vision();
+  // Vision m_vision = new Vision();
   Intake m_intake = new Intake();
   Elevator m_elevator = new Elevator();
+  LEDControl m_LedControl = new LEDControl();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -66,6 +67,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
     drivetrain.setDefaultCommand(
@@ -103,6 +105,7 @@ public class RobotContainer {
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    joystick.rightBumper().onTrue(m_LedControl.runOnce(() -> m_LedControl.solidLEDS(153, 51, 0)));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -112,7 +115,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-   // SmartDashboard.putData(m_vision);
+    // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
