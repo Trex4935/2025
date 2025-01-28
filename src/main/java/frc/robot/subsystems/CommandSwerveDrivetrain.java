@@ -294,9 +294,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   }
 
   public Command ppSimple(Pose2d goToPose) {
-    return AutoBuilder.pathfindToPose(goToPose, new PathConstraints(1, 1, 1, 1), 0);
+    double targetX = goToPose.getX();
+    double targetY = goToPose.getY() * -1;
+    Pose2d targetPose = new Pose2d(targetX, targetY, goToPose.getRotation());
+    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(0.5, 0.5, 0.5, 0.5),0);
   }
-
 
   @Override
   public void periodic() {
