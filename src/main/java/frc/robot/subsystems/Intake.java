@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
 
 
   public Command cm_intakeMove(double speed) {
-    return runEnd(() -> pickUp(speed), () -> stop());
+    return startEnd(() -> pickUp(speed), () -> stop());
   }
 
 
