@@ -134,8 +134,8 @@ public class RobotContainer {
 
     m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.6));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
-    m_driverController.a().whileTrue(m_intake.cm_intakeMove(0.6));
-    m_driverController.b().whileTrue(m_intake.cm_intakeMove(-0.6));
+    m_driverController.a().whileTrue(m_intake.cm_intakeMovement(0.6));
+    m_driverController.b().whileTrue(m_intake.cm_intakeMovement(-0.6));
   }
 
   /**

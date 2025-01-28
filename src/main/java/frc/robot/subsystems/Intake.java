@@ -17,20 +17,17 @@ public class Intake extends SubsystemBase {
     intakeMotor1 = new TalonFX(0);
   }
 
-  public void pickUp(double speed) {
+  public void runIntakeMotor(double speed) {
     intakeMotor1.set(speed);
   }
 
-  public void stop() {
+  public void stopIntakeMotor() {
     intakeMotor1.stopMotor();
   }
 
-
-
-  public Command cm_intakeMove(double speed) {
-    return startEnd(() -> pickUp(speed), () -> stop());
+  public Command cm_intakeMovement(double speed) {
+    return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
-
 
   /**
    * Example command factory method.

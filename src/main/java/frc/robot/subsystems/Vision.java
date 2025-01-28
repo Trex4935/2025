@@ -4,11 +4,9 @@
 
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.extensions.LimelightHelpers;
-
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
@@ -26,11 +24,6 @@ public class Vision extends SubsystemBase {
         };
     return poseArray;
   }
-
-
-
-
-
 
   @Override
   public void initSendable(SendableBuilder builder) {

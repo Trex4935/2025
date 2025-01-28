@@ -11,30 +11,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
-  public final TalonFX moveElevator;
+  public final TalonFX elevatorMotor;
 
   public Elevator() {
-    moveElevator = new TalonFX(9);
+    elevatorMotor = new TalonFX(9);
   }
 
   public void runElevatorMotor(double speed) {
-    moveElevator.set(speed);
+    elevatorMotor.set(speed);
   }
 
-
-  public void stopElevator() {
-    moveElevator.stopMotor();
+  public void stopElevatorMotor() {
+    elevatorMotor.stopMotor();
   }
 
   public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotor(speed), () -> stopElevator());
+    return startEnd(() -> runElevatorMotor(speed), () -> stopElevatorMotor());
   }
-
-
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
-        "Left Climber Encoder Position", () -> moveElevator.getPosition().getValueAsDouble(), null);
+        "Left Climber Encoder Position",
+        () -> elevatorMotor.getPosition().getValueAsDouble(),
+        null);
   }
 
   @Override
