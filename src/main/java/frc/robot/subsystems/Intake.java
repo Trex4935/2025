@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor speed", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty("Intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
         "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
