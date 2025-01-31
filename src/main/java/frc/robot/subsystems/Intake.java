@@ -17,24 +17,16 @@ public class Intake extends SubsystemBase {
     intakeMotor1 = new TalonFX(10);
   }
 
-  public void pickUp() {
-    intakeMotor1.set(.05);
+  public void runIntakeMotor(double speed) {
+    intakeMotor1.set(speed);
   }
 
-  public void stop() {
+  public void stopIntakeMotor() {
     intakeMotor1.stopMotor();
   }
 
-  public void drop() {
-    intakeMotor1.set(-.05);
-  }
-
-  public Command intakeGo() {
-    return runEnd(() -> pickUp(), () -> stop());
-  }
-
-  public Command intakeDrop() {
-    return runEnd(() -> drop(), () -> stop());
+  public Command cm_intakeMovement(double speed) {
+    return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
   /**
@@ -52,7 +44,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor speed", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty("Intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
         "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
