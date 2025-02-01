@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0" version="26.0.10">
   <diagram name="Page-1" id="NdqYyiHwcc_uubxuyyjD">
-    <mxGraphModel dx="1050" dy="603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1010" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -99,6 +98,57 @@
         </mxCell>
         <mxCell id="Kw4XpGqL2rXSmAsbGMWC-17" value="Reverse Intake Motors" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="560" y="260" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-1" value="Note Life Cycle Version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+          <mxGeometry x="150" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-2" target="FjSJTUMppFiD3XPCcplV-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-2" value="Sensor detects game pieces" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-4" target="FjSJTUMppFiD3XPCcplV-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-4" value="runs motor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-6" value="Note state will then proceed to &quot;stashed gamepiece&quot;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="780" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-9" target="FjSJTUMppFiD3XPCcplV-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-9" value="Autonomous Version" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" vertex="1" parent="1">
+          <mxGeometry x="490" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-10" value="Named Command runs intake to drop of prestored piece" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="590" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-12" target="FjSJTUMppFiD3XPCcplV-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-12" value="Once robot gets to driver station (timed?) named command to intake&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="730" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-13" value="intake motor stops" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="660" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-14" target="FjSJTUMppFiD3XPCcplV-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-14" value="intake motor stops" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="810" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-15" value="teleop starts" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="890" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.517;entryY=0.128;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-10" target="FjSJTUMppFiD3XPCcplV-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FjSJTUMppFiD3XPCcplV-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0.117;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="FjSJTUMppFiD3XPCcplV-13" target="FjSJTUMppFiD3XPCcplV-12">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
