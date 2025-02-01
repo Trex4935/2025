@@ -146,6 +146,4 @@ public class LEDControl extends SubsystemBase {
     // Make sure starting position isn't beyond the length of the strip
     walkStartingPosition = walkStartingPosition % ledBufferLength;
   }
-
-  @Override
-  public void periodic() {}
+}
