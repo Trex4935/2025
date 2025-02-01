@@ -25,14 +25,14 @@ public class AlgaeIntake extends SubsystemBase {
     intakeMotor1.stopMotor();
   }
 
-  public Command cm_intakeMovement(double speed) {
+  public Command cm_intakeAlgae(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor percent output", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty("Algae intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
-        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+        "Alge intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
 
   /**

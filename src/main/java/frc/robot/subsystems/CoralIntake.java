@@ -25,14 +25,14 @@ public class CoralIntake extends SubsystemBase {
     intakeMotor1.stopMotor();
   }
 
-  public Command cm_intakeMovement(double speed) {
+  public Command cm_intakeCoral(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor percent output", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty("Coral intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
-        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+        "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
   /**
    * Example command factory method.
