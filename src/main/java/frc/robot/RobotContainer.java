@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -84,7 +85,7 @@ public class RobotContainer {
                                                                                                   // negative Y
                                                                                                   // (forward)
                         .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
+                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
                                                                                    // negative X (left)
                                                                                    // if inversion for the 2nd joystick
                                                                                    // broken change to pos -joseph
@@ -104,11 +105,13 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         // speed limiter button that slows the speed down if needed
-        joystick.rightBumper().whileTrue(Commands.startEnd(() -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25, () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
+        joystick.rightBumper().onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
+        joystick.leftTrigger().whileTrue(Commands.startEnd(() -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25, () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
     // Configure the trigger bindings
+
     configureBindings();
     SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
