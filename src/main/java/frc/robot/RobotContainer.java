@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -19,9 +20,9 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -53,7 +54,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
-  Intake m_intake = new Intake();
+  CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -80,7 +81,7 @@ public class RobotContainer {
                     .withVelocityY(
                         joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
+                        -joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
             // negative X (left)
             // if inversion for the 2nd joystick
             // broken change to pos -joseph
@@ -104,10 +105,21 @@ public class RobotContainer {
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    // speed limiter button that slows the speed down if needed
+    joystick
+        .rightBumper()
+        .onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
+    joystick
+        .leftTrigger()
+        .whileTrue(
+            Commands.startEnd(
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
     // Configure the trigger bindings
+
     configureBindings();
     SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
@@ -135,8 +147,8 @@ public class RobotContainer {
 
     m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.6));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
-    m_driverController.a().whileTrue(m_intake.cm_intakeMovement(0.6));
-    m_driverController.b().whileTrue(m_intake.cm_intakeMovement(-0.6));
+    m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
+    m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
     // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
     // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
     // operator.a().whileTrue(fullSequence(BotState.REEF));
@@ -153,7 +165,6 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-
-    return new PathPlannerAuto("Forward Backward Left Right");
+    return new PathPlannerAuto("Forward");
   }
 }

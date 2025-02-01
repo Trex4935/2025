@@ -25,6 +25,11 @@ public class Elevator extends SubsystemBase {
     elevatorMotor.stopMotor();
   }
 
+  // method to set the position of the elevator
+  public void setElevatorPosition(double position){
+    elevatorMotor.setPosition(position);
+  }
+
   public Command cm_elevatorMovement(double speed) {
     return startEnd(() -> runElevatorMotor(speed), () -> stopElevatorMotor());
   }
@@ -34,6 +39,8 @@ public class Elevator extends SubsystemBase {
         "Left Climber Encoder Position",
         () -> elevatorMotor.getPosition().getValueAsDouble(),
         null);
+        builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
+
   }
 
   @Override
