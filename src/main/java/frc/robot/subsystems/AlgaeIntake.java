@@ -34,7 +34,7 @@ public class AlgaeIntake extends SubsystemBase {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
-  public Command cm_intakeAlgeVelocity(double velocity) {
+  public Command cm_intakeAlgaeVelocity(double velocity) {
     return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
