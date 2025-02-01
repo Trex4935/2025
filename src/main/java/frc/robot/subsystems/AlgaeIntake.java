@@ -32,7 +32,7 @@ public class AlgaeIntake extends SubsystemBase {
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty("Algae intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
-        "Alge intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+        "Algae intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
 
   /**
