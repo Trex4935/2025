@@ -29,7 +29,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -61,7 +61,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
-  Intake m_intake = new Intake();
+  CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
