@@ -22,8 +22,8 @@ public class AlgaeIntake extends SubsystemBase {
     intakeMotor1.set(speed);
   }
 
-  public void runIntakeMotorVelocity(double speed) {
-    intakeMotor1.setControl(new MotionMagicVelocityVoltage(speed));
+  public void algaeIntakeMotorVelocity(double velocity) {
+    intakeMotor1.setControl(new MotionMagicVelocityVoltage(velocity));
   }
 
   public void stopIntakeMotor() {
@@ -34,8 +34,8 @@ public class AlgaeIntake extends SubsystemBase {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
-  public Command cm_intakeAlgeVelocity(double speed) {
-    return startEnd(() -> runIntakeMotorVelocity(speed), () -> stopIntakeMotor());
+  public Command cm_intakeAlgeVelocity(double velocity) {
+    return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
@@ -57,8 +57,6 @@ public class AlgaeIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
