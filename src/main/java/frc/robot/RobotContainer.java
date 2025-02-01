@@ -148,6 +148,7 @@ public class RobotContainer {
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
     m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
     m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
+    m_driverController.rightBumper().whileTrue(m_LedControl.RAINBOW());
   }
 
   /**

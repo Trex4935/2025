@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDControl extends SubsystemBase {
@@ -29,6 +30,9 @@ public class LEDControl extends SubsystemBase {
     // Makes the counter and toggle
     ledToggle = false;
     counter = 0;
+  }
+  public Command RAINBOW(){
+    return startEnd(() -> LEDController(), () -> solidLEDS(0, 0, 0));
   }
 
   // Used to create rainbow LEDs
