@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,12 +22,20 @@ public class AlgaeIntake extends SubsystemBase {
     intakeMotor1.set(speed);
   }
 
+  public void runIntakeMotorVelocity(double speed) {
+    intakeMotor1.setControl(new MotionMagicVelocityVoltage(speed));
+  }
+
   public void stopIntakeMotor() {
     intakeMotor1.stopMotor();
   }
 
   public Command cm_intakeAlgae(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
+  }
+
+  public Command cm_intakeAlgeVelocity(double speed) {
+    return startEnd(() -> runIntakeMotorVelocity(speed), () -> stopIntakeMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
