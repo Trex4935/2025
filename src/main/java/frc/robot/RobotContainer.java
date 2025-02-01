@@ -108,10 +108,6 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    // Intake test code
-    m_driverController.a().whileTrue(m_intake.intakeGo());
-    m_driverController.b().whileTrue(m_intake.intakeDrop());
-
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
@@ -143,10 +139,10 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_elevator.cm_movementUp());
-    m_driverController.y().whileTrue(m_elevator.cm_movementDown());
-    m_driverController.a().whileTrue(m_intake.intakeGo());
-    m_driverController.b().whileTrue(m_intake.intakeDrop());
+    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.6));
+    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
+    m_driverController.a().whileTrue(m_intake.cm_intakeMovement(0.6));
+    m_driverController.b().whileTrue(m_intake.cm_intakeMovement(-0.6));
   }
 
     /**
