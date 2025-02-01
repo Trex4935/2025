@@ -192,11 +192,11 @@ public class RobotContainer {
     m_driverController
         .start()
         .and(m_driverController.povUp())
-        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 6, new Rotation2d(0))));
+        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 6, new Rotation2d(Math.PI))));
     m_driverController
         .start()
         .and(m_driverController.povDown())
-        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 4, new Rotation2d(0))));
+        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 4, new Rotation2d(Math.PI))));
   }
 
   /**
