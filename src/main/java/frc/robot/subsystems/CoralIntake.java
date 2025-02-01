@@ -9,34 +9,31 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
+public class CoralIntake extends SubsystemBase {
   public final TalonFX intakeMotor1;
 
   /** Creates a new ExampleSubsystem. */
-  public Intake() {
+  public CoralIntake() {
     intakeMotor1 = new TalonFX(0);
   }
 
-  public void pickUp() {
-    intakeMotor1.set(.8);
+  public void runIntakeMotor(double speed) {
+    intakeMotor1.set(speed);
   }
 
-  public void stop() {
+  public void stopIntakeMotor() {
     intakeMotor1.stopMotor();
   }
 
-  public void drop() {
-    intakeMotor1.set(-.8);
+  public Command cm_intakeCoral(double speed) {
+    return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
-  public Command intakeGo() {
-    return runEnd(() -> pickUp(), () -> stop());
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("Coral intake motor percent output", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty(
+        "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
-
-  public Command intakeDrop() {
-    return runEnd(() -> drop(), () -> stop());
-  }
-
   /**
    * Example command factory method.
    *
@@ -51,11 +48,7 @@ public class Intake extends SubsystemBase {
         });
   }
 
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor speed", () -> intakeMotor1.get(), null);
-    builder.addDoubleProperty(
-        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
-  }
+
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
