@@ -9,11 +9,11 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
+public class CoralIntake extends SubsystemBase {
   public final TalonFX intakeMotor1;
 
   /** Creates a new ExampleSubsystem. */
-  public Intake() {
+  public CoralIntake() {
     intakeMotor1 = new TalonFX(0);
   }
 
@@ -25,10 +25,15 @@ public class Intake extends SubsystemBase {
     intakeMotor1.stopMotor();
   }
 
-  public Command cm_intakeMovement(double speed) {
+  public Command cm_intakeCoral(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("Coral intake motor percent output", () -> intakeMotor1.get(), null);
+    builder.addDoubleProperty(
+        "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+  }
   /**
    * Example command factory method.
    *
@@ -43,11 +48,7 @@ public class Intake extends SubsystemBase {
         });
   }
 
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Intake motor percent output", () -> intakeMotor1.get(), null);
-    builder.addDoubleProperty(
-        "Intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
-  }
+
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
