@@ -34,6 +34,7 @@ public class CoralIntake extends SubsystemBase {
     builder.addDoubleProperty(
         "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
+
   /**
    * Example command factory method.
    *
@@ -47,8 +48,6 @@ public class CoralIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

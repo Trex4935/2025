@@ -31,7 +31,8 @@ public class LEDControl extends SubsystemBase {
     ledToggle = false;
     counter = 0;
   }
-  public Command RAINBOW(){
+
+  public Command RAINBOW() {
     return startEnd(() -> LEDController(), () -> solidLEDS(0, 0, 0));
   }
 
