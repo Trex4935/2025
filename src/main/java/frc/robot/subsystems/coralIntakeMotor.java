@@ -10,19 +10,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class coralIntakeMotor extends SubsystemBase {
-  public final TalonFX intakeMotor1;
+  public final TalonFX coralIntakeMotor;
 
   /** Creates a new ExampleSubsystem. */
   public coralIntakeMotor() {
-    intakeMotor1 = new TalonFX(0);
+    coralIntakeMotor = new TalonFX(0);
   }
 
   public void runIntakeMotor(double speed) {
-    intakeMotor1.set(speed);
+    coralIntakeMotor.set(speed);
   }
 
   public void stopIntakeMotor() {
-    intakeMotor1.stopMotor();
+    coralIntakeMotor.stopMotor();
   }
 
   public Command cm_intakeCoral(double speed) {
@@ -30,9 +30,12 @@ public class coralIntakeMotor extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Coral intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
-        "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+        "Coral intake motor percent output", () -> coralIntakeMotor.get(), null);
+    builder.addDoubleProperty(
+        "Coral intake motor velocity",
+        () -> coralIntakeMotor.getVelocity().getValueAsDouble(),
+        null);
   }
 
   /**
