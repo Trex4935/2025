@@ -106,7 +106,6 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         // speed limiter button that slows the speed down if needed
-        joystick.rightBumper().onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
         joystick.leftTrigger().whileTrue(Commands.startEnd(() -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25, () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
