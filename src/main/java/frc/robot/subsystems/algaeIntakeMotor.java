@@ -9,11 +9,11 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class AlgaeIntake extends SubsystemBase {
+public class algaeIntakeMotor extends SubsystemBase {
   public final TalonFX intakeMotor1;
 
   /** Creates a new AlgaeIntake Subsystem. */
-  public AlgaeIntake() {
+  public algaeIntakeMotor() {
     intakeMotor1 = new TalonFX(99);
   }
 
@@ -48,8 +48,6 @@ public class AlgaeIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

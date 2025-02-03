@@ -9,11 +9,11 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class CoralIntake extends SubsystemBase {
+public class coralIntakeMotor extends SubsystemBase {
   public final TalonFX intakeMotor1;
 
   /** Creates a new ExampleSubsystem. */
-  public CoralIntake() {
+  public coralIntakeMotor() {
     intakeMotor1 = new TalonFX(0);
   }
 
@@ -34,6 +34,7 @@ public class CoralIntake extends SubsystemBase {
     builder.addDoubleProperty(
         "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
   }
+
   /**
    * Example command factory method.
    *
@@ -47,8 +48,6 @@ public class CoralIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
