@@ -146,61 +146,6 @@ public class RobotContainer {
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
     m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
     m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
-
-    // Auto-drive commands, the ones commented below are intended for comps
-    /*
-    m_driverController
-        .back()
-        .and(m_driverController.povUpLeft())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft));
-    m_driverController
-        .back()
-        .and(m_driverController.povUp())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarMid));
-    m_driverController
-        .back()
-        .and(m_driverController.povUpRight())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarRight));
-    m_driverController
-        .back()
-        .and(m_driverController.povDownLeft())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseLeft));
-    m_driverController
-        .back()
-        .and(m_driverController.povDown())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseMid));
-    m_driverController
-        .back()
-        .and(m_driverController.povDownRight())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseRight));
-
-    m_driverController
-        .back()
-        .and(m_driverController.povLeft())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft));
-    m_driverController
-        .back()
-        .and(m_driverController.povRight())
-        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight));
-
-    */
-
-    /*
-    m_driverController
-        .start()
-        .and(m_driverController.povUp())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.halltag1, 49));
-        */
-    /*
-    m_driverController
-        .start()
-        .and(m_driverController.povUp())
-        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 6, new Rotation2d(Math.PI))));
-    m_driverController
-        .start()
-        .and(m_driverController.povDown())
-        .whileTrue(drivetrain.ppSimple(new Pose2d(10, 4, new Rotation2d(Math.PI))));
-    */
   }
 
   /**
