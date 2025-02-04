@@ -191,6 +191,7 @@ public class RobotContainer {
         .and(m_driverController.povUp())
         .whileTrue(drivetrain.ppAutoDrive(Locations.halltag1, 49));
         */
+    /*
     m_driverController
         .start()
         .and(m_driverController.povUp())
@@ -199,6 +200,7 @@ public class RobotContainer {
         .start()
         .and(m_driverController.povDown())
         .whileTrue(drivetrain.ppSimple(new Pose2d(10, 4, new Rotation2d(Math.PI))));
+    */
   }
 
   /**
