@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,8 +26,16 @@ public class CoralIntake extends SubsystemBase {
     coralIntakeMotor.stopMotor();
   }
 
+  public void coralIntakeMotorVelocity(double velocity) {
+    coralIntakeMotor.setControl(new MotionMagicVelocityVoltage(velocity));
+  }
+
   public Command cm_intakeCoral(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
+  }
+
+  public Command cm_intakeCoralVelocity(double velocity) {
+    return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
