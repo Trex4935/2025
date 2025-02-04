@@ -147,40 +147,43 @@ public class RobotContainer {
     m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
     m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
 
-    // Auto-drive commands
+    // Auto-drive commands, the ones commented below are intended for comps
+    /*
     m_driverController
         .back()
         .and(m_driverController.povUpLeft())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefFarLeft));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft));
     m_driverController
         .back()
         .and(m_driverController.povUp())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefFarMid));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarMid));
     m_driverController
         .back()
         .and(m_driverController.povUpRight())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefFarRight));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarRight));
     m_driverController
         .back()
         .and(m_driverController.povDownLeft())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseLeft));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseLeft));
     m_driverController
         .back()
         .and(m_driverController.povDown())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseMid));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseMid));
     m_driverController
         .back()
         .and(m_driverController.povDownRight())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.reefCloseRight));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseRight));
 
     m_driverController
         .back()
         .and(m_driverController.povLeft())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationLeft));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft));
     m_driverController
         .back()
         .and(m_driverController.povRight())
-        .whileTrue(drivetrain.ppAutoDrive(Locations.coralStationRight));
+        .whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight));
+
+    */
 
     /*
     m_driverController
