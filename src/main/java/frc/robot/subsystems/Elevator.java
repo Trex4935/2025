@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
   }
 
   // method to set the position of the elevator
-  public void setElevatorPosition(double position){
+  public void setElevatorPosition(double position) {
     elevatorMotor.setPosition(position);
   }
 
@@ -39,8 +39,7 @@ public class Elevator extends SubsystemBase {
         "Left Climber Encoder Position",
         () -> elevatorMotor.getPosition().getValueAsDouble(),
         null);
-        builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
-
+    builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
   }
 
   @Override

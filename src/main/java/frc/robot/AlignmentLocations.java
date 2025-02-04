@@ -21,7 +21,8 @@ public class AlignmentLocations {
 
   // Hallway field map AprilTags
 
-  private static Pose3d hallTag1Pose3d = new Pose3d(3.073, 1.6096, 1.1684, new Rotation3d(0, 0, Math.PI));
+  private static Pose3d hallTag1Pose3d =
+      new Pose3d(3.073, 1.6096, 1.1684, new Rotation3d(0, 0, Math.PI));
   private static Pose3d hallTag2Pose3d = new Pose3d(0, -1.5875, 1.2549, new Rotation3d());
   private static Pose3d hallTag3Pose3d = new Pose3d(0, 1.5875, 1.2319, new Rotation3d());
   private static Pose3d hallTag4Pose3d = new Pose3d(0, 0, 1.2319, new Rotation3d());
@@ -33,7 +34,8 @@ public class AlignmentLocations {
   private static AprilTag hallTag3 = new AprilTag(3, hallTag3Pose3d);
   private static AprilTag hallTag4 = new AprilTag(4, hallTag4Pose3d);
 
-  private static List<AprilTag> hallwayFieldMapTagList = List.of(hallTag1, hallTag2, hallTag3, hallTag4);
+  private static List<AprilTag> hallwayFieldMapTagList =
+      List.of(hallTag1, hallTag2, hallTag3, hallTag4);
 
   private static AprilTagFieldLayout testAprilTagFieldLayout =
       new AprilTagFieldLayout(hallwayFieldMapTagList, 17.5483, 8.0519);
@@ -156,7 +158,7 @@ public class AlignmentLocations {
 
   // Hallway tests tags
   public static AlignmentPose halltag1 =
-  new AlignmentPose(hallTag1_1Pose3d.toPose2d(),new double[] {-1, 0, 0});
-      //new AlignmentPose(
-        //  testAprilTagFieldLayout.getTagPose(1).get().toPose2d(), new double[] {-1, 0, 0});
+      new AlignmentPose(hallTag1_1Pose3d.toPose2d(), new double[] {-1, 0, 0});
+  // new AlignmentPose(
+  //  testAprilTagFieldLayout.getTagPose(1).get().toPose2d(), new double[] {-1, 0, 0});
 }
