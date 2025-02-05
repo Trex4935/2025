@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,12 +14,20 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX elevatorMotor;
 
+  /** CANdi sensor */
+  CANdi elevatorCandi;
+
   public Elevator() {
     elevatorMotor = new TalonFX(9);
+    elevatorCandi = new CANdi(20);
   }
 
   public void runElevatorMotor(double speed) {
     elevatorMotor.set(speed);
+  }
+
+  public void candiSensor() {
+    elevatorCandi.getPWM1Position();
   }
 
   public void stopElevatorMotor() {
@@ -40,6 +49,8 @@ public class Elevator extends SubsystemBase {
         () -> elevatorMotor.getPosition().getValueAsDouble(),
         null);
     builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Candi distance", () -> elevatorCandi.getQuadraturePosition().getValueAsDouble(), null);
   }
 
   @Override
