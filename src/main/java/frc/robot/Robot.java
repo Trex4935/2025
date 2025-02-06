@@ -5,12 +5,16 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
 
+import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.core.CoreCANrange;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -18,7 +22,7 @@ import frc.robot.extensions.LimelightHelpers;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
   /**
@@ -29,6 +33,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CANrangeConfiguration configs = new CANrangeConfiguration();
+    CANrange = new CANrange(0);
+
+ // Write these configs to the CANrange
+     CANrange.getConfigurator().apply(configs);
+
   }
 
   /**
@@ -40,6 +50,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    var distance = CANrange.getDistance();
+
+    // Refresh and print these values
+    System.out.println("Distance is " + distance.refresh().toString());
+
     CommandScheduler.getInstance().run();
     var driveState = m_robotContainer.drivetrain.getState();
     double headingDeg = driveState.Pose.getRotation().getDegrees();
@@ -77,6 +92,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
