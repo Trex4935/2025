@@ -58,6 +58,7 @@ public class RobotContainer {
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -145,6 +146,11 @@ public class RobotContainer {
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
     m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
     m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
+    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
+    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
+    // operator.a().whileTrue(fullSequence(BotState.REEF));
+    // operator.b().whileTrue(fullSequence(BotState.CLIMB));
+    // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
   }
 
   /**
