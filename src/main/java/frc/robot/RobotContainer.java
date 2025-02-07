@@ -107,9 +107,6 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .rightBumper()
-        .onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
-    joystick
         .leftTrigger()
         .whileTrue(
             Commands.startEnd(
