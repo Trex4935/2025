@@ -23,7 +23,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,7 +52,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  Vision m_vision = new Vision();
+  // Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
@@ -118,7 +117,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureBindings();
-    SmartDashboard.putData(m_vision);
+    // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
@@ -142,10 +141,10 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.6));
-    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
-    m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
-    m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
+    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2, 0.2));
+    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2, -0.2));
+    m_driverController.a().whileTrue(m_intake.cm_intakeCoralVelocity(0.25));
+    m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.1));
     // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
     // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
     // operator.a().whileTrue(fullSequence(BotState.REEF));
