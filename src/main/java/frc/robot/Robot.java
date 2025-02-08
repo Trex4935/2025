@@ -4,15 +4,8 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -32,30 +25,11 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  AddressableLED m_led;
-
-  AddressableLEDBuffer m_ledBuffer;
-
   public Robot() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
-    m_led = new AddressableLED(3);
-
-    m_ledBuffer = new AddressableLEDBuffer(60);
-    m_led.setLength(m_ledBuffer.getLength());
-
-    m_led.setData(m_ledBuffer);
-    m_led.start();
   }
-
-  final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
-
-  final Distance kLedSpacing = Meters.of(1 / 120.0);
-
-  final LEDPattern m_scrollingRainbow =
-      m_rainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
 
   @Override
   public void robotPeriodic() {
@@ -108,11 +82,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    m_scrollingRainbow.applyTo(m_ledBuffer);
-    // Set the LEDs
-    m_led.setData(m_ledBuffer);
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

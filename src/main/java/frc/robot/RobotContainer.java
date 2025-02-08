@@ -23,7 +23,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LEDControl;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -57,7 +57,7 @@ public class RobotContainer {
   Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
-  LEDControl m_LedControl = new LEDControl();
+  public final LEDSubsystem m_LedSubsystem = new LEDSubsystem();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -122,7 +122,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureBindings();
-    // SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
@@ -145,12 +145,10 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
     m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.6));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.4));
     m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.6));
     m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.6));
-    m_driverController.rightBumper().whileTrue(m_LedControl.RAINBOW());
   }
 
   /**

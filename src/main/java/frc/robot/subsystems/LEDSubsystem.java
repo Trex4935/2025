@@ -1,14 +1,20 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LEDControl extends SubsystemBase {
-
+public class LEDSubsystem extends SubsystemBase {
   // Declaring ledstrip
   int m_rainbowFirstPixelHue;
   AddressableLED ledStrip;
@@ -17,23 +23,20 @@ public class LEDControl extends SubsystemBase {
   boolean ledToggle;
   int counter, ledBufferLength;
   private int walkStartingPosition = 0;
+  private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
 
   /** Creates a new LEDControl. */
-  public LEDControl() {
+  public LEDSubsystem() {
 
     // Creating addressable led Objects
     m_rainbowFirstPixelHue = 0;
-    ledStrip = new AddressableLED(0);
-    ledBuffer = new AddressableLEDBuffer(180);
+    ledStrip = new AddressableLED(2);
+    ledBuffer = new AddressableLEDBuffer(160);
     ledBufferLength = ledBuffer.getLength();
     ledStrip.setLength(ledBuffer.getLength());
     // Makes the counter and toggle
     ledToggle = false;
     counter = 0;
-  }
-
-  public Command RAINBOW() {
-    return startEnd(() -> LEDController(), () -> solidLEDS(0, 0, 0));
   }
 
   // Used to create rainbow LEDs
@@ -57,7 +60,7 @@ public class LEDControl extends SubsystemBase {
   // Used to create a 'walking' LED
   public void sectionedLEDControl() {
     for (var i = 0; i < ledBuffer.getLength(); i++) {
-      ledBuffer.setLED(i, Color.kBlue);
+      ledBuffer.setLED(i, Color.kOlive);
       if (i < ledBuffer.getLength() - 1) {
         // System.out.println("+1: "+(i+1));
         ledBuffer.setLED(i + 1, Color.kBlack);
@@ -77,12 +80,12 @@ public class LEDControl extends SubsystemBase {
   }
 
   // A method used to create non changing LEDs or solid LEDs
-  public void solidLEDS(int hue, int saturation, int brightness) {
+  public void solidLEDS(int red, int green, int blue) {
     for (var i = 0; i < ledBuffer.getLength(); i++) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
       // Set the value
-      ledBuffer.setHSV(i, hue, saturation, brightness);
+      ledBuffer.setRGB(i, red, green, blue);
     }
     // Increase by to make the rainbow "move"
     // Check bounds
@@ -91,13 +94,13 @@ public class LEDControl extends SubsystemBase {
   }
 
   // A method used to create flashing LEDs taking blink rate into account
-  public void flashLEDS(int hue, int saturation, int brightness, int blinkRate) {
+  public void flashLEDS(int red, int green, int blue, int blinkRate) {
     counter++;
     // Checks to see how long one cycle has passed
     if (counter % blinkRate == 0) {
       // Checks to see if LEDs are off and turns them on
       if (!ledToggle) {
-        solidLEDS(hue, saturation, brightness);
+        solidLEDS(red, green, blue);
         ledToggle = true;
       }
       // Turns off the LEDs if they are on
@@ -107,6 +110,19 @@ public class LEDControl extends SubsystemBase {
       }
     }
   }
+
+  public void setLedToColor(Color color) {
+    Color8Bit color8Bit = new Color8Bit(color);
+    solidLEDS(color8Bit.red, color8Bit.green, color8Bit.blue);
+  }
+
+  public Command cm_setLedToColor(Color color) {
+    return Commands.runOnce(() -> setLedToColor(color));
+  }
+
+  // public Command runLED(){
+  //   return solidLEDS(m_rainbowFirstPixelHue, ledBufferLength, counter);
+  // }
 
   /**
    * @param pirmaryColor Primary color of LED strip e.g Color.kRed
@@ -151,4 +167,7 @@ public class LEDControl extends SubsystemBase {
     // Make sure starting position isn't beyond the length of the strip
     walkStartingPosition = walkStartingPosition % ledBufferLength;
   }
+
+  @Override
+  public void periodic() {}
 }
