@@ -11,35 +11,59 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
-  public final TalonFX elevatorMotor;
+  public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
   public Elevator() {
-    elevatorMotor = new TalonFX(9);
+    leftElevatorMotor = new TalonFX(9);
+    rightElevatorMotor = new TalonFX(10);
   }
 
-  public void runElevatorMotor(double speed) {
-    elevatorMotor.set(speed);
+  public void runLeftElevatorMotor(double speed) {
+    leftElevatorMotor.set(speed);
   }
 
-  public void stopElevatorMotor() {
-    elevatorMotor.stopMotor();
+  public void runRightElevatorMotor(double speed) {
+    rightElevatorMotor.set(speed);
+  }
+
+  public void runElevatorMotors(double leftSpeed, double rightSpeed) {
+    runLeftElevatorMotor(leftSpeed);
+    runRightElevatorMotor(rightSpeed);
+  }
+
+  public void stopLeftElevatorMotor() {
+    leftElevatorMotor.stopMotor();
+  }
+
+  public void stopRightElevatorMotor() {
+    rightElevatorMotor.stopMotor();
+  }
+
+  public void stopElevatorMotors() {
+    stopLeftElevatorMotor();
+    stopRightElevatorMotor();
   }
 
   // method to set the position of the elevator
   public void setElevatorPosition(double position) {
-    elevatorMotor.setPosition(position);
+    leftElevatorMotor.setPosition(position);
   }
 
-  public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotor(speed), () -> stopElevatorMotor());
+  public Command cm_elevatorMovement(double leftSpeed, double rightSpeed) {
+    return startEnd(() -> runElevatorMotors(leftSpeed, rightSpeed), () -> stopElevatorMotors());
   }
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
-        "Left Climber Encoder Position",
-        () -> elevatorMotor.getPosition().getValueAsDouble(),
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
         null);
-    builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
+    builder.addDoubleProperty("Right Elevator percent output", () -> rightElevatorMotor.get(), null);
   }
 
   @Override
