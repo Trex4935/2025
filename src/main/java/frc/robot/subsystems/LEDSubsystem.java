@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,25 +36,12 @@ public class LEDSubsystem extends SubsystemBase {
     // Makes the counter and toggle
     ledToggle = false;
     counter = 0;
-  }
 
-  // Used to create rainbow LEDs
-  public void LEDController() {
-    // For every pixel
-    for (var i = 0; i < ledBuffer.getLength(); i++) {
-      // Calculate the hue - hue is easier for rainbows because the color
-      // shape is a circle so only one value needs to precess
-      final var hue = (m_rainbowFirstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
-      // Set the value
-      ledBuffer.setHSV(i, hue, 255, 32);
-    }
-    // Increase by to make the rainbow "move"
-    m_rainbowFirstPixelHue += 3;
-    // Check bounds
-    m_rainbowFirstPixelHue %= 180;
-    ledStrip.setData(ledBuffer);
+    ledStrip.setLength(ledBufferLength);
     ledStrip.start();
   }
+
+
 
   // Used to create a 'walking' LED
   public void sectionedLEDControl() {
@@ -74,8 +60,6 @@ public class LEDSubsystem extends SubsystemBase {
       }
 
       Timer.delay(.05);
-      ledStrip.setData(ledBuffer);
-      ledStrip.start();
     }
   }
 
@@ -87,10 +71,16 @@ public class LEDSubsystem extends SubsystemBase {
       // Set the value
       ledBuffer.setRGB(i, red, green, blue);
     }
-    // Increase by to make the rainbow "move"
-    // Check bounds
-    ledStrip.setData(ledBuffer);
-    ledStrip.start();
+  }
+
+  // A method used to create non changing LEDs or solid LEDs
+  public void solidLEDS(Color color) {
+    for (var i = 0; i < ledBuffer.getLength(); i++) {
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      // Set the value
+      ledBuffer.setLED(i, color);
+    }
   }
 
   // A method used to create flashing LEDs taking blink rate into account
@@ -111,13 +101,8 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void setLedToColor(Color color) {
-    Color8Bit color8Bit = new Color8Bit(color);
-    solidLEDS(color8Bit.red, color8Bit.green, color8Bit.blue);
-  }
-
   public Command cm_setLedToColor(Color color) {
-    return Commands.runOnce(() -> setLedToColor(color));
+    return Commands.runOnce(() -> solidLEDS(color));
   }
 
   // public Command runLED(){
@@ -169,5 +154,8 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    // Periodically send the latest LED color data to the LED strip for it to display
+    ledStrip.setData(ledBuffer);
+  }
 }
