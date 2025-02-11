@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Diagonal to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to Human Player"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " Human Player to Reef"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
