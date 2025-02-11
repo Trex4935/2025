@@ -4,31 +4,31 @@
 
 package frc.robot.subsystems;
 
-import java.util.HashMap;
-
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.sim.CANrangeSimState;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX leftElevatorMotor, rightElevatorMotor;
+
   public CANrange canRange;
-  public PIDController PID;
+
+  public PIDController elevatorPID;
   private double pidCalc = 0;
   private double position = 0.37;
   private HashMap<String, Double> elevatorPosition;
+  public static boolean atPosition = false;
 
   public Elevator() {
-    PID = new PIDController(0.7, 0, 0);//ONLY SET THE P VALUE
+    elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
 
+    elevatorPID.setTolerance(0.1);
 
     leftElevatorMotor = new TalonFX(9);
     rightElevatorMotor = new TalonFX(10);
@@ -40,10 +40,9 @@ public class Elevator extends SubsystemBase {
 
     elevatorPosition = new HashMap<>();
     elevatorPosition.put("Default", 0.37);
-    elevatorPosition.put("L2", 0.420);
-    elevatorPosition.put("L3", 0.67);
+    elevatorPosition.put("L2", 0.520);
+    elevatorPosition.put("L3", 0.705);
   }
-
 
   public void runElevatorMotors(double speed) {
     leftElevatorMotor.set(speed);
@@ -51,8 +50,19 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setMotorToPIDCalc() {
-    pidCalc = PID.calculate(canRange.getDistance().getValueAsDouble(), position);
+    pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
     runElevatorMotors(pidCalc);
+    /*
+    if (MathUtil.isNear(pidCalc, leftElevatorMotor.getPosition().getValueAsDouble(), 0.1)){
+      atPosition = true;
+    }
+    else {
+      at
+    } */
+  }
+
+  public boolean isAtPosition() {
+    return elevatorPID.atSetpoint();
   }
 
   public void stopElevatorMotors() {
@@ -60,11 +70,11 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor.stopMotor();
   }
 
-  public void setElevatorState(String targetPosition){
+  public void setElevatorState(String targetPosition) {
     position = elevatorPosition.get(targetPosition);
   }
 
-  public Command cm_setElevatorState(String targetState){
+  public Command cm_setElevatorState(String targetState) {
     return runOnce(() -> setElevatorState(targetState));
   }
 
@@ -74,10 +84,9 @@ public class Elevator extends SubsystemBase {
     return startEnd(() -> runElevatorMotors(speed), () -> stopElevatorMotors());
   }
 
-  public double returnPID(){
+  public double returnPID() {
     return pidCalc;
   }
-
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
@@ -89,12 +98,12 @@ public class Elevator extends SubsystemBase {
         () -> rightElevatorMotor.getPosition().getValueAsDouble(),
         null);
     builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
-    builder.addDoubleProperty("Right Elevator percent output", () -> rightElevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Right Elevator percent output", () -> rightElevatorMotor.get(), null);
 
     builder.addDoubleProperty("PID Value", () -> returnPID(), null);
   }
 
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 }

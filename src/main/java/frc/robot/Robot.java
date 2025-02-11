@@ -6,15 +6,13 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
-
+import com.ctre.phoenix6.hardware.CANrange;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
 
-import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.core.CoreCANrange;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -36,9 +34,8 @@ public class Robot extends TimedRobot {
     CANrangeConfiguration configs = new CANrangeConfiguration();
     CANrange = new CANrange(0);
 
- // Write these configs to the CANrange
-     CANrange.getConfigurator().apply(configs);
-
+    // Write these configs to the CANrange
+    CANrange.getConfigurator().apply(configs);
   }
 
   /**
