@@ -63,7 +63,8 @@ public class Elevator extends SubsystemBase {
         () -> rightElevatorMotor.getPosition().getValueAsDouble(),
         null);
     builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
-    builder.addDoubleProperty("Right Elevator percent output", () -> rightElevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Right Elevator percent output", () -> rightElevatorMotor.get(), null);
   }
 
   @Override
