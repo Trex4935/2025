@@ -53,7 +53,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  Vision m_vision = new Vision();
+ // Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
@@ -118,7 +118,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureBindings();
-   SmartDashboard.putData(m_vision);
+   //SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
@@ -162,6 +162,6 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto("Forward");
+    return new PathPlannerAuto("joseph auto");
   }
 }
