@@ -26,4 +26,6 @@ jobs:
     - name: Compile and run tests on robot code
       run: ./gradlew build
     - name: Compile and run simulation
-      run: ./gradlew simulateJava --fail-fast
+      run: |
+        ./gradlew simulateJava | tee output.log
+        if grep -q "Error at" output.log; then exit 1; fi
