@@ -27,5 +27,8 @@ jobs:
       run: ./gradlew build
     - name: Compile and run simulation
       run: |
-        ./gradlew simulateJava | tee output.log
-        if grep -q "Error at" output.log; then exit 1; fi
+        ./gradlew simulateJava 2>&1 | tee output.log
+        if grep -q "Error at" output.log; then
+          echo "Simulation errors found, failing build."
+          exit 1
+        fi
