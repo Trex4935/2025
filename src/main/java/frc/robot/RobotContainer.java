@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
@@ -59,6 +61,7 @@ public class RobotContainer {
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
+  private final CommandXboxController sysid = new CommandXboxController(2);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -103,6 +106,16 @@ public class RobotContainer {
     joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
+
+
+    //sysid
+        sysid.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+        sysid.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+        sysid.y().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        sysid.a().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        sysid.b().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        sysid.x().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    //sysid
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed

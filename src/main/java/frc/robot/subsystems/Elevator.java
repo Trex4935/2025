@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -11,6 +14,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
@@ -24,6 +31,9 @@ public class Elevator extends SubsystemBase {
   private double position = 0.37;
   private HashMap<String, Double> elevatorPosition;
   public static boolean atPosition = false;
+  SysIdRoutine m_sysIdRoutine;
+
+
 
   public Elevator() {
     elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
@@ -32,9 +42,11 @@ public class Elevator extends SubsystemBase {
 
     leftElevatorMotor = new TalonFX(9);
     rightElevatorMotor = new TalonFX(10);
+    leftElevatorMotor.setControl(new StrictFollower(rightElevatorMotor.getDeviceID()));
 
     leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
     rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+    final VoltageOut m_sysIdControl = new VoltageOut(0);
 
     canRange = new CANrange(2);
 
@@ -42,12 +54,35 @@ public class Elevator extends SubsystemBase {
     elevatorPosition.put("Default", 0.37);
     elevatorPosition.put("L2", 0.520);
     elevatorPosition.put("L3", 0.705);
+
+    final SysIdRoutine m_sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,         // Use default ramp rate (1 V/s)
+                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+                null,          // Use default timeout (10 s)
+                                       // Log state with Phoenix SignalLogger class
+                state -> SignalLogger.writeString("Elevator SYSID", state.toString())
+            ),
+            new SysIdRoutine.Mechanism(
+                volts -> rightElevatorMotor.setControl(m_sysIdControl.withOutput(volts)),
+                null,
+                this
+            )
+        );
   }
 
   public void runElevatorMotors(double speed) {
     leftElevatorMotor.set(speed);
     rightElevatorMotor.set(speed);
   }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.quasistatic(direction);
+}
+public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.dynamic(direction);
+}
 
   public void setMotorToPIDCalc() {
     pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
