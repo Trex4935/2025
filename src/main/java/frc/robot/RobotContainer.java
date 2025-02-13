@@ -8,8 +8,10 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -57,14 +59,16 @@ public class RobotContainer {
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
+
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
-
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+      private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -115,12 +119,15 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
+    autoChooser = AutoBuilder.buildAutoChooser();
+
     // Configure the trigger bindings
 
     configureBindings();
    SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -164,4 +171,8 @@ public class RobotContainer {
     // pre-loaded auto/path
     return new PathPlannerAuto("Forward");
   }
-}
+
+  public Command autoChooserCommand() {
+    return autoChooser.getSelected();
+
+}}
