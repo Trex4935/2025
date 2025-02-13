@@ -15,7 +15,7 @@ public class CoralIntake extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFX(0);
+    coralIntakeMotor = new TalonFX(8);
   }
 
   public void runIntakeMotor(double speed) {

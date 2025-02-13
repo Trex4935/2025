@@ -38,6 +38,15 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor.set(speed);
   }
 
+  public void setMotorToPIDCalc() {
+    pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
+    runElevatorMotors(pidCalc);
+  }
+
+  public boolean isAtPosition() {
+    return elevatorPID.atSetpoint();
+  }
+
   public void stopElevatorMotors() {
     leftElevatorMotor.stopMotor();
     rightElevatorMotor.stopMotor();
@@ -58,6 +67,14 @@ public class Elevator extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty(
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
     builder.addDoubleProperty(
         "Left Elevator Encoder Position",
         () -> leftElevatorMotor.getPosition().getValueAsDouble(),
