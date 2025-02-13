@@ -4,10 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -92,6 +96,8 @@ public class Elevator extends SubsystemBase {
     builder.addDoubleProperty(
         "Right Elevator Encoder Position",
         () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
         "Left Elevator Encoder Position",
         () -> leftElevatorMotor.getPosition().getValueAsDouble(),
         null);
