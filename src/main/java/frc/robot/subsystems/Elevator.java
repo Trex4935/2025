@@ -52,13 +52,6 @@ public class Elevator extends SubsystemBase {
   public void setMotorToPIDCalc() {
     pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
     runElevatorMotors(pidCalc);
-    /*
-    if (MathUtil.isNear(pidCalc, leftElevatorMotor.getPosition().getValueAsDouble(), 0.1)){
-      atPosition = true;
-    }
-    else {
-      at
-    } */
   }
 
   public boolean isAtPosition() {
