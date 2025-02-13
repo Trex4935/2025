@@ -4,88 +4,55 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
-  public CANrange canRange;
+  public final CANrange canRange;
 
-  public PIDController elevatorPID;
-  private double pidCalc = 0;
-  private double position = 0.37;
-  private HashMap<String, Double> elevatorPosition;
-  public static boolean atPosition = false;
+  private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
 
   public Elevator() {
-    elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
-
-    elevatorPID.setTolerance(0.1);
-
     leftElevatorMotor = new TalonFX(9);
     rightElevatorMotor = new TalonFX(10);
 
-    leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
-    rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+    TalonFXConfiguration configs = new TalonFXConfiguration();
+    configs.Slot0.kP = 2.4; // An error of 1 rotation results in 2.4 V output
+    configs.Slot0.kI = 0; // No output for integrated error
+    configs.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
+    // Peak output of 8 V
+    configs.Voltage.withPeakForwardVoltage(Volts.of(8)).withPeakReverseVoltage(Volts.of(-8));
+
+    configs.Slot1.kP = 60; // An error of 1 rotation results in 60 A output
+    configs.Slot1.kI = 0; // No output for integrated error
+    configs.Slot1.kD = 6; // A velocity of 1 rps results in 6 A output
+    // Peak output of 120 A
+    configs.TorqueCurrent.withPeakForwardTorqueCurrent(Amps.of(120))
+        .withPeakReverseTorqueCurrent(Amps.of(-120));
+
+    /* Make sure we start at 0 */
+    leftElevatorMotor.setPosition(0);
+    leftElevatorMotor.setPosition(0);
 
     canRange = new CANrange(2);
-
-    elevatorPosition = new HashMap<>();
-    elevatorPosition.put("Default", 0.37);
-    elevatorPosition.put("L2", 0.520);
-    elevatorPosition.put("L3", 0.705);
   }
 
-  public void runElevatorMotors(double speed) {
-    leftElevatorMotor.set(speed);
-    rightElevatorMotor.set(speed);
+  public void setElevatorPosition(double position) {
+    leftElevatorMotor.setControl(positionVoltage.withPosition(position));
   }
 
-  public void setMotorToPIDCalc() {
-    pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
-    runElevatorMotors(pidCalc);
-    /*
-    if (MathUtil.isNear(pidCalc, leftElevatorMotor.getPosition().getValueAsDouble(), 0.1)){
-      atPosition = true;
-    }
-    else {
-      at
-    } */
-  }
-
-  public boolean isAtPosition() {
-    return elevatorPID.atSetpoint();
-  }
-
-  public void stopElevatorMotors() {
-    leftElevatorMotor.stopMotor();
-    rightElevatorMotor.stopMotor();
-  }
-
-  public void setElevatorState(String targetPosition) {
-    position = elevatorPosition.get(targetPosition);
-  }
-
-  public Command cm_setElevatorState(String targetState) {
-    return runOnce(() -> setElevatorState(targetState));
-  }
-
-  // method to set the position of the elevator
-
-  public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotors(speed), () -> stopElevatorMotors());
-  }
-
-  public double returnPID() {
-    return pidCalc;
+  public Command cm_setElevatorPosition(double position) {
+    return runOnce(() -> setElevatorPosition(position));
   }
 
   public void initSendable(SendableBuilder builder) {
@@ -100,8 +67,6 @@ public class Elevator extends SubsystemBase {
     builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
     builder.addDoubleProperty(
         "Right Elevator percent output", () -> rightElevatorMotor.get(), null);
-
-    builder.addDoubleProperty("PID Value", () -> returnPID(), null);
   }
 
   @Override
