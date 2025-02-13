@@ -13,12 +13,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
@@ -137,7 +137,7 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
+    // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
@@ -156,15 +156,12 @@ public class RobotContainer {
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
 
     // For levels one, two, and three respectiveley
-    operator.a().onTrue(m_elevator.cm_setElevatorState("Default"));
-    operator
-        .b()
-        .whileTrue(
-            new SequentialCommandGroup(
-                    m_elevator.cm_setElevatorState("L2").until(() -> m_elevator.isAtPosition()),
-                    m_intake.cm_intakeCoral(0.25))
-                .withTimeout(5));
-    operator.x().whileTrue(m_elevator.cm_setElevatorState("L3"));
+    // operator.a().onTrue(m_elevator.cm_setElevatorState("Default"));
+    // operator.x().whileTrue(m_elevator.cm_setElevatorState("L3");
+  }
+
+  private Command cm_fullSequence(BotState state) {
+    return m_elevator.cm_setElevatorPosition(state.elevatorPosition);
   }
 
   /**

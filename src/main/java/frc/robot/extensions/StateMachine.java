@@ -29,8 +29,8 @@ public class StateMachine {
     public final double coralIntakePosition;
     public final String colorDisplay;
 
-    private BotState(double elevatorSpeed, double coralIntakeSpeed, String color) {
-      this.elevatorPosition = elevatorSpeed;
+    private BotState(double elevatorPosition, double coralIntakeSpeed, String color) {
+      this.elevatorPosition = elevatorPosition;
       this.coralIntakePosition = coralIntakeSpeed;
       this.colorDisplay = color;
     }
