@@ -70,6 +70,14 @@ public class Elevator extends SubsystemBase {
         "Right Elevator Encoder Position",
         () -> rightElevatorMotor.getPosition().getValueAsDouble(),
         null);
+    builder.addDoubleProperty(
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
     builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
     builder.addDoubleProperty(
         "Right Elevator percent output", () -> rightElevatorMotor.get(), null);
