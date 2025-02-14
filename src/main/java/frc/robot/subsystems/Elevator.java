@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,10 +19,9 @@ public class Elevator extends SubsystemBase {
 
   public CANrange canRange;
 
-  // public PIDController elevatorPID;
-  // private double pidCalc = 0;
+  public PIDController elevatorPID;
+  private double pidCalc = 0;
   private double position = 0.37;
-  // private HashMap<String, Double> elevatorPosition;
   public static boolean atPosition = false;
 
   public Elevator() {
@@ -29,6 +30,8 @@ public class Elevator extends SubsystemBase {
 
     leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
     rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+
+    elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
 
     canRange = new CANrange(2);
   }
@@ -39,8 +42,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setMotorToPIDCalc() {
+    System.out.println(atPosition);
     pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
     runElevatorMotors(pidCalc);
+
+    if (MathUtil.isNear(position, canRange.getDistance().getValueAsDouble(), 0.1)) {
+      atPosition = true;
+    } else {
+      atPosition = false;
+    }
   }
 
   public boolean isAtPosition() {
@@ -54,6 +64,7 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorPosition(Double targetPosition) {
     // code to move elevator position to targetPosition goes here
+    position = targetPosition;
   }
 
   public Command cm_setElevatorPosition(Double targetPosition) {

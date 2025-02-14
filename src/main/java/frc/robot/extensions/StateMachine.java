@@ -16,22 +16,24 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(0, 0, "Red"), // field state, default state, no game pieces
-    INTAKECORAL(0, 0.2, "Orange"), // preparing to intake coral
-    INTAKEALGAE(0, 0, "Yellow"), // preparing to intake algae
-    STORAGE(0, 0, "Green"), // intaked, coral or algae in
-    REEF(0, -0.2, "Blue"), // scoring coral
-    PROCESSOR(0, 0, "Purple"), // scoring algae
-    CLIMB(0.3, 0, "Pink"), // climbing
-    EJECT(0.3, 0.2, "White"); // everything out
+    DEFAULT(0.37, 0, "Red"), // field state, default state, no game pieces
+    INTAKECORAL(0.520, 0.2, "Orange"), // preparing to intake coral
+    INTAKEALGAE(0.37, 0, "Yellow"), // preparing to intake algae
+    STORAGE(0.37, 0, "Green"), // intaked, coral or algae in
+    L1(0.37, -0.2, "Blue"), // scoring coral
+    L2(0.520, -0.2, "Blue"), // scoring coral
+    L3(0.705, -0.2, "Blue"), // scoring coral
+    PROCESSOR(0.37, 0, "Purple"), // scoring algae
+    CLIMB(0.37, 0, "Pink"), // climbing
+    EJECT(0.37, -0.2, "White"); // everything out
 
     public final double elevatorPosition;
-    public final double coralIntakePosition;
+    public final double coralIntakeSpeed;
     public final String colorDisplay;
 
     private BotState(double elevatorPosition, double coralIntakeSpeed, String color) {
       this.elevatorPosition = elevatorPosition;
-      this.coralIntakePosition = coralIntakeSpeed;
+      this.coralIntakeSpeed = coralIntakeSpeed;
       this.colorDisplay = color;
     }
   }

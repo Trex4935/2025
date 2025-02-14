@@ -54,7 +54,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   // Vision m_vision = new Vision();
-  CoralIntake m_intake = new CoralIntake();
+  CoralIntake m_coralIntake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -120,7 +120,7 @@ public class RobotContainer {
     configureBindings();
     // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
-    SmartDashboard.putData(m_intake);
+    SmartDashboard.putData(m_coralIntake);
   }
 
   /**
@@ -137,7 +137,7 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
+    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
@@ -147,10 +147,13 @@ public class RobotContainer {
     m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
 
-    operator.leftBumper().whileTrue(m_intake.cm_intakeCoral(0.25));
-    operator.rightBumper().whileTrue(m_intake.cm_intakeCoral(-0.1));
-    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
-    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
+    operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
+    operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
+
+    operator.a().onTrue(cm_fullSequence(BotState.DEFAULT));
+    operator.b().onTrue(cm_fullSequence(BotState.L2));
+    operator.x().onTrue(cm_fullSequence(BotState.L3));
+
     // operator.a().whileTrue(fullSequence(BotState.REEF));
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
@@ -161,7 +164,12 @@ public class RobotContainer {
   }
 
   private Command cm_fullSequence(BotState state) {
-    return m_elevator.cm_setElevatorPosition(state.elevatorPosition);
+    return (m_elevator
+        .cm_setElevatorPosition(state.elevatorPosition)
+        .andThen(
+            m_coralIntake
+                .cm_intakeCoral(state.coralIntakeSpeed)
+                .onlyIf(() -> Elevator.atPosition)));
   }
 
   /**
