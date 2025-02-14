@@ -57,7 +57,7 @@ public class RobotContainer {
   Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
-  public final LEDSubsystem m_LedSubsystem = new LEDSubsystem();
+  public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
 

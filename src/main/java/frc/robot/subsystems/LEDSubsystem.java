@@ -32,12 +32,11 @@ public class LEDSubsystem extends SubsystemBase {
     ledStrip = new AddressableLED(2);
     ledBuffer = new AddressableLEDBuffer(160);
     ledBufferLength = ledBuffer.getLength();
-    ledStrip.setLength(ledBuffer.getLength());
+    ledStrip.setLength(ledBufferLength);
     // Makes the counter and toggle
     ledToggle = false;
     counter = 0;
 
-    ledStrip.setLength(ledBufferLength);
     ledStrip.start();
   }
 
