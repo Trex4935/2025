@@ -25,13 +25,7 @@ public class Vision extends SubsystemBase {
     return poseArray;
   }
 
-
-
-
   @Override
-
-
-
   public void initSendable(SendableBuilder builder) {
     if (LimelightHelpers.getLatestResults("limelight-bow").error == null) {
     builder.addDoubleArrayProperty("Pose", () -> getPose(), null);
