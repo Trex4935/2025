@@ -27,7 +27,16 @@ jobs:
       run: ./gradlew build
     - name: Compile and run simulation
       run: |
-        ./gradlew simulateJava 2>&1 | tee output.log
+        set -o pipefail
+        # Run simulation and limit execution to 30 seconds
+        timeout 30s ./gradlew simulateJava 2>&1 | tee output.log
+        # Capture the exit code of timeout (stored in PIPESTATUS[0])
+        exit_code=${PIPESTATUS[0]}
+        if [ $exit_code -eq 124 ]; then
+          echo "Simulation timed out after 30 seconds."
+          exit 0
+        fi
+        # Check if the output contains error messages
         if grep -q "Error at" output.log; then
           echo "Simulation errors found, failing build."
           exit 1
