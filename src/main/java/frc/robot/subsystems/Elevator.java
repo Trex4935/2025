@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -21,6 +22,8 @@ public class Elevator extends SubsystemBase {
   public final CANrange canRange;
 
   private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
+
+  private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
     leftElevatorMotor = new TalonFX(9);
@@ -42,7 +45,6 @@ public class Elevator extends SubsystemBase {
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
-    leftElevatorMotor.setPosition(0);
 
     canRange = new CANrange(2);
   }
@@ -51,8 +53,12 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setControl(positionVoltage.withPosition(position));
   }
 
+  public void setBrake() {
+    leftElevatorMotor.setControl(m_brake);
+  }
+
   public Command cm_setElevatorPosition(double position) {
-    return runOnce(() -> setElevatorPosition(position));
+    return runEnd(() -> setElevatorPosition(position), () -> setBrake());
   }
 
   public void initSendable(SendableBuilder builder) {

@@ -149,8 +149,9 @@ public class RobotContainer {
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
 
-    // For levels one, two, and three respectiveley
-    operator.x().whileTrue(m_elevator.cm_setElevatorPosition(6));
+    // For levels one, two, and three respectively
+    // Use the command below to move elevator
+    // operator.x().onTrue(m_elevator.cm_setElevatorPosition(#));
   }
 
   /**
