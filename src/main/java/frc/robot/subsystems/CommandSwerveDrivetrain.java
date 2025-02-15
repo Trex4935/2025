@@ -9,6 +9,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -338,8 +339,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     m_simNotifier.startPeriodic(kSimLoopPeriod);
   }
 
-  /** this method sets a control to move the robot in a strieght line to the target pose */
-  private void moveToPositionPID(Pose2d targetPose) {
+  /** Moves robot to a pose using a PID */
+  public void pidAutoAlign(Pose2d targetPose) {
     // copied from documentation so might not be right
     final SwerveRequest.FieldCentric m_driveRequest =
         new SwerveRequest.FieldCentric()
@@ -347,45 +348,36 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             .withRotationalDeadband(0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
             .withSteerRequestType(SteerRequestType.MotionMagicExpo);
-    // start of my code
-    Pose2d robotPose = this.getState().Pose; // idk where to get the robot's pose from
-    double turnMaxSpeed = 1; // change this
-    double driveMaxSpeed = 1; // change this
-    double turnSpeed;
-    double xRawVel = targetPose.getX() - robotPose.getX();
-    double yRawVel = targetPose.getY() - robotPose.getY();
-    double xRelativeVel;
-    double yRelativeVel;
-    // sets converts the raw position from the target and the robot to a ration between the target
-    // and the current position;
-    if (xRawVel > yRawVel) {
-      xRelativeVel = 1;
-      yRelativeVel = yRawVel / xRawVel;
-    } else {
-      yRelativeVel = 1;
-      xRelativeVel = xRawVel / yRawVel;
-    }
-    // finds which direction the robot should turn in order to reach the target rotation
-    if (robotPose.getRotation().getDegrees() > targetPose.getRotation().getDegrees()) {
-      turnSpeed = turnMaxSpeed * -1;
-    } else if (robotPose.getRotation().getDegrees() == targetPose.getRotation().getDegrees()) {
-      turnSpeed = 0;
-    } else {
-      turnSpeed = turnMaxSpeed;
-    }
+
+    PhoenixPIDController swervePIDx = new PhoenixPIDController(0.5, 0, 0);
+    PhoenixPIDController swervePIDy = new PhoenixPIDController(0.5, 0, 0);
+    PhoenixPIDController swervePIDtheta = new PhoenixPIDController(0.3, 0, 0);
+
+    swervePIDtheta.enableContinuousInput(-Math.PI, Math.PI);
+
+    swervePIDx.setTolerance(0.05);
+    swervePIDy.setTolerance(0.05);
+    swervePIDtheta.setTolerance(Math.toRadians(0.1));
+
+    Pose2d currentPose = this.getState().Pose;
+
+    targetPose.getRotation().minus(currentPose.getRotation()).getRadians();
     // sets a control with the ratio between the x and y times the max speed
+
+    double xApplied =
+        -swervePIDx.calculate(currentPose.getX(), targetPose.getX(), this.getState().Timestamp);
+    double yApplied =
+        -swervePIDy.calculate(currentPose.getY(), targetPose.getY(), this.getState().Timestamp);
+    double rotationApplied =
+        swervePIDtheta.calculate(
+            currentPose.getRotation().getDegrees(),
+            targetPose.getRotation().getDegrees(),
+            this.getState().Timestamp);
+
     this.setControl(
         m_driveRequest
-            .withVelocityX(xRelativeVel * driveMaxSpeed)
-            .withVelocityY(yRelativeVel * driveMaxSpeed)
-            .withRotationalRate(turnSpeed));
-  }
-
-  /** sets a control that brakes */
-  public void stopSwerve() {}
-
-  public Command cm_moveToPositionPID(Pose2d targetPose) {
-    return runEnd(
-        () -> moveToPositionPID(targetPose), () -> stopSwerve()); // may or may not stay as a run()
+            .withVelocityX(xApplied)
+            .withVelocityY(yApplied)
+            .withRotationalRate(rotationApplied));
   }
 }
