@@ -151,7 +151,10 @@ public class RobotContainer {
 
     // For levels one, two, and three respectively
     // Use the command below to move elevator
-    // operator.x().onTrue(m_elevator.cm_setElevatorPosition(#));
+    operator.x().onTrue(m_elevator.cm_setElevatorPosition(9));
+    operator.y().onTrue(m_elevator.cm_setElevatorPosition(15));
+    operator.b().onTrue(m_elevator.cm_setElevatorPosition(0));
+    operator.a().onTrue(m_elevator.cm_setElevatorPosition(50));
   }
 
   /**
