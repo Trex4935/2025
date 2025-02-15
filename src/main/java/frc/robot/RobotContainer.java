@@ -59,7 +59,6 @@ public class RobotContainer {
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
 
-
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -68,7 +67,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-      private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -188,5 +187,5 @@ public class RobotContainer {
 
   public Command autoChooserCommand() {
     return autoChooser.getSelected();
-
-}}
+  }
+}
