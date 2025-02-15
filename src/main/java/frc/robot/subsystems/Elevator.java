@@ -4,79 +4,50 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.extensions.StateMachine.RobotStateMachine;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
-  public CANrange canRange;
+  public final CANrange canRange;
 
-  public PIDController elevatorPID;
-  private double pidCalc = 0;
-  private double position = 0.37;
-  public static boolean atPosition = false;
+  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+
+  private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
     leftElevatorMotor = new TalonFX(9);
     rightElevatorMotor = new TalonFX(10);
 
-    leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
-    rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+    /* Make sure we start at 0 */
+    leftElevatorMotor.setPosition(0);
+    rightElevatorMotor.setPosition(0);
 
-    elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
+    rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
     canRange = new CANrange(2);
   }
 
-  public void runElevatorMotors(double speed) {
-    leftElevatorMotor.set(speed);
-    rightElevatorMotor.set(speed);
+  public void setElevatorPosition(double position) {
+    leftElevatorMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
-  public void setMotorToPIDCalc() {
-    System.out.println(RobotStateMachine.botState);
-    pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
-    runElevatorMotors(pidCalc);
-
-    if (MathUtil.isNear(position, canRange.getDistance().getValueAsDouble(), 0.1)) {
-      atPosition = true;
-    } else {
-      atPosition = false;
-    }
+  public void setBrake() {
+    leftElevatorMotor.setControl(m_brake);
   }
 
-  public boolean isAtPosition() {
-    return elevatorPID.atSetpoint();
-  }
-
-  public void stopElevatorMotors() {
-    leftElevatorMotor.stopMotor();
-    rightElevatorMotor.stopMotor();
-  }
-
-  public void setElevatorPosition(Double targetPosition) {
-    // code to move elevator position to targetPosition goes here
-    System.out.println(RobotStateMachine.botState);
-    position = targetPosition;
-  }
-
-  public Command cm_setElevatorPosition(Double targetPosition) {
-    return runOnce(() -> setElevatorPosition(targetPosition));
-  }
-
-  // method to set the position of the elevator
-
-  public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotors(speed), () -> stopElevatorMotors());
+  public Command cm_setElevatorPosition(double position) {
+    return runEnd(() -> setElevatorPosition(position), () -> setBrake());
   }
 
   public void initSendable(SendableBuilder builder) {

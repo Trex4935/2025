@@ -133,36 +133,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    // m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
-    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
-
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
-
-    operator.a().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.DEFAULT)));
-    operator.b().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L2)));
-    // m_driverController.x().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L3)));
-
+    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
+    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
     // operator.a().whileTrue(fullSequence(BotState.REEF));
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
 
-    // For levels one, two, and three respectiveley
-    // operator.a().onTrue(m_elevator.cm_setElevatorState("Default"));
-    // operator.x().whileTrue(m_elevator.cm_setElevatorState("L3");
-  }
-
-  private Command cm_fullSequence(BotState state) {
-    return Commands.sequence(
-        m_elevator.cm_setElevatorPosition(state.elevatorPosition),
-        m_coralIntake.cm_intakeCoral(state.coralIntakeSpeed).onlyIf(() -> Elevator.atPosition));
+    // For levels one, two, and three respectively
+    // Use the command below to move elevator
+    operator.x().onTrue(m_elevator.cm_setElevatorPosition(9));
+    operator.y().onTrue(m_elevator.cm_setElevatorPosition(15));
+    operator.b().onTrue(m_elevator.cm_setElevatorPosition(0));
+    operator.a().onTrue(m_elevator.cm_setElevatorPosition(50));
   }
 
   /**
