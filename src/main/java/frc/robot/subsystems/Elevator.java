@@ -5,56 +5,113 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANdi;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
-  public final TalonFX elevatorMotor;
+  public final TalonFX leftElevatorMotor, rightElevatorMotor;
+
+  public CANrange canRange;
+
+  public PIDController elevatorPID;
+  private double pidCalc = 0;
+  private double position = 0.37;
+  private HashMap<String, Double> elevatorPosition;
+  public static boolean atPosition = false;
 
   /** CANdi sensor */
   CANdi elevatorCandi;
 
   public Elevator() {
-    elevatorMotor = new TalonFX(9);
+    elevatorPID = new PIDController(0.85, 0, 0); // ONLY SET THE P VALUE
+
+    elevatorPID.setTolerance(0.1);
+
+    leftElevatorMotor = new TalonFX(9);
+    rightElevatorMotor = new TalonFX(10);
+
+    leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+    rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
+
+    canRange = new CANrange(2);
+
+    elevatorPosition = new HashMap<>();
+    elevatorPosition.put("Default", 0.37);
+    elevatorPosition.put("L2", 0.520);
+    elevatorPosition.put("L3", 0.705);
     elevatorCandi = new CANdi(20);
   }
 
-  public void runElevatorMotor(double speed) {
-    elevatorMotor.set(speed);
+  public void runElevatorMotors(double speed) {
+    leftElevatorMotor.set(speed);
+    rightElevatorMotor.set(speed);
   }
 
   public void candiSensor() {
     elevatorCandi.getPWM1Position();
   }
 
-  public void stopElevatorMotor() {
-    elevatorMotor.stopMotor();
+  public void setMotorToPIDCalc() {
+    pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
+    runElevatorMotors(pidCalc);
+  }
+
+  public boolean isAtPosition() {
+    return elevatorPID.atSetpoint();
+  }
+
+  public void stopElevatorMotors() {
+    leftElevatorMotor.stopMotor();
+    rightElevatorMotor.stopMotor();
+  }
+
+  public void setElevatorState(String targetPosition) {
+    position = elevatorPosition.get(targetPosition);
+  }
+
+  public Command cm_setElevatorState(String targetState) {
+    return runOnce(() -> setElevatorState(targetState));
   }
 
   // method to set the position of the elevator
-  public void setElevatorPosition(double position) {
-    elevatorMotor.setPosition(position);
-  }
 
   public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotor(speed), () -> stopElevatorMotor());
+    return startEnd(() -> runElevatorMotors(speed), () -> stopElevatorMotors());
+  }
+
+  public double returnPID() {
+    return pidCalc;
   }
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
-        "Left Climber Encoder Position",
-        () -> elevatorMotor.getPosition().getValueAsDouble(),
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
         null);
-    builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty("Elevator percent output", () -> leftElevatorMotor.get(), null);
     builder.addDoubleProperty(
         "Candi distance", () -> elevatorCandi.getQuadraturePosition().getValueAsDouble(), null);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }
