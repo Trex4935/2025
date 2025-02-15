@@ -6,11 +6,9 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -23,7 +21,7 @@ public class Elevator extends SubsystemBase {
 
   public final CANrange canRange;
 
-  private MotionMagicVoltage positionVoltage = new MotionMagicVoltage(0).withSlot(0);
+  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
 
   private final NeutralOut m_brake = new NeutralOut();
 
@@ -31,25 +29,17 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor = new TalonFX(9);
     rightElevatorMotor = new TalonFX(10);
 
-    TalonFXConfiguration configs = new TalonFXConfiguration();
-    // configs.Slot0.kP = 0.09; // An error of 1 rotation results in 2.4 V output
-    // configs.Slot0.kI = 0; // No output for integrated error
-    // configs.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
-    // Peak output of 8 V
-    configs.Voltage.withPeakForwardVoltage(Volts.of(8)).withPeakReverseVoltage(Volts.of(-8));
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
     rightElevatorMotor.setPosition(0);
 
-
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
     canRange = new CANrange(2);
-
   }
 
   public void setElevatorPosition(double position) {
-    leftElevatorMotor.setControl(positionVoltage.withPosition(position));
+    leftElevatorMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
   public void setBrake() {
