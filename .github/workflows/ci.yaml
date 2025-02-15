@@ -26,6 +26,7 @@ jobs:
     - name: Compile and run tests on robot code
       run: ./gradlew build
     - name: Compile and run simulation
+      shell: bash
       run: |
         set -o pipefail
         # Run simulation and limit execution to 30 seconds
