@@ -106,16 +106,14 @@ public class RobotContainer {
     joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-
-
-    //sysid
-        sysid.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
-        sysid.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
-        sysid.y().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        sysid.a().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        sysid.b().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        sysid.x().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    //sysid
+    // sysid
+    sysid.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+    sysid.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+    sysid.y().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    sysid.a().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    sysid.b().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    sysid.x().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // sysid
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
