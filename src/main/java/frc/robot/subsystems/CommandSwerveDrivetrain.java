@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -334,5 +336,56 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               updateSimState(deltaTime, RobotController.getBatteryVoltage());
             });
     m_simNotifier.startPeriodic(kSimLoopPeriod);
+  }
+
+  /** this method sets a control to move the robot in a strieght line to the target pose */
+  private void moveToPositionPID(Pose2d targetPose) {
+    // copied from documentation so might not be right
+    final SwerveRequest.FieldCentric m_driveRequest =
+        new SwerveRequest.FieldCentric()
+            .withDeadband(0.1) // dont understand what these mean
+            .withRotationalDeadband(0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+            .withSteerRequestType(SteerRequestType.MotionMagicExpo);
+    // start of my code
+    Pose2d robotPose = this.getState().Pose; // idk where to get the robot's pose from
+    double turnMaxSpeed = 1; // change this
+    double driveMaxSpeed = 1; // change this
+    double turnSpeed;
+    double xRawVel = targetPose.getX() - robotPose.getX();
+    double yRawVel = targetPose.getY() - robotPose.getY();
+    double xRelativeVel;
+    double yRelativeVel;
+    // sets converts the raw position from the target and the robot to a ration between the target
+    // and the current position;
+    if (xRawVel > yRawVel) {
+      xRelativeVel = 1;
+      yRelativeVel = yRawVel / xRawVel;
+    } else {
+      yRelativeVel = 1;
+      xRelativeVel = xRawVel / yRawVel;
+    }
+    // finds which direction the robot should turn in order to reach the target rotation
+    if (robotPose.getRotation().getDegrees() > targetPose.getRotation().getDegrees()) {
+      turnSpeed = turnMaxSpeed * -1;
+    } else if (robotPose.getRotation().getDegrees() == targetPose.getRotation().getDegrees()) {
+      turnSpeed = 0;
+    } else {
+      turnSpeed = turnMaxSpeed;
+    }
+    // sets a control with the ratio between the x and y times the max speed
+    this.setControl(
+        m_driveRequest
+            .withVelocityX(xRelativeVel * driveMaxSpeed)
+            .withVelocityY(yRelativeVel * driveMaxSpeed)
+            .withRotationalRate(turnSpeed));
+  }
+
+  /** sets a control that brakes */
+  public void stopSwerve() {}
+
+  public Command cm_moveToPositionPID(Pose2d targetPose) {
+    return runEnd(
+        () -> moveToPositionPID(targetPose), () -> stopSwerve()); // may or may not stay as a run()
   }
 }
