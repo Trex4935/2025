@@ -4,35 +4,47 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeIntake extends SubsystemBase {
-  public final TalonFX intakeMotor1;
+  public final TalonFX algaeIntakeMotor;
 
   /** Creates a new AlgaeIntake Subsystem. */
   public AlgaeIntake() {
-    intakeMotor1 = new TalonFX(99);
+    algaeIntakeMotor = new TalonFX(99);
   }
 
   public void runIntakeMotor(double speed) {
-    intakeMotor1.set(speed);
+    algaeIntakeMotor.set(speed);
+  }
+
+  public void algaeIntakeMotorVelocity(double velocity) {
+    algaeIntakeMotor.setControl(new MotionMagicVelocityVoltage(velocity));
   }
 
   public void stopIntakeMotor() {
-    intakeMotor1.stopMotor();
+    algaeIntakeMotor.stopMotor();
   }
 
   public Command cm_intakeAlgae(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
+  public Command cm_intakeAlgaeVelocity(double velocity) {
+    return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
+  }
+
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Algae intake motor percent output", () -> intakeMotor1.get(), null);
     builder.addDoubleProperty(
-        "Algae intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+        "Algae intake motor percent output", () -> algaeIntakeMotor.get(), null);
+    builder.addDoubleProperty(
+        "Algae intake motor velocity",
+        () -> algaeIntakeMotor.getVelocity().getValueAsDouble(),
+        null);
   }
 
   /**
@@ -48,8 +60,6 @@ public class AlgaeIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
