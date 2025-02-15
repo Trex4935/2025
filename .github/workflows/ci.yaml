@@ -28,6 +28,8 @@ jobs:
     - name: Compile and run simulation
       shell: bash
       run: |
+        # Disable immediate exit on nonzero exit codes.
+        set +e
         set -o pipefail
         # Run simulation and limit execution to 30 seconds
         timeout 30s ./gradlew simulateJava 2>&1 | tee output.log
