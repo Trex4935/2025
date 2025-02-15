@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.extensions.StateMachine.BotState;
-import frc.robot.extensions.StateMachine.RobotStateMachine;
+import frc.robot.extensions.StateMachine.StateMachineLogic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
@@ -144,8 +144,11 @@ public class RobotContainer {
 
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
-    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
-    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
+
+    operator.a().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.DEFAULT)));
+    operator.b().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.L2)));
+    // m_driverController.x().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L3)));
+
     // operator.a().whileTrue(fullSequence(BotState.REEF));
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));

@@ -38,10 +38,11 @@ public class StateMachine {
     }
   }
 
-  public static class RobotStateMachine {
+  public static class StateMachineLogic {
     public static BotState botState;
+    public static boolean atPosition = false;
 
-    RobotStateMachine() {
+    StateMachineLogic() {
       botState = BotState.DEFAULT;
     }
 
