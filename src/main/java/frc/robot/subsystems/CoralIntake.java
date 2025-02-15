@@ -4,36 +4,49 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralIntake extends SubsystemBase {
-  public final TalonFX intakeMotor1;
+  public final TalonFX coralIntakeMotor;
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    intakeMotor1 = new TalonFX(0);
+    coralIntakeMotor = new TalonFX(8);
   }
 
   public void runIntakeMotor(double speed) {
-    intakeMotor1.set(speed);
+    coralIntakeMotor.set(speed);
   }
 
   public void stopIntakeMotor() {
-    intakeMotor1.stopMotor();
+    coralIntakeMotor.stopMotor();
+  }
+
+  public void coralIntakeMotorVelocity(double velocity) {
+    coralIntakeMotor.setControl(new MotionMagicVelocityVoltage(velocity));
   }
 
   public Command cm_intakeCoral(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Coral intake motor percent output", () -> intakeMotor1.get(), null);
-    builder.addDoubleProperty(
-        "Coral intake motor velocity", () -> intakeMotor1.getVelocity().getValueAsDouble(), null);
+  public Command cm_intakeCoralVelocity(double velocity) {
+    return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
+
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty(
+        "Coral intake motor percent output", () -> coralIntakeMotor.get(), null);
+    builder.addDoubleProperty(
+        "Coral intake motor velocity",
+        () -> coralIntakeMotor.getVelocity().getValueAsDouble(),
+        null);
+  }
+
   /**
    * Example command factory method.
    *
@@ -47,8 +60,6 @@ public class CoralIntake extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

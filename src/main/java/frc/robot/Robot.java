@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
+import com.ctre.phoenix6.hardware.CANrange;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,7 +20,7 @@ import frc.robot.extensions.LimelightHelpers;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
   /**
@@ -29,6 +31,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CANrangeConfiguration configs = new CANrangeConfiguration();
+    CANrange = new CANrange(0);
+
+    // Write these configs to the CANrange
+    CANrange.getConfigurator().apply(configs);
   }
 
   /**
@@ -40,7 +47,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    var distance = CANrange.getDistance();
+
+    // Refresh and print these values
+    System.out.println("Distance is " + distance.refresh().toString());
+
     CommandScheduler.getInstance().run();
+    var driveState = m_robotContainer.drivetrain.getState();
+    double headingDeg = driveState.Pose.getRotation().getDegrees();
+    double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+
+    LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
+    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
+    if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
+      m_robotContainer.drivetrain.addVisionMeasurement(
+          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -63,21 +85,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-    var driveState = m_robotContainer.drivetrain.getState();
-    double headingDeg = driveState.Pose.getRotation().getDegrees();
-    double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
-
-    LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
-    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
-    if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-      m_robotContainer.drivetrain.addVisionMeasurement(
-          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
-    }
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
