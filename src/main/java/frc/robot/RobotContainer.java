@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.extensions.StateMachine.BotState;
+import frc.robot.extensions.StateMachine.RobotStateMachine;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
@@ -133,10 +133,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
     m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
@@ -144,15 +140,15 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
+    // m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
 
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
 
-    operator.a().onTrue(cm_fullSequence(BotState.DEFAULT));
-    operator.b().onTrue(cm_fullSequence(BotState.L2));
-    operator.x().onTrue(cm_fullSequence(BotState.L3));
+    operator.a().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.DEFAULT)));
+    operator.b().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L2)));
+    // m_driverController.x().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L3)));
 
     // operator.a().whileTrue(fullSequence(BotState.REEF));
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
@@ -164,12 +160,9 @@ public class RobotContainer {
   }
 
   private Command cm_fullSequence(BotState state) {
-    return (m_elevator
-        .cm_setElevatorPosition(state.elevatorPosition)
-        .andThen(
-            m_coralIntake
-                .cm_intakeCoral(state.coralIntakeSpeed)
-                .onlyIf(() -> Elevator.atPosition)));
+    return Commands.sequence(
+        m_elevator.cm_setElevatorPosition(state.elevatorPosition),
+        m_coralIntake.cm_intakeCoral(state.coralIntakeSpeed).onlyIf(() -> Elevator.atPosition));
   }
 
   /**

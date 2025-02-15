@@ -37,4 +37,17 @@ public class StateMachine {
       this.colorDisplay = color;
     }
   }
+
+  public static class RobotStateMachine {
+    public static BotState botState;
+
+    RobotStateMachine() {
+      botState = BotState.DEFAULT;
+    }
+
+    public static BotState switchState(BotState state) {
+      botState = state;
+      return state;
+    }
+  }
 }

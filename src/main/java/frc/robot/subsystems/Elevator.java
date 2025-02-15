@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.extensions.StateMachine.RobotStateMachine;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -42,7 +43,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setMotorToPIDCalc() {
-    System.out.println(atPosition);
+    System.out.println(RobotStateMachine.botState);
     pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
     runElevatorMotors(pidCalc);
 
@@ -64,6 +65,7 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorPosition(Double targetPosition) {
     // code to move elevator position to targetPosition goes here
+    System.out.println(RobotStateMachine.botState);
     position = targetPosition;
   }
 
