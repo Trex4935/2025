@@ -24,6 +24,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,6 +57,7 @@ public class RobotContainer {
   // Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
+  public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
@@ -75,11 +77,11 @@ public class RobotContainer {
         drivetrain.applyRequest(
             () ->
                 drive
-                    .withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                    .withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
                     // negative Y
                     // (forward)
                     .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
             // negative X (left)
@@ -106,6 +108,9 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
+    joystick
+        .rightBumper()
+        .onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
     joystick
         .leftTrigger()
         .whileTrue(
