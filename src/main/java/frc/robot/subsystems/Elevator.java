@@ -87,13 +87,6 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
   public void setMotorToPIDCalc() {
     pidCalc = elevatorPID.calculate(canRange.getDistance().getValueAsDouble(), position);
     runElevatorMotors(pidCalc);
-    /*
-    if (MathUtil.isNear(pidCalc, leftElevatorMotor.getPosition().getValueAsDouble(), 0.1)){
-      atPosition = true;
-    }
-    else {
-      at
-    } */
   }
 
   public boolean isAtPosition() {
@@ -124,6 +117,14 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
   }
 
   public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty(
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
     builder.addDoubleProperty(
         "Left Elevator Encoder Position",
         () -> leftElevatorMotor.getPosition().getValueAsDouble(),

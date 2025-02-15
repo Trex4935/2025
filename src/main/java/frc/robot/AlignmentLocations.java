@@ -17,7 +17,7 @@ import java.util.List;
 public class AlignmentLocations {
 
   private static AprilTagFieldLayout fieldAprilTagLayout =
-      AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+      AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
   // Hallway field map AprilTags
 
