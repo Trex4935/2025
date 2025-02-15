@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -23,7 +24,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -118,7 +118,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureBindings();
-   //SmartDashboard.putData(m_vision);
+  // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
   }
@@ -137,20 +137,34 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
+    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2, 0.2));
-    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2, -0.2));
-    m_driverController.a().whileTrue(m_intake.cm_intakeCoral(0.25));
-    m_driverController.b().whileTrue(m_intake.cm_intakeCoral(-0.1));
+    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
+    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
+
+    operator.leftBumper().whileTrue(m_intake.cm_intakeCoral(0.25));
+    operator.rightBumper().whileTrue(m_intake.cm_intakeCoral(-0.1));
     // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
     // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
     // operator.a().whileTrue(fullSequence(BotState.REEF));
     // operator.b().whileTrue(fullSequence(BotState.CLIMB));
     // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
+
+    // For levels one, two, and three respectiveley
+    operator.a().onTrue(m_elevator.cm_setElevatorState("Default"));
+    operator
+        .b()
+        .whileTrue(
+            new SequentialCommandGroup(
+                    m_elevator.cm_setElevatorState("L2").until(() -> m_elevator.isAtPosition()),
+                    m_intake.cm_intakeCoral(0.25))
+                .withTimeout(5));
+    operator.x().whileTrue(m_elevator.cm_setElevatorState("L3"));
   }
 
   /**
