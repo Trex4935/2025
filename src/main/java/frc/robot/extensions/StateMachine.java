@@ -38,17 +38,5 @@ public class StateMachine {
     }
   }
 
-  public static class StateMachineLogic {
-    public static BotState botState;
-    public static boolean atPosition = false;
 
-    StateMachineLogic() {
-      botState = BotState.DEFAULT;
-    }
-
-    public static BotState switchState(BotState state) {
-      botState = state;
-      return state;
-    }
-  }
 }

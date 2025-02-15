@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SetGlobalState;
 import frc.robot.extensions.StateMachine.BotState;
-import frc.robot.extensions.StateMachine.StateMachineLogic;
+import frc.robot.Constants.StateMachineConstant;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
@@ -142,23 +144,21 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
-    operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
+    // operator.a().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.DEFAULT)));
+    // operator.b().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.L2)));
 
-    operator.a().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.DEFAULT)));
-    operator.b().onTrue(cm_fullSequence(StateMachineLogic.switchState(BotState.L2)));
     // m_driverController.x().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L3)));
 
-    // operator.a().whileTrue(fullSequence(BotState.REEF));
-    // operator.b().whileTrue(fullSequence(BotState.CLIMB));
-    // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
+    operator.x().onTrue(new SetGlobalState(BotState.L1));
+    operator.b().onTrue(new SetGlobalState(BotState.L2));
+    operator.a().onTrue(new SetGlobalState(BotState.L3));
 
-    // For levels one, two, and three respectively
-    // Use the command below to move elevator
-    operator.x().onTrue(m_elevator.cm_setElevatorPosition(9));
-    operator.y().onTrue(m_elevator.cm_setElevatorPosition(15));
-    operator.b().onTrue(m_elevator.cm_setElevatorPosition(0));
-    operator.a().onTrue(m_elevator.cm_setElevatorPosition(50));
+    operator
+        .leftBumper()
+        .whileTrue(m_coralIntake.cm_intakeCoral(0.25));
+    operator
+        .rightBumper()
+        .whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
   }
 
   /**
