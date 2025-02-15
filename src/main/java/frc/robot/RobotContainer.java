@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SetGlobalState;
+import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.Constants.StateMachineConstant;
 import frc.robot.generated.TunerConstants;
@@ -56,8 +57,10 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   // Vision m_vision = new Vision();
-  CoralIntake m_coralIntake = new CoralIntake();
-  Elevator m_elevator = new Elevator();
+  public CoralIntake m_coralIntake = new CoralIntake();
+  public Elevator m_elevator = new Elevator();
+
+  StateMachine m_StateMachine = new StateMachine();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
@@ -149,9 +152,9 @@ public class RobotContainer {
 
     // m_driverController.x().onTrue(cm_fullSequence(RobotStateMachine.switchState(BotState.L3)));
 
-    operator.x().onTrue(new SetGlobalState(BotState.L1));
-    operator.b().onTrue(new SetGlobalState(BotState.L2));
-    operator.a().onTrue(new SetGlobalState(BotState.L3));
+    operator.x().onTrue(new SetGlobalState(BotState.L1).andThen(m_StateMachine.scoringSequence(this)));
+    operator.b().onTrue(new SetGlobalState(BotState.L2).andThen(m_StateMachine.scoringSequence(this)));
+    operator.a().onTrue(new SetGlobalState(BotState.L3).andThen(m_StateMachine.scoringSequence(this)));
 
     operator
         .leftBumper()

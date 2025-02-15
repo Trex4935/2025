@@ -4,6 +4,16 @@
 
 package frc.robot.extensions;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.StateMachineConstant;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.CoralIntake;
+
 /** Add your docs here. */
 public class StateMachine {
 
@@ -39,4 +49,11 @@ public class StateMachine {
   }
 
 
+    public Command scoringSequence(RobotContainer bot) {
+      return new SequentialCommandGroup(
+      bot.m_elevator.cm_setElevatorPosition(StateMachineConstant.botState.elevatorPosition),
+      new WaitUntilCommand(() -> bot.m_elevator.checkPos(StateMachineConstant.botState.elevatorPosition)),
+      bot.m_coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
+    }
 }
+

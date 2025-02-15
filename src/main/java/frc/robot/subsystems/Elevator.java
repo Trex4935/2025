@@ -48,10 +48,13 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setControl(m_brake);
   }
 
+  public boolean checkPos(double position){
+    return leftElevatorMotor.getPosition().getValueAsDouble() == position;
+  }
+
   public Command cm_setElevatorPosition(double position) {
     return runEnd(() -> setElevatorPosition(position), () -> setBrake());
   }
-
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Left Elevator Encoder Position",
