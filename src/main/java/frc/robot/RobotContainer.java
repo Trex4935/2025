@@ -152,7 +152,7 @@ public class RobotContainer {
     m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
     m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
 
-    operator.leftBumper().whileTrue(m_intake.cm_intakeCoral(0.25));
+    operator.leftBumper().whileTrue(m_intake.cm_intakeCoralVelocity(10));
     operator.rightBumper().whileTrue(m_intake.cm_intakeCoral(-0.1));
     // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
     // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
