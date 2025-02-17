@@ -305,7 +305,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     double shift = shiftLeft ? 1 : -1;
 
     // shift the robot
-    this.setControl(m_driveRequest.withVelocityY(shift * 0.1));
+    this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
   }
 
   @Override

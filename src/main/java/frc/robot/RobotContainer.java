@@ -121,8 +121,8 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.povLeft().whileTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(2));
-    joystick.povRight().whileTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(2));
+    joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
+    joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
     // Configure the trigger bindings
 
