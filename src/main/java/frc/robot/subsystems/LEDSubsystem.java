@@ -40,8 +40,6 @@ public class LEDSubsystem extends SubsystemBase {
     ledStrip.start();
   }
 
-
-
   // Used to create a 'walking' LED
   public void sectionedLEDControl() {
     for (var i = 0; i < ledBuffer.getLength(); i++) {

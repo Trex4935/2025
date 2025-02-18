@@ -300,6 +300,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return AutoBuilder.pathfindToPose(goToPose, new PathConstraints(0.5, 0.5, 0.5, 0.5), 0);
   }
 
+  /** Shifts the robot left or right */
+  public void shiftAlign(boolean shiftLeft) {
+    // copied from documentation so might not be right
+    final SwerveRequest.RobotCentric m_driveRequest = new SwerveRequest.RobotCentric();
+
+    double shift = shiftLeft ? 1 : -1;
+
+    // shift the robot
+    this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
+  }
+
   @Override
   public void periodic() {
     /*
