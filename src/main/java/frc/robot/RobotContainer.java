@@ -28,6 +28,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Vision;
 
 
 /**
@@ -133,6 +134,9 @@ public class RobotContainer {
                 () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
+    joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
     // Configure the trigger bindings
 
