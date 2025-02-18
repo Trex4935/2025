@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +30,7 @@ import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,7 +60,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  // Vision m_vision = new Vision();
+  Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
@@ -138,10 +140,17 @@ public class RobotContainer {
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
+    joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
+    joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
+
+    joystick
+        .povDown()
+        .whileTrue(Commands.run(() -> drivetrain.pidAutoAlign(new Pose2d(3, 7, new Rotation2d()))));
+
     // Configure the trigger bindings
 
     configureBindings();
-    // SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_intake);
     SmartDashboard.putData("Auto Chooser", autoChooser);
