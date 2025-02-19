@@ -5,17 +5,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralIntake extends SubsystemBase {
-  public final TalonFX coralIntakeMotor;
+  public final TalonFXS coralIntakeMotor;
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFX(8);
+    coralIntakeMotor = new TalonFXS(8);
   }
 
   public void runIntakeMotor(double speed) {

@@ -5,17 +5,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeIntake extends SubsystemBase {
-  public final TalonFX algaeIntakeMotor;
+  public final TalonFXS algaeIntakeMotor;
 
   /** Creates a new AlgaeIntake Subsystem. */
   public AlgaeIntake() {
-    algaeIntakeMotor = new TalonFX(99);
+    algaeIntakeMotor = new TalonFXS(99);
   }
 
   public void runIntakeMotor(double speed) {
