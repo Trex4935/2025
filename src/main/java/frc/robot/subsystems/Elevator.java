@@ -47,7 +47,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public Command cm_setElevatorPosition(double position) {
-    return runEnd(() -> setElevatorPosition(position), () -> setBrake());
+    return run(() -> setElevatorPosition(position));
   }
 
   public void initSendable(SendableBuilder builder) {

@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     var distance = CANrange.getDistance();
 
     // Refresh and print these values
-    System.out.println("Distance is " + distance.refresh().toString());
+    // System.out.println("Distance is " + distance.refresh().toString());
 
     CommandScheduler.getInstance().run();
     var driveState = m_robotContainer.drivetrain.getState();

@@ -17,7 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.StateMachineConstant;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.extensions.StateMachine;
+import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
@@ -53,8 +56,8 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   // Vision m_vision = new Vision();
-  CoralIntake m_coralIntake = new CoralIntake();
-  Elevator m_elevator = new Elevator();
+  public CoralIntake m_coralIntake = new CoralIntake();
+  public Elevator m_elevator = new Elevator();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
@@ -114,12 +117,16 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
+    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
+
     // Configure the trigger bindings
 
     configureBindings();
     // SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_coralIntake);
+    SmartDashboard.putString(
+        "Bot State", StateMachineConstant.getState().toString()); // TODO: Needs further testing
   }
 
   /**
@@ -141,20 +148,25 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+    operator
+        .x()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L1)
+                .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
+    operator
+        .b()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L2)
+                .andThen((StateMachine.scoringSequence(m_elevator, m_coralIntake))));
+    operator
+        .a()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L3)
+                .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
+    operator.y().onTrue(m_elevator.cm_setElevatorPosition(0));
+
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
-    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
-    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
-    // operator.a().whileTrue(fullSequence(BotState.REEF));
-    // operator.b().whileTrue(fullSequence(BotState.CLIMB));
-    // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
-
-    // For levels one, two, and three respectively
-    // Use the command below to move elevator
-    operator.x().onTrue(m_elevator.cm_setElevatorPosition(9));
-    operator.y().onTrue(m_elevator.cm_setElevatorPosition(15));
-    operator.b().onTrue(m_elevator.cm_setElevatorPosition(0));
-    operator.a().onTrue(m_elevator.cm_setElevatorPosition(50));
   }
 
   /**
