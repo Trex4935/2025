@@ -163,6 +163,7 @@ public class RobotContainer {
         .onTrue(
             StateMachine.setGlobalState(BotState.L3)
                 .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
+    operator.y().onTrue(m_elevator.cm_setElevatorPosition(0));
 
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
