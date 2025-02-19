@@ -21,12 +21,13 @@ public final class Constants {
 
   public static class StateMachineConstant {
     public static BotState botState = BotState.DEFAULT;
-    public static BotState getState(){
+
+    public static BotState getState() {
       return StateMachineConstant.botState;
     }
-    public static void setState(BotState state){
+
+    public static void setState(BotState state) {
       StateMachineConstant.botState = state;
     }
   }
-
 }

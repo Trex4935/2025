@@ -14,8 +14,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.StateMachineConstant;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -48,13 +46,10 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setControl(m_brake);
   }
 
-  public boolean checkPos(double position){
-    return leftElevatorMotor.getPosition().getValueAsDouble() == position;
+  public Command cm_setElevatorPosition(double position) {
+    return run(() -> setElevatorPosition(position));
   }
 
-  public Command cm_setElevatorPosition(double position) {
-    return runEnd(() -> setElevatorPosition(position), () -> setBrake());
-  }
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Left Elevator Encoder Position",
@@ -78,7 +73,5 @@ public class Elevator extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    System.out.println(Constants.StateMachineConstant.getState());
-  }
+  public void periodic() {}
 }

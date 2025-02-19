@@ -4,15 +4,14 @@
 
 package frc.robot.extensions;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstant;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.CoralIntake;
+import frc.robot.subsystems.Elevator;
 
 /** Add your docs here. */
 public class StateMachine {
@@ -48,12 +47,21 @@ public class StateMachine {
     }
   }
 
+  public static Command setGlobalState(BotState state) {
+    return Commands.runOnce(() -> Constants.StateMachineConstant.setState(state));
+  }
 
-    public Command scoringSequence(RobotContainer bot) {
-      return new SequentialCommandGroup(
-      bot.m_elevator.cm_setElevatorPosition(StateMachineConstant.botState.elevatorPosition),
-      new WaitUntilCommand(() -> bot.m_elevator.checkPos(StateMachineConstant.botState.elevatorPosition)),
-      bot.m_coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
-    }
+  public static Command scoringSequence(Elevator elevator, CoralIntake coralIntake) {
+    return new SequentialCommandGroup(
+        elevator
+            .cm_setElevatorPosition(StateMachineConstant.botState.elevatorPosition)
+            .until(
+                () ->
+                    MathUtil.isNear(
+                        StateMachineConstant.botState.elevatorPosition,
+                        elevator.leftElevatorMotor.getPosition().getValueAsDouble(),
+                        1)),
+        elevator.cm_setElevatorPosition(15)); // Temp command to test sequencing
+    // coralIntake.cm_intakeCoral(botState.coralIntakeSpeed));
+  }
 }
-

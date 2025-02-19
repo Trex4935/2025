@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
   public final TalonFX coralIntakeMotor;
@@ -39,6 +40,8 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
+    builder.addStringProperty(
+        "botState", () -> Constants.StateMachineConstant.botState.toString(), null);
     builder.addDoubleProperty(
         "Coral intake motor percent output", () -> coralIntakeMotor.get(), null);
     builder.addDoubleProperty(
