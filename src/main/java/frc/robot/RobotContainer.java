@@ -120,6 +120,8 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
+    m_intake.setDefaultCommand(m_intake.run(() -> m_intake.setBrake()));
+
     // Configure the trigger bindings
 
     configureBindings();
