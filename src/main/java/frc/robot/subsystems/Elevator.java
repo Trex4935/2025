@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
-  public final TalonFXS leftElevatorMotor, rightElevatorMotor;
+  public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
   public CANrange canRange;
 
@@ -30,8 +30,8 @@ public class Elevator extends SubsystemBase {
 
     elevatorPID.setTolerance(0.1);
 
-    leftElevatorMotor = new TalonFXS(9);
-    rightElevatorMotor = new TalonFXS(10);
+    leftElevatorMotor = new TalonFX(9);
+    rightElevatorMotor = new TalonFX(10);
 
     leftElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
     rightElevatorMotor.setNeutralMode(NeutralModeValue.Brake);
