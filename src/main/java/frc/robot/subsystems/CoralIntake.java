@@ -6,36 +6,36 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralIntake extends SubsystemBase {
   public final TalonFX coralIntakeMotor;
-  public final PWMSparkMax coralIntakePivot;
+  public final SparkMax coralPivotMotor;
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFX(8);
-    coralIntakePivot = new PWMSparkMax(11);
-    coralIntakePivot.setInverted(true);
+    coralPivotMotor = new SparkMax(6, MotorType.kBrushless);
   }
 
   public void runIntakeMotor(double speed) {
     coralIntakeMotor.set(speed);
   }
 
-  public void runCoralPivot(double speed) {
-    coralIntakePivot.set(speed);
+  public void runCoralPivotMotor(double speed) {
+    coralPivotMotor.set(speed);
   }
 
   public void stopIntakeMotor() {
     coralIntakeMotor.stopMotor();
   }
 
-  public void stopCoralPivot() {
-    coralIntakePivot.stopMotor();
+  public void stopCoralPivotMotor() {
+    coralPivotMotor.stopMotor();
   }
 
   public void coralIntakeMotorVelocity(double velocity) {
@@ -48,6 +48,10 @@ public class CoralIntake extends SubsystemBase {
 
   public Command cm_intakeCoralVelocity(double velocity) {
     return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
+  }
+
+  public Command cm_runCoralPivotMotor(double speed) {
+    return startEnd(() -> runCoralPivotMotor(speed), () -> stopCoralPivotMotor());
   }
 
   public void initSendable(SendableBuilder builder) {
