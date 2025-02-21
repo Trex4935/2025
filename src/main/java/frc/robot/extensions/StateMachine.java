@@ -29,9 +29,9 @@ public class StateMachine {
     INTAKECORAL(0.520, 0.2, "Orange"), // preparing to intake coral
     INTAKEALGAE(0.37, 0, "Yellow"), // preparing to intake algae
     STORAGE(0.37, 0, "Green"), // intaked, coral or algae in
-    L1(0.37, -0.2, "Blue"), // scoring coral
-    L2(0.520, -0.2, "Blue"), // scoring coral
-    L3(0.705, -0.2, "Blue"), // scoring coral
+    L1(7, -0.2, "Blue"), // scoring coral
+    L2(25, -0.2, "Blue"), // scoring coral
+    L3(0, -0.2, "Blue"), // scoring coral
     PROCESSOR(0.37, 0, "Purple"), // scoring algae
     CLIMB(0.37, 0, "Pink"), // climbing
     EJECT(0.37, -0.2, "White"); // everything out

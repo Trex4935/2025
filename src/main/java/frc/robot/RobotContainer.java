@@ -97,11 +97,11 @@ public class RobotContainer {
         drivetrain.applyRequest(
             () ->
                 drive
-                    .withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
+                    .withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                     // negative Y
                     // (forward)
                     .withVelocityY(
-                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
             // negative X (left)
@@ -181,6 +181,12 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+
+
+    /*
+    State machine wont work unless a button is pressed
+     If b button is pressed, elevator moves in wrong direction and x button won't work
+    */
     operator
         .x()
         .onTrue(
@@ -191,13 +197,7 @@ public class RobotContainer {
         .onTrue(
             StateMachine.setGlobalState(BotState.L2)
                 .andThen((StateMachine.scoringSequence(m_elevator, m_coralIntake))));
-    operator
-        .a()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L3)
-                .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
-    operator.y().onTrue(m_elevator.cm_setElevatorPosition(0));
-
+    operator.a().onTrue(m_elevator.cm_setElevatorPosition(BotState.L1.elevatorPosition));
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
   }
