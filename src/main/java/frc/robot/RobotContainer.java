@@ -181,12 +181,11 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-
-
     /*
     State machine wont work unless a button is pressed
      If b button is pressed, elevator moves in wrong direction and x button won't work
     */
+    /*
     operator
         .x()
         .onTrue(
@@ -200,6 +199,19 @@ public class RobotContainer {
     operator.a().onTrue(m_elevator.cm_setElevatorPosition(BotState.L1.elevatorPosition));
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
+    */
+    operator
+        .a()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L1).andThen(m_elevator.cm_setElevatorToState()));
+    operator
+        .x()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L2).andThen(m_elevator.cm_setElevatorToState()));
+    operator
+        .b()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L3).andThen(m_elevator.cm_setElevatorToState()));
   }
 
   /**

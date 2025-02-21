@@ -14,6 +14,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -48,6 +49,11 @@ public class Elevator extends SubsystemBase {
 
   public Command cm_setElevatorPosition(double position) {
     return run(() -> setElevatorPosition(position));
+  }
+
+  public final Command cm_setElevatorToState() {
+    return run(
+        () -> setElevatorPosition(Constants.StateMachineConstant.getState().elevatorPosition));
   }
 
   public void initSendable(SendableBuilder builder) {
