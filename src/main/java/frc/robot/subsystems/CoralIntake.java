@@ -6,36 +6,25 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
   public final TalonFX coralIntakeMotor;
-  public final SparkMax coralPivotMotor;
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFX(8);
-    coralPivotMotor = new SparkMax(6, MotorType.kBrushless);
   }
 
   public void runIntakeMotor(double speed) {
     coralIntakeMotor.set(speed);
   }
 
-  public void runCoralPivotMotor(double speed) {
-    coralPivotMotor.set(speed);
-  }
-
   public void stopIntakeMotor() {
     coralIntakeMotor.stopMotor();
-  }
-
-  public void stopCoralPivotMotor() {
-    coralPivotMotor.stopMotor();
   }
 
   public void coralIntakeMotorVelocity(double velocity) {
@@ -46,15 +35,19 @@ public class CoralIntake extends SubsystemBase {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
+  public Command cm_coralIntakeState() {
+    return startEnd(
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
+        () -> stopIntakeMotor());
+  }
+
   public Command cm_intakeCoralVelocity(double velocity) {
     return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
-  public Command cm_runCoralPivotMotor(double speed) {
-    return startEnd(() -> runCoralPivotMotor(speed), () -> stopCoralPivotMotor());
-  }
-
   public void initSendable(SendableBuilder builder) {
+    builder.addStringProperty(
+        "botState", () -> Constants.StateMachineConstant.botState.toString(), null);
     builder.addDoubleProperty(
         "Coral intake motor percent output", () -> coralIntakeMotor.get(), null);
     builder.addDoubleProperty(
