@@ -45,7 +45,7 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
 
-  private double MaxSpeed =
+  public double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5; // adjust multipler for speed
   // speed
   private double MaxAngularRate =
