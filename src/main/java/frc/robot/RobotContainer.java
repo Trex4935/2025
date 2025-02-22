@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.StateMachineConstant;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SetElevatorPosition;
+import frc.robot.commands.Shooting;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
@@ -80,8 +82,13 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
 
+  private final Shooting cmd_shooting;
+  private final SetElevatorPosition cmd_SetElevatorPosition;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    cmd_shooting = new Shooting(m_elevator, m_coralIntake);
+    cmd_SetElevatorPosition = new SetElevatorPosition(m_elevator);
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
 
@@ -140,7 +147,7 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
+    // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -200,18 +207,9 @@ public class RobotContainer {
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
     */
-    operator
-        .a()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L1).andThen(m_elevator.cm_setElevatorToState()));
-    operator
-        .x()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L2).andThen(m_elevator.cm_setElevatorToState()));
-    operator
-        .b()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L3).andThen(m_elevator.cm_setElevatorToState()));
+    operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
+    operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
+    operator.y().onTrue(cmd_SetElevatorPosition);
   }
 
   /**

@@ -35,6 +35,12 @@ public class CoralIntake extends SubsystemBase {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
+  public Command cm_coralIntakeState() {
+    return startEnd(
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
+        () -> stopIntakeMotor());
+  }
+
   public Command cm_intakeCoralVelocity(double velocity) {
     return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }

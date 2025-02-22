@@ -51,6 +51,10 @@ public class Elevator extends SubsystemBase {
     return run(() -> setElevatorPosition(position));
   }
 
+  public Command cm_setElevatorPositionRunOnce(double position) {
+    return runOnce(() -> setElevatorPosition(position));
+  }
+
   public final Command cm_setElevatorToState() {
     return run(
         () -> setElevatorPosition(Constants.StateMachineConstant.getState().elevatorPosition));
