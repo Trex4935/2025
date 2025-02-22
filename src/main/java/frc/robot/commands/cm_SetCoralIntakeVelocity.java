@@ -4,26 +4,26 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.StateMachineConstant;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.CoralIntake;
 
 /** An example command that uses an example subsystem. */
-public class SetElevatorPosition extends Command {
+public class cm_SetCoralIntakeVelocity extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Elevator m_elevator;
+  private final CoralIntake m_coralIntake;
+
+  Timer timer = new Timer();
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SetElevatorPosition(Elevator elevator) {
-    m_elevator = elevator;
+  public cm_SetCoralIntakeVelocity(CoralIntake coralIntake) {
+    m_coralIntake = coralIntake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevator);
+    addRequirements(coralIntake);
   }
 
   // Called when the command is initially scheduled.
@@ -33,21 +33,18 @@ public class SetElevatorPosition extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.setElevatorPosition(Constants.StateMachineConstant.botState.elevatorPosition);
+    m_coralIntake.coralIntakeMotorVelocity(-5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_elevator.run(() -> m_elevator.setBrake());
+    m_coralIntake.run(() -> m_coralIntake.setBrake());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return MathUtil.isNear(
-        StateMachineConstant.botState.elevatorPosition,
-        m_elevator.leftElevatorMotor.getPosition().getValueAsDouble(),
-        1);
+    return timer.hasElapsed(5);
   }
 }
