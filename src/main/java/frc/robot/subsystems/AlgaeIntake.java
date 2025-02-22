@@ -6,28 +6,20 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeIntake extends SubsystemBase {
   public final TalonFX algaeIntakeMotor;
-  public final SparkMax algaePivotMotor;
 
   /** Creates a new AlgaeIntake Subsystem. */
   public AlgaeIntake() {
     algaeIntakeMotor = new TalonFX(13);
-    algaePivotMotor = new SparkMax(12, MotorType.kBrushless);
   }
 
   public void runIntakeMotor(double speed) {
     algaeIntakeMotor.set(speed);
-  }
-
-  public void runAlgaePivotMotor(double speed) {
-    algaePivotMotor.set(speed);
   }
 
   public void algaeIntakeMotorVelocity(double velocity) {
@@ -38,10 +30,6 @@ public class AlgaeIntake extends SubsystemBase {
     algaeIntakeMotor.stopMotor();
   }
 
-  public void stopAlgaePivotMotor() {
-    algaePivotMotor.stopMotor();
-  }
-
   public Command cm_intakeAlgae(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
@@ -50,9 +38,7 @@ public class AlgaeIntake extends SubsystemBase {
     return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
-  public Command cm_runAlgaePivotMotor(double speed) {
-    return startEnd(() -> runAlgaePivotMotor(speed), () -> stopAlgaePivotMotor());
-  }
+
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(

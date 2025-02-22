@@ -207,9 +207,12 @@ public class RobotContainer {
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
     */
+    operator.b().onTrue(StateMachine.setGlobalState(BotState.DEFAULT));
     operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
     operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
     operator.y().onTrue(cmd_SetElevatorPosition);
+
+    operator.leftBumper().whileTrue(m_coralIntake.cm_runCoralPivotMotor(0.1));
   }
 
   /**
