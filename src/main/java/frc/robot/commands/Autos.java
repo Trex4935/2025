@@ -6,12 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.AlignmentLocations;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public final class Autos {
   /** Example static factory for an autonomous command. */
-  public static Command exampleAuto(ExampleSubsystem subsystem) {
-    return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
+  public static Command runPoseEstimator(CommandSwerveDrivetrain drivetrain) {
+    return Commands.runOnce(() -> drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft, 8889));
   }
 
   private Autos() {
