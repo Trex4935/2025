@@ -9,7 +9,6 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -198,6 +197,11 @@ public class RobotContainer {
                     m_intake.cm_intakeCoral(0.25))
                 .withTimeout(5));
     operator.x().whileTrue(m_elevator.cm_setElevatorState("L3"));
+    operator
+        .y()
+        .whileTrue(
+            drivetrain.runOnce(
+                () -> drivetrain.ppSimple(new Pose2d(5.459, 5.587, new Rotation2d(90)))));
   }
 
   /**
@@ -209,10 +213,6 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto("Forward");
-  }
-
-  public Command autoChooserCommand() {
     return autoChooser.getSelected();
   }
 }
