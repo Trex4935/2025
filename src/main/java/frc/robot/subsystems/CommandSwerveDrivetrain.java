@@ -280,7 +280,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
    * @param theSillyNumber A number to make this different from the above method, does nothing
    * @return A command that drives to a location using PathPlanner
    */
-  public Command ppAutoDrive(AlignmentPose pose, double theSillyNumber) {
+  public static Command ppAutoDrive(AlignmentPose pose, double theSillyNumber) {
 
     // Determine necessary tag pose
     Pose2d tagPose = pose.aprilTagPose;

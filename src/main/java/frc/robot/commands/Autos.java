@@ -11,8 +11,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public final class Autos {
   /** Example static factory for an autonomous command. */
-  public static Command runPoseEstimator(CommandSwerveDrivetrain drivetrain) {
-    return Commands.runOnce(() -> drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft, 8889));
+  public static Command runPoseEstimator() {
+    return Commands.runOnce(
+        () -> CommandSwerveDrivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft, 8889));
   }
 
   private Autos() {
