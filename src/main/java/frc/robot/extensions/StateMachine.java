@@ -41,7 +41,8 @@ public class StateMachine {
     public final String colorDisplay;
     public final double pivotAngle;
 
-    private BotState(double elevatorPosition, double coralIntakeSpeed, String color, double pivotAngle) {
+    private BotState(
+        double elevatorPosition, double coralIntakeSpeed, String color, double pivotAngle) {
       this.elevatorPosition = elevatorPosition;
       this.coralIntakeSpeed = coralIntakeSpeed;
       this.colorDisplay = color;
