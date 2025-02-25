@@ -15,9 +15,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -25,6 +27,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
@@ -63,10 +66,12 @@ public class RobotContainer {
   Vision m_vision = new Vision();
   CoralIntake m_intake = new CoralIntake();
   Elevator m_elevator = new Elevator();
+  AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
+  private final CommandGenericHID operatorBoard = new CommandGenericHID(2);
 
   public final CommandSwerveDrivetrain drivetrain;
 
@@ -147,6 +152,49 @@ public class RobotContainer {
         .povDown()
         .whileTrue(Commands.run(() -> drivetrain.pidAutoAlign(new Pose2d(3, 7, new Rotation2d()))));
 
+    // operator board bindings
+    // manually moves elevator down
+    operatorBoard
+        .button(1)
+        .onTrue((m_elevator.runOnce(() -> m_elevator.cm_elevatorMovement(-0.1))));
+    // n/a for now... not sure what i want to do with this just yet (likely climber)
+    operatorBoard.button(2).onTrue(getAutonomousCommand());
+    // manually moves elevator up
+    operatorBoard.button(3).onTrue((m_elevator.runOnce(() -> m_elevator.cm_elevatorMovement(0.1))));
+    // n/a for now... not sure what i want to do with this just yet (likely climber)
+    operatorBoard.button(4).onTrue(getAutonomousCommand());
+    // ejects game piece (coral for now)
+    operatorBoard.button(5).onTrue(m_intake.runOnce(() -> m_intake.cm_intakeCoral(0.3)));
+    // goes to default
+    operatorBoard
+        .button(6)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkViolet))));
+    // algae intake
+    operatorBoard
+        .button(7)
+        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
+    // shoots L4
+    operatorBoard
+        .button(8)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kBlack))));
+    // shoots processor
+    operatorBoard
+        .button(9)
+        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+    // coral intake
+    operatorBoard.button(10).onTrue((m_intake.runOnce(() -> m_intake.cm_intakeCoral(-0.5))));
+    // shoots L3
+    operatorBoard
+        .button(12)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkOrange))));
+    // shoots L2
+    operatorBoard
+        .button(13)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDenim))));
+    // shoots L1
+    operatorBoard
+        .button(14)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kRed))));
     // Configure the trigger bindings
 
     configureBindings();
