@@ -140,7 +140,7 @@ public class RobotContainer {
     joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    // joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
         .rightBumper()
@@ -218,11 +218,9 @@ public class RobotContainer {
     operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
     operator.y().onTrue(cmd_SetElevatorPosition);
     operator.b().onTrue(cmd_FullSequence);
-    operator
-        .y()
-        .whileTrue(
-            drivetrain.runOnce(
-                () -> drivetrain.ppSimple(new Pose2d(5.459, 5.587, new Rotation2d(90)))));
+    m_driverController
+        .leftBumper()
+        .whileTrue(drivetrain.ppSimple(new Pose2d(5.459, 5.587, new Rotation2d(-112.380))));
   }
 
   /**
