@@ -26,15 +26,15 @@ public class StateMachine {
    */
   public enum BotState {
     DEFAULT(0.37, 0, "Red"), // field state, default state, no game pieces
-    INTAKECORAL(0.520, 0.2, "Orange"), // preparing to intake coral
+    INTAKECORAL(0.520, 5, "Orange"), // preparing to intake coral
     INTAKEALGAE(0.37, 0, "Yellow"), // preparing to intake algae
     STORAGE(0.37, 0, "Green"), // intaked, coral or algae in
-    L1(7, -0.2, "Blue"), // scoring coral
-    L2(25, -0.2, "Blue"), // scoring coral
-    L3(0, -0.2, "Blue"), // scoring coral
+    L1(7, -5, "Blue"), // scoring coral
+    L2(25, -5, "Blue"), // scoring coral
+    L3(0, -5, "Blue"), // scoring coral
     PROCESSOR(0.37, 0, "Purple"), // scoring algae
     CLIMB(0.37, 0, "Pink"), // climbing
-    EJECT(0.37, -0.2, "White"); // everything out
+    EJECT(0.37, -5, "White"); // everything out
 
     public final double elevatorPosition;
     public final double coralIntakeSpeed;

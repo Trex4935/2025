@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
-import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -29,8 +28,6 @@ public class CoralIntake extends SubsystemBase {
 
   private MotionMagicVelocityVoltage mmVelocityVoltage =
       new MotionMagicVelocityVoltage(0).withSlot(0);
-
-  private final NeutralOut m_brake = new NeutralOut();
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
@@ -68,10 +65,6 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
 
   public void stopIntakeMotor() {
     coralIntakeMotor.stopMotor();
-  }
-
-  public void setBrake() {
-    coralIntakeMotor.setControl(m_brake);
   }
 
   public void coralIntakeMotorVelocity(double velocity) {
