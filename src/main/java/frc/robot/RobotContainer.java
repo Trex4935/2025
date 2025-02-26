@@ -214,6 +214,9 @@ public class RobotContainer {
     operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
     operator.y().onTrue(cmd_SetElevatorPosition);
     operator.b().onTrue(cmd_FullSequence);
+
+    operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
+    operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
   }
 
   /**
