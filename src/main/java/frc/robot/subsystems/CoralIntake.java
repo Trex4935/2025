@@ -11,13 +11,12 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.extensions.StateMachine;
 
 public class CoralIntake extends SubsystemBase {
   public final TalonFX coralIntakeMotor;
@@ -29,11 +28,12 @@ public class CoralIntake extends SubsystemBase {
     coralPivotMotor = new SparkMax(6, MotorType.kBrushless);
     SparkMaxConfig config = new SparkMaxConfig();
 
-config.signals.primaryEncoderPositionPeriodMs(5);
-config.inverted(true);
-config.idleMode(IdleMode.kCoast);
-coralPivotMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-double position = coralPivotMotor.getEncoder().getPosition();
+    config.signals.primaryEncoderPositionPeriodMs(5);
+    config.inverted(true);
+    config.idleMode(IdleMode.kCoast);
+    coralPivotMotor.configure(
+        config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    double pivotPosition = coralPivotMotor.getEncoder().getPosition();
   }
 
   public void runCoralPivotMotor(double speed) {
@@ -43,7 +43,6 @@ double position = coralPivotMotor.getEncoder().getPosition();
   public void stopCoralPivotMotor() {
     coralPivotMotor.stopMotor();
   }
-
 
   // pivotPID.setReference(targetAngle, CANSparkBase.ControlType.kPosition);
 
@@ -55,11 +54,9 @@ double position = coralPivotMotor.getEncoder().getPosition();
     coralIntakeMotor.stopMotor();
   }
 
-
   public Command cm_runCoralPivotMotor(double speed) {
     return startEnd(() -> runCoralPivotMotor(speed), () -> stopCoralPivotMotor());
   }
-
 
   public void coralIntakeMotorVelocity(double velocity) {
     coralIntakeMotor.setControl(new MotionMagicVelocityVoltage(velocity));
@@ -79,12 +76,12 @@ double position = coralPivotMotor.getEncoder().getPosition();
     return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
-  public void setIntakePivotPosition(){
-    //coralPivotMotor.getClosedLoopController().setReference(Constants.StateMachineConstant.botState.pivotAngle, ControlType.kPosition);
+  public void setIntakePivotPosition() {
+    // coralPivotMotor.getClosedLoopController().setReference(Constants.StateMachineConstant.botState.pivotAngle, ControlType.kPosition);
     coralPivotMotor.getClosedLoopController().setReference(0.1, ControlType.kPosition);
   }
 
-  public Command cm_setIntakePivotPosition(){
+  public Command cm_setIntakePivotPosition() {
     return startEnd(() -> setIntakePivotPosition(), null);
   }
 
