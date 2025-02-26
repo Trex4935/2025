@@ -18,6 +18,6 @@ public class cm_FullSequence extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new cm_SetElevatorPosition(elevator).withTimeout(10),
-        new cm_SetCoralIntake(coralIntake).withTimeout(5));
+        new cm_SetCoralIntakeVelocity(coralIntake).withTimeout(5));
   }
 }
