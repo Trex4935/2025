@@ -22,6 +22,7 @@ public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
   public final TalonFX coralIntakeMotor;
+  private final SysIdRoutine m_sysIdRoutine;
 
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
@@ -36,14 +37,14 @@ public class CoralIntake extends SubsystemBase {
     coralIntakeMotor = new TalonFX(8);
 
 
-   SysIdRoutine m_sysIdRoutine =
+  m_sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null,         // Use default ramp rate (1 V/s)
-                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
                 null,          // Use default timeout (10 s)
                                        // Log state with Phoenix SignalLogger class
-                state -> SignalLogger.writeString("Elevator SYSID", state.toString())
+                state -> SignalLogger.writeString("Coral SYSID", state.toString())
             ),
             new SysIdRoutine.Mechanism(
                 volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
@@ -59,6 +60,8 @@ public class CoralIntake extends SubsystemBase {
 public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return m_sysIdRoutine.dynamic(direction);
 }
+
+
   public void runIntakeMotor(double speed) {
     coralIntakeMotor.set(speed);
   }

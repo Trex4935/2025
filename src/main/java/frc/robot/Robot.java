@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -83,6 +84,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+    SignalLogger.setPath("/media/sda1/ctre-logs/");
+
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

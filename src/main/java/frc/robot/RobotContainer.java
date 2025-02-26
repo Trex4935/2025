@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.StateMachineConstant;
@@ -72,6 +74,7 @@ public class RobotContainer {
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
+  private final CommandXboxController sysid = new CommandXboxController(3);
 
   public final CommandSwerveDrivetrain drivetrain;
 
@@ -210,13 +213,26 @@ public class RobotContainer {
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
     */
-    operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
-    operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
-    operator.y().onTrue(cmd_SetElevatorPosition);
-    operator.b().onTrue(cmd_FullSequence);
+  //  operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
+   // operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
+    //operator.y().onTrue(cmd_SetElevatorPosition);
+    //operator.b().onTrue(cmd_FullSequence);
 
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
     operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
+
+
+
+
+    operator.povRight().onTrue(Commands.runOnce(SignalLogger::start));
+    operator.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
+
+    operator.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    operator.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+    operator.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    operator.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
   }
 
   /**
