@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -14,15 +16,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
-import static edu.wpi.first.units.Units.Volts;
-
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
   public final TalonFX coralIntakeMotor;
   private final SysIdRoutine m_sysIdRoutine;
-
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
@@ -33,31 +32,27 @@ public class CoralIntake extends SubsystemBase {
   public CoralIntake() {
     coralIntakeMotor = new TalonFX(8);
 
-
-  m_sysIdRoutine =
+    m_sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                null,         // Use default ramp rate (1 V/s)
+                null, // Use default ramp rate (1 V/s)
                 Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
-                null,          // Use default timeout (10 s)
-                                       // Log state with Phoenix SignalLogger class
-                state -> SignalLogger.writeString("Coral SYSID", state.toString())
-            ),
+                null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+                state -> SignalLogger.writeString("Coral SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
                 volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
                 null,
-                this
-            )
-        );
+                this));
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return m_sysIdRoutine.quasistatic(direction);
-}
-public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.dynamic(direction);
-}
+  }
 
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.dynamic(direction);
+  }
 
   public void runIntakeMotor(double speed) {
     coralIntakeMotor.set(speed);
@@ -80,9 +75,6 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
         () -> stopIntakeMotor());
   }
-
-
-
 
   public Command cm_intakeCoralVelocity(double velocity) {
     return run(() -> coralIntakeMotorVelocity(velocity));
@@ -112,9 +104,6 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
           /* one-time action goes here */
         });
   }
-
-
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

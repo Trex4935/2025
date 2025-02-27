@@ -28,8 +28,6 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Shooting;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_SetElevatorPosition;
-import frc.robot.extensions.StateMachine;
-import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -213,16 +211,13 @@ public class RobotContainer {
     operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
     operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
     */
-  //  operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
-   // operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
-    //operator.y().onTrue(cmd_SetElevatorPosition);
-    //operator.b().onTrue(cmd_FullSequence);
+    //  operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
+    // operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
+    // operator.y().onTrue(cmd_SetElevatorPosition);
+    // operator.b().onTrue(cmd_FullSequence);
 
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
     operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
-
-
-
 
     operator.povRight().onTrue(Commands.runOnce(SignalLogger::start));
     operator.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
@@ -232,7 +227,6 @@ public class RobotContainer {
 
     operator.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
     operator.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
   }
 
   /**
