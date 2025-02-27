@@ -5,6 +5,7 @@
 package frc.robot.extensions;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -25,22 +26,22 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(0.37, 0, "Red"), // field state, default state, no game pieces
-    INTAKECORAL(0.520, 5, "Orange"), // preparing to intake coral
-    INTAKEALGAE(0.37, 0, "Yellow"), // preparing to intake algae
-    STORAGE(0.37, 0, "Green"), // intaked, coral or algae in
-    L1(7, -5, "Blue"), // scoring coral
-    L2(25, -5, "Blue"), // scoring coral
-    L3(0, -5, "Blue"), // scoring coral
-    PROCESSOR(0.37, 0, "Purple"), // scoring algae
-    CLIMB(0.37, 0, "Pink"), // climbing
-    EJECT(0.37, -5, "White"); // everything out
+    DEFAULT(0.37, 0, Color.kRed), // field state, default state, no game pieces
+    INTAKECORAL(0.520, 5, Color.kOrange), // preparing to intake coral
+    INTAKEALGAE(0.37, 0, Color.kYellow), // preparing to intake algae
+    STORAGE(0.37, 0, Color.kGreen), // intaked, coral or algae in
+    L1(7, -5, Color.kBlue), // scoring coral
+    L2(25, -5, Color.kBlue), // scoring coral
+    L3(0, -5, Color.kBlue), // scoring coral
+    PROCESSOR(0.37, 0, Color.kPurple), // scoring algae
+    CLIMB(0.37, 0, Color.kPink), // climbing
+    EJECT(0.37, -5, Color.kWhite); // everything out
 
     public final double elevatorPosition;
     public final double coralIntakeSpeed;
-    public final String colorDisplay;
+    public final Color colorDisplay;
 
-    private BotState(double elevatorPosition, double coralIntakeSpeed, String color) {
+    private BotState(double elevatorPosition, double coralIntakeSpeed, Color color) {
       this.elevatorPosition = elevatorPosition;
       this.coralIntakeSpeed = coralIntakeSpeed;
       this.colorDisplay = color;
