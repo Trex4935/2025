@@ -4,7 +4,15 @@
 
 package frc.robot.extensions;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
+import frc.robot.Constants.StateMachineConstant;
+import frc.robot.subsystems.CoralIntake;
+import frc.robot.subsystems.Elevator;
 
 /** Add your docs here. */
 public class StateMachine {
@@ -18,23 +26,43 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(0, 0, Color.kRed), // field state, default state, no game pieces
-    INTAKECORAL(0, 0.2, Color.kOrange), // preparing to intake coral
-    INTAKEALGAE(0, 0, Color.kYellow), // preparing to intake algae
-    STORAGE(0, 0, Color.kGreen), // intaked, coral or algae in
-    REEF(0, -0.2, Color.kBlue), // scoring coral
-    PROCESSOR(0, 0, Color.kPurple), // scoring algae
-    CLIMB(0.3, 0, Color.kPink), // climbing
-    EJECT(0.3, 0.2, Color.kWhite); // everything out
+    DEFAULT(0.37, 0, Color.kRed), // field state, default state, no game pieces
+    INTAKECORAL(0.520, 5, Color.kOrange), // preparing to intake coral
+    INTAKEALGAE(0.37, 0, Color.kYellow), // preparing to intake algae
+    STORAGE(0.37, 0, Color.kGreen), // intaked, coral or algae in
+    L1(7, -5, Color.kBlue), // scoring coral
+    L2(25, -5, Color.kBlue), // scoring coral
+    L3(0, -5, Color.kBlue), // scoring coral
+    PROCESSOR(0.37, 0, Color.kPurple), // scoring algae
+    CLIMB(0.37, 0, Color.kPink), // climbing
+    EJECT(0.37, -5, Color.kWhite); // everything out
 
     public final double elevatorPosition;
     public final double coralIntakePosition;
     public final Color colorDisplay;
 
-    private BotState(double elevatorSpeed, double coralIntakeSpeed, Color color) {
-      this.elevatorPosition = elevatorSpeed;
-      this.coralIntakePosition = coralIntakeSpeed;
+    private BotState(double elevatorPosition, double coralIntakePosition, Color color) {
+      this.elevatorPosition = elevatorPosition;
+      this.coralIntakePosition = coralIntakePosition;
       this.colorDisplay = color;
     }
+  }
+
+  public static Command setGlobalState(BotState state) {
+    return Commands.runOnce(() -> Constants.StateMachineConstant.setState(state));
+  }
+
+  public static Command scoringSequence(Elevator elevator, CoralIntake coralIntake) {
+    return new SequentialCommandGroup(
+        elevator
+            .cm_setElevatorPosition(StateMachineConstant.botState.elevatorPosition)
+            .until(
+                () ->
+                    MathUtil.isNear(
+                        StateMachineConstant.botState.elevatorPosition,
+                        elevator.leftElevatorMotor.getPosition().getValueAsDouble(),
+                        1)),
+        elevator.cm_setElevatorPosition(15)); // Temp command to test sequencing
+    // coralIntake.cm_intakeCoral(botState.coralIntakeSpeed));
   }
 }
