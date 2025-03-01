@@ -5,6 +5,7 @@
 package frc.robot.extensions;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -25,26 +26,26 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(0.37, 0, "Red", 0), // field state, default state, no game pieces
-    INTAKECORAL(0.520, 0.2, "Orange", 0), // preparing to intake coral
-    INTAKEALGAE(0.37, 0, "Yellow", 0), // preparing to intake algae
-    STORAGE(0.37, 0, "Green", 0), // intaked, coral or algae in
-    L1(7, -0.2, "Blue", 0.1), // scoring coral
-    L2(25, -0.2, "Blue", 0.3), // scoring coral
-    L3(0, -0.2, "Blue", 0.3), // scoring coral
-    PROCESSOR(0.37, 0, "Purple", 0), // scoring algae
-    CLIMB(0.37, 0, "Pink", 0), // climbing
-    EJECT(0.37, -0.2, "White", 0); // everything out
+    DEFAULT(0.37, 0, Color.kRed, 0), // field state, default state, no game pieces
+    INTAKECORAL(0.520, 5, Color.kOrange, 0), // preparing to intake coral
+    INTAKEALGAE(0.37, 0, Color.kYellow, 0), // preparing to intake algae
+    STORAGE(0.37, 0, Color.kGreen, 0), // intaked, coral or algae in
+    L1(7, -5, Color.kBlue, 0.1), // scoring coral
+    L2(25, -5, Color.kBlue, 0.3), // scoring coral
+    L3(0, -5, Color.kBlue, 0.3), // scoring coral
+    PROCESSOR(0.37, 0, Color.kPurple, 0), // scoring algae
+    CLIMB(0.37, 0, Color.kPink, 0), // climbing
+    EJECT(0.37, -5, Color.kWhite, 0); // everything out
 
     public final double elevatorPosition;
-    public final double coralIntakeSpeed;
-    public final String colorDisplay;
+    public final double coralIntakePosition;
+    public final Color colorDisplay;
     public final double pivotAngle;
 
     private BotState(
-        double elevatorPosition, double coralIntakeSpeed, String color, double pivotAngle) {
+        double elevatorPosition, double coralIntakePosition, Color color, double pivotAngle) {
       this.elevatorPosition = elevatorPosition;
-      this.coralIntakeSpeed = coralIntakeSpeed;
+      this.coralIntakePosition = coralIntakePosition;
       this.colorDisplay = color;
       this.pivotAngle = pivotAngle;
     }

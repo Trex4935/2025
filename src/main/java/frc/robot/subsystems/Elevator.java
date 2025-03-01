@@ -20,6 +20,8 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
+  public final double maxElevatorRotation = 20;
+
   public final CANrange canRange;
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
