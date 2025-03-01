@@ -75,10 +75,10 @@ public class CoralIntake extends SubsystemBase {
         () -> stopIntakeMotor());
   }
 
-  public Command cm_intakeCoralVelocity(double velocity) {
+  /* public Command cm_intakeCoralVelocity(double velocity) {
     return run(() -> coralIntakeMotorVelocity(velocity));
   }
-
+  */
   public void initSendable(SendableBuilder builder) {
     builder.addStringProperty(
         "botState", () -> Constants.StateMachineConstant.botState.toString(), null);
