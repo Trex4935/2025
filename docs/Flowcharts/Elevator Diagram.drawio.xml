@@ -1,6 +1,4 @@
-<mxfile host="app.diagrams.net"
-  agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0"
-  version="26.0.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0" version="26.0.10">
   <diagram name="Page-1" id="vX1XKZ78U6n9zcANlU9t">
     <mxGraphModel dx="1010" dy="704" grid="1" gridSize="10"
       guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1"
@@ -115,59 +113,38 @@
           <mxGeometry x="720" y="270" width="120" height="40"
             as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-25"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1"
-          target="Ipaw-4_axsUOfQ5ESiZo-23">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1" target="Ipaw-4_axsUOfQ5ESiZo-23" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-31"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="740" y="500" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-1" value="State Machine"
-          style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="560" y="360" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-1" value="State Machine" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="560" y="360" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-37"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2"
-          target="IorvXz3BjkLuXUcxzgwF-13">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2" target="IorvXz3BjkLuXUcxzgwF-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-2" value="Manual Control"
-          style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="550" y="110" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-2" value="Manual Control" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="550" y="110" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-5" value=""
-          style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1"
-            as="geometry">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-5" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="560" y="390" as="sourcePoint" />
             <mxPoint x="480" y="390" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-12"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-7">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-7" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="260" y="460" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-7" value="Control state"
-          style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;"
-          vertex="1" parent="1">
-          <mxGeometry x="360" y="360" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-7" value="Control state" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="1" vertex="1">
+          <mxGeometry x="360" y="360" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-15"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-8">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-8" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="980" y="460" as="targetPoint" />
             <Array as="points">
@@ -176,120 +153,105 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-8" value="Shooting state"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;"
-          vertex="1" parent="1">
-          <mxGeometry x="760" y="360" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-8" value="Shooting state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="760" y="360" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-9" value=""
-          style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1"
-            as="geometry">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-9" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="680" y="389.5" as="sourcePoint" />
             <mxPoint x="760" y="389.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-17"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-14">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-14" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1110" y="540" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-14"
-          value="Current position of robot&amp;nbsp;"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="920" y="460" width="110" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-14" value="Current position of robot&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="920" y="460" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-16"
-          value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Elevator motors disabled to prevent movement&lt;/font&gt;"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="680" y="620" width="120" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-16" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Elevator motors disabled to prevent movement&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="680" y="620" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-19"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-18">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-18" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1115" y="640" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-18"
-          value="Align with apriltag&amp;nbsp;"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="1060" y="540" width="110" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-18" value="Align with apriltag&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="1060" y="540" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-20"
-          value="Elevator moves based on button pressed"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="1060" y="640" width="110" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-20" value="Elevator moves based on button pressed" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="1060" y="640" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-26"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-23">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-23" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="500" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-23" value="Stashed state"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;"
-          vertex="1" parent="1">
-          <mxGeometry x="440" y="500" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-23" value="Stashed state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="440" y="500" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-27"
-          value="Elevator in default position"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="200" y="460" width="120" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-27" value="Elevator in default position" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="200" y="460" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-29"
-          value="Elevator back down to default position"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="440" y="720" width="120" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-29" value="Elevator back down to default position" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="440" y="720" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-33"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-32">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-32" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="740" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-32" value="Climbing"
-          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;"
-          vertex="1" parent="1">
-          <mxGeometry x="680" y="500" width="120" height="60"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-32" value="Climbing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="680" y="500" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-35"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-34"
-          target="Ipaw-4_axsUOfQ5ESiZo-29">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-34" target="Ipaw-4_axsUOfQ5ESiZo-29" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-34"
-          value="Sensors detect gamepiece"
-          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
-          vertex="1" parent="1">
-          <mxGeometry x="440" y="620" width="120" height="40"
-            as="geometry" />
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-34" value="Sensors detect gamepiece" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="440" y="620" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-36"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.589;entryY=-0.042;entryDx=0;entryDy=0;entryPerimeter=0;"
-          edge="1" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2"
-          target="IorvXz3BjkLuXUcxzgwF-5">
+        <mxCell id="Ipaw-4_axsUOfQ5ESiZo-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.589;entryY=-0.042;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="Ipaw-4_axsUOfQ5ESiZo-2" target="IorvXz3BjkLuXUcxzgwF-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kpWKbbm9Ed6uu3uCt-Mu-1" target="kpWKbbm9Ed6uu3uCt-Mu-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-1" value="Autonomous" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="780" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="kpWKbbm9Ed6uu3uCt-Mu-4" target="kpWKbbm9Ed6uu3uCt-Mu-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-4" value="Once robot reaches desired position, Named Command will go off, moving the elevator to correct position" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="570" y="860" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kpWKbbm9Ed6uu3uCt-Mu-5" target="kpWKbbm9Ed6uu3uCt-Mu-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-5" value="Elevator goes back down to default position once piece is shot" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="580" y="960" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-6" value="Once auto ends, teleop begins and controls are given to operator (elevator in default position)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1050" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-7" value="" style="curved=1;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="740" y="1000" as="sourcePoint" />
+            <mxPoint x="750" y="870" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="790" y="1000" />
+              <mxPoint x="780" y="960" />
+              <mxPoint x="770" y="940" />
+              <mxPoint x="790" y="870" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kpWKbbm9Ed6uu3uCt-Mu-8" value="occurs as many times&amp;nbsp;&lt;div&gt;as auto path specifies&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="kpWKbbm9Ed6uu3uCt-Mu-7">
+          <mxGeometry x="-0.0492" y="-10" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
