@@ -37,8 +37,8 @@ public class AlignmentLocations {
   private static List<AprilTag> hallwayFieldMapTagList =
       List.of(hallTag1, hallTag2, hallTag3, hallTag4);
 
-  private static AprilTagFieldLayout testAprilTagFieldLayout =
-      new AprilTagFieldLayout(hallwayFieldMapTagList, 17.5483, 8.0519);
+  // private static AprilTagFieldLayout testAprilTagFieldLayout =
+  // new AprilTagFieldLayout(hallwayFieldMapTagList, 17.5483, 8.0519);
 
   public static class AlignmentPose {
     public Pose2d aprilTagPose;

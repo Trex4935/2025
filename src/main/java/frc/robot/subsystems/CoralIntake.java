@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,8 +24,8 @@ public class CoralIntake extends SubsystemBase {
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
-  private MotionMagicVelocityVoltage mmVelocityVoltage =
-      new MotionMagicVelocityVoltage(0).withSlot(0);
+  /*private MotionMagicVelocityVoltage mmVelocityVoltage =
+  new MotionMagicVelocityVoltage(0).withSlot(0); */
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {

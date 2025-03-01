@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
+// import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +22,8 @@ public class LEDSubsystem extends SubsystemBase {
   boolean ledToggle;
   int counter, ledBufferLength;
   private int walkStartingPosition = 0;
-  private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+
+  // private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
 
   /** Creates a new LEDControl. */
   public LEDSubsystem() {
