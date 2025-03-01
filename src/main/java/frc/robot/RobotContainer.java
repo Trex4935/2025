@@ -264,6 +264,12 @@ public class RobotContainer {
     // operator.y().onTrue(cmd_SetElevatorPosition);
     // operator.b().onTrue(cmd_FullSequence);
 
+    new Trigger(() -> m_elevator.leftElevatorMotor.getPosition().getValueAsDouble() > 20)
+        .whileTrue(
+            Commands.startEnd(
+                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.15,
+                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
+
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
     operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
 
