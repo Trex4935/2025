@@ -15,6 +15,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -39,6 +40,9 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
     canRange = new CANrange(2);
+
+    PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
+    PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
   }
 
   public void setElevatorPosition(double position) {

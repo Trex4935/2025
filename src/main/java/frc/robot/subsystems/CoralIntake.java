@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
@@ -44,6 +45,8 @@ public class CoralIntake extends SubsystemBase {
                 volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
                 null,
                 this));
+
+    PhysicsSim.getInstance().addTalonFX(coralIntakeMotor, 0.2);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
