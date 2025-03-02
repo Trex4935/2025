@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -15,16 +16,23 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.StateMachineConstant;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Shooting;
+import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_SetElevatorPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
@@ -40,7 +48,7 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
 
-  private double MaxSpeed =
+  public double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5; // adjust multipler for speed
   // speed
   private double MaxAngularRate =
@@ -61,12 +69,15 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   Vision m_vision = new Vision();
-  CoralIntake m_intake = new CoralIntake();
+  CoralIntake m_coralIntake = new CoralIntake();
   Elevator m_elevator = new Elevator();
+  AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
   private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
+  private final CommandXboxController sysid = new CommandXboxController(3);
+  private final CommandGenericHID operatorBoard = new CommandGenericHID(2);
 
   public final CommandSwerveDrivetrain drivetrain;
 
@@ -78,8 +89,15 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
 
+  private final Shooting cmd_shooting;
+  private final cm_SetElevatorPosition cmd_SetElevatorPosition;
+  private final cm_FullSequence cmd_FullSequence;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    cmd_shooting = new Shooting(m_elevator, m_coralIntake);
+    cmd_SetElevatorPosition = new cm_SetElevatorPosition(m_elevator);
+    cmd_FullSequence = new cm_FullSequence(m_elevator, m_coralIntake);
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
 
@@ -95,11 +113,11 @@ public class RobotContainer {
         drivetrain.applyRequest(
             () ->
                 drive
-                    .withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
+                    .withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                     // negative Y
                     // (forward)
                     .withVelocityY(
-                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
             // negative X (left)
@@ -127,9 +145,6 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .rightBumper()
-        .onTrue(Commands.runOnce(() -> drivetrain.getPigeon2().setYaw(Degrees.of(180))));
-    joystick
         .leftTrigger()
         .whileTrue(
             Commands.startEnd(
@@ -137,6 +152,8 @@ public class RobotContainer {
                 () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -147,13 +164,64 @@ public class RobotContainer {
         .povDown()
         .whileTrue(Commands.run(() -> drivetrain.pidAutoAlign(new Pose2d(3, 7, new Rotation2d()))));
 
+    // operator board bindings
+    // manually moves elevator down
+    operatorBoard
+        .button(1)
+        .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(-0.5))));
+    // n/a for now... not sure what i want to do with this just yet (likely climber)
+    operatorBoard.button(2).onTrue(getAutonomousCommand());
+    operatorBoard
+    .button(3)
+    .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(0.5))));
+    // manually moves elevator up
+    // operatorBoard.button(3).onTrue((m_elevator.runOnce(() ->
+    // m_elevator.cm_elevatorMovement(0.1))));
+    // n/a for now... not sure what i want to do with this just yet (likely climber)
+    operatorBoard.button(4).onTrue(getAutonomousCommand());
+    // ejects game piece (coral for now)
+    operatorBoard.button(5).onTrue(m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(0.3)));
+    // goes to default
+    operatorBoard
+        .button(6)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkViolet))));
+    // algae intake
+    operatorBoard
+        .button(7)
+        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
+    // shoots L4
+    operatorBoard
+        .button(8)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kBlack))));
+    // shoots processor
+    operatorBoard
+        .button(9)
+        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+    // coral intake
+    operatorBoard
+        .button(10)
+        .onTrue((m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(-0.5))));
+    // shoots L3
+    operatorBoard
+        .button(12)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkOrange))));
+    // shoots L2
+    operatorBoard
+        .button(13)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDenim))));
+    // shoots L1
+    operatorBoard
+        .button(14)
+        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kRed))));
     // Configure the trigger bindings
 
     configureBindings();
     SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
-    SmartDashboard.putData(m_intake);
+    SmartDashboard.putData(m_coralIntake);
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putString(
+        "Bot State", StateMachineConstant.getState().toString()); // TODO: Needs further testing
   }
 
   /**
@@ -170,34 +238,46 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setMotorToPIDCalc()));
-
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.x().whileTrue(m_elevator.cm_elevatorMovement(0.2));
-    m_driverController.y().whileTrue(m_elevator.cm_elevatorMovement(-0.2));
-
-    operator.leftBumper().whileTrue(m_intake.cm_intakeCoral(0.25));
-    operator.rightBumper().whileTrue(m_intake.cm_intakeCoral(-0.1));
-    // operator.x().whileTrue(fullSequence(BotState.DEFAULT));
-    // operator.y().whileTrue(fullSequence(BotState.INTAKECORAL));
-    // operator.a().whileTrue(fullSequence(BotState.REEF));
-    // operator.b().whileTrue(fullSequence(BotState.CLIMB));
-    // operator.leftBumper().whileTrue(fullSequence(BotState.EJECT));
-
-    // For levels one, two, and three respectiveley
-    operator.a().onTrue(m_elevator.cm_setElevatorState("Default"));
+    /*
+    State machine wont work unless a button is pressed
+     If b button is pressed, elevator moves in wrong direction and x button won't work
+    */
+    /*
+    operator
+        .x()
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L1)
+                .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
     operator
         .b()
-        .whileTrue(
-            new SequentialCommandGroup(
-                    m_elevator.cm_setElevatorState("L2").until(() -> m_elevator.isAtPosition()),
-                    m_intake.cm_intakeCoral(0.25))
-                .withTimeout(5));
-    operator.x().whileTrue(m_elevator.cm_setElevatorState("L3"));
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L2)
+                .andThen((StateMachine.scoringSequence(m_elevator, m_coralIntake))));
+    operator.a().onTrue(m_elevator.cm_setElevatorPosition(BotState.L1.elevatorPosition));
+    operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
+    operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
+    */
+    //  operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
+    // operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
+    // operator.y().onTrue(cmd_SetElevatorPosition);
+    // operator.b().onTrue(cmd_FullSequence);
+
+    operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
+    operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
+
+    operator.povRight().onTrue(Commands.runOnce(SignalLogger::start));
+    operator.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
+
+    operator.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    operator.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+    operator.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    operator.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**

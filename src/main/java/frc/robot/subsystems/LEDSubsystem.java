@@ -107,13 +107,13 @@ public class LEDSubsystem extends SubsystemBase {
   // }
 
   /**
-   * @param pirmaryColor Primary color of LED strip e.g Color.kRed
+   * @param primaryColor Primary color of LED strip e.g Color.kRed
    * @param secondaryColor Secondary color of LED strip e.g. Color.kBlack
    * @param startPosition Initial position of Primary color
    * @param lengthOfPrimary Number of LEDs to set to Primary Color
    */
   public void setLEDSectionOn(
-      Color pirmaryColor, Color secondaryColor, int startPosition, int lengthOfPrimary) {
+      Color primaryColor, Color secondaryColor, int startPosition, int lengthOfPrimary) {
 
     // set all of the leds to the secondary color
     for (int i = 0; i < ledBufferLength; i++) {
@@ -128,7 +128,7 @@ public class LEDSubsystem extends SubsystemBase {
         startPosition = 0;
       }
 
-      ledBuffer.setLED(startPosition, pirmaryColor);
+      ledBuffer.setLED(startPosition, primaryColor);
       startPosition++;
     }
   }
