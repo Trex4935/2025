@@ -23,8 +23,8 @@ import frc.robot.Constants;
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFX coralIntakeMotor;
-  public final TalonFXS coralPivotMotor;
+  public final TalonFXS coralIntakeMotor;
+  public final TalonFX coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
@@ -37,8 +37,8 @@ public class CoralIntake extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFX(8);
-    coralPivotMotor = new TalonFXS(6);
+    coralIntakeMotor = new TalonFXS(8);
+    coralPivotMotor = new TalonFX(6);
 
     m_sysIdRoutine =
         new SysIdRoutine(
