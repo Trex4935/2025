@@ -30,6 +30,8 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Shooting;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_SetElevatorPosition;
+import frc.robot.extensions.StateMachine;
+import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.AlgaeIntake;
@@ -166,25 +168,32 @@ public class RobotContainer {
 
     // operator board bindings
     // manually moves elevator down
-    operatorBoard
-        .button(1)
-        .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(-0.5))));
+    operatorBoard.button(1).whileTrue((m_elevator.cm_moveElevator(-0.5)));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     operatorBoard.button(2).onTrue(getAutonomousCommand());
-    operatorBoard
-    .button(3)
-    .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(0.5))));
+    operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.5));
     // manually moves elevator up
-    // operatorBoard.button(3).onTrue((m_elevator.runOnce(() ->
-    // m_elevator.cm_elevatorMovement(0.1))));
+    operatorBoard
+        .button(3)
+        .onTrue(
+            (m_coralIntake.runOnce(
+                () ->
+                    m_coralIntake.cm_runCoralPivotMotor(
+                        0.3)))); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     operatorBoard.button(4).onTrue(getAutonomousCommand());
     // ejects game piece (coral for now)
-    operatorBoard.button(5).onTrue(m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(0.3)));
+    operatorBoard
+        .button(5)
+        .onTrue(
+            m_coralIntake.runOnce(
+                () ->
+                    m_coralIntake.cm_intakeCoral(
+                        0.3))); // Cannot be an onTrue, should not be a runOnce
     // goes to default
     operatorBoard
         .button(6)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkViolet))));
+        .onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen(cmd_FullSequence));
     // algae intake
     operatorBoard
         .button(7)
@@ -200,19 +209,21 @@ public class RobotContainer {
     // coral intake
     operatorBoard
         .button(10)
-        .onTrue((m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(-0.5))));
+        .onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen(cmd_FullSequence));
     // shoots L3
     operatorBoard
         .button(12)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkOrange))));
+        .onTrue(StateMachine.setGlobalState(BotState.L3).andThen(cmd_FullSequence));
     // shoots L2
     operatorBoard
         .button(13)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDenim))));
+        .onTrue(StateMachine.setGlobalState(BotState.L2).andThen(cmd_FullSequence));
     // shoots L1
     operatorBoard
         .button(14)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kRed))));
+        .onTrue(
+            StateMachine.setGlobalState(BotState.L1)
+                .andThen(cmd_FullSequence)); // Change this to run full sequence
     // Configure the trigger bindings
 
     configureBindings();
