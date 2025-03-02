@@ -1,6 +1,10 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0" version="26.0.10">
+<mxfile host="app.diagrams.net"
+  agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0"
+  version="26.0.10">
   <diagram name="Page-1" id="u9Eqa8ZndKZUswdCY75V">
-    <mxGraphModel dx="1010" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1010" dy="704" grid="1" gridSize="10"
+      guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1"
+      pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -191,55 +195,98 @@
           <mxGeometry x="320" y="520" width="120" height="40"
             as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-15">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-12"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;"
+          edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-15">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="120" y="580" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="xY7sr8YmSQQFSFSk4JKy-15" value="Shooter motors turn on at speed &lt;i&gt;a&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="160" y="280" width="120" height="40" as="geometry" />
+        <mxCell id="xY7sr8YmSQQFSFSk4JKy-15"
+          value="Shooter motors turn on at speed &lt;i&gt;a&lt;/i&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          parent="1" vertex="1">
+          <mxGeometry x="160" y="280" width="120" height="40"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-16">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-13"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;"
+          edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-16">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="120" y="580" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="xY7sr8YmSQQFSFSk4JKy-16" value="Shooter motors turn on at speed &lt;i&gt;b&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="160" y="360" width="120" height="40" as="geometry" />
+        <mxCell id="xY7sr8YmSQQFSFSk4JKy-16"
+          value="Shooter motors turn on at speed &lt;i&gt;b&lt;/i&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          parent="1" vertex="1">
+          <mxGeometry x="160" y="360" width="120" height="40"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-17">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-14"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;"
+          edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-17">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="120" y="580" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="xY7sr8YmSQQFSFSk4JKy-17" value="Shooter motors turn on at speed &lt;i&gt;c&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="160" y="440" width="120" height="40" as="geometry" />
+        <mxCell id="xY7sr8YmSQQFSFSk4JKy-17"
+          value="Shooter motors turn on at speed &lt;i&gt;c&lt;/i&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          parent="1" vertex="1">
+          <mxGeometry x="160" y="440" width="120" height="40"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-18">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-15"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;"
+          edge="1" parent="1" source="xY7sr8YmSQQFSFSk4JKy-18">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="120" y="580" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="xY7sr8YmSQQFSFSk4JKy-18" value="Shooter motors turn on at speed &lt;i&gt;d&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="160" y="520" width="120" height="40" as="geometry" />
+        <mxCell id="xY7sr8YmSQQFSFSk4JKy-18"
+          value="Shooter motors turn on at speed &lt;i&gt;d&lt;/i&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          parent="1" vertex="1">
+          <mxGeometry x="160" y="520" width="120" height="40"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-1" value="Autonomous" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="630" width="120" height="60" as="geometry" />
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-1" value="Autonomous"
+          style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="630" width="120" height="60"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AWNUibVXNIHxa7QeQl6d-3" target="AWNUibVXNIHxa7QeQl6d-4">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-10"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
+          edge="1" parent="1" source="AWNUibVXNIHxa7QeQl6d-3"
+          target="AWNUibVXNIHxa7QeQl6d-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-3" value="When robot and elevator are at desired positions, run shooter motor to output prestored piece" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="330" y="700" width="130" height="70" as="geometry" />
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-3"
+          value="When robot and elevator are at desired positions, run shooter motor to output prestored piece"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          vertex="1" parent="1">
+          <mxGeometry x="330" y="700" width="130" height="70"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AWNUibVXNIHxa7QeQl6d-4" target="AWNUibVXNIHxa7QeQl6d-9">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-11"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
+          edge="1" parent="1" source="AWNUibVXNIHxa7QeQl6d-4"
+          target="AWNUibVXNIHxa7QeQl6d-9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-4" value="motors stop running once piece exits mechanism" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="330" y="790" width="130" height="70" as="geometry" />
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-4"
+          value="motors stop running once piece exits mechanism"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          vertex="1" parent="1">
+          <mxGeometry x="330" y="790" width="130" height="70"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-6" value="" style="curved=1;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-6" value=""
+          style="curved=1;endArrow=classic;html=1;rounded=0;" edge="1"
+          parent="1">
+          <mxGeometry width="50" height="50" relative="1"
+            as="geometry">
             <mxPoint x="480" y="840" as="sourcePoint" />
             <mxPoint x="470" y="740" as="targetPoint" />
             <Array as="points">
@@ -251,16 +298,27 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-7" value="occurs as many times as necessary,&lt;div&gt;&amp;nbsp;depending on the auto path&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="AWNUibVXNIHxa7QeQl6d-6">
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-7"
+          value="occurs as many times as necessary,&lt;div&gt;&amp;nbsp;depending on the auto path&lt;/div&gt;"
+          style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];"
+          vertex="1" connectable="0" parent="AWNUibVXNIHxa7QeQl6d-6">
           <mxGeometry x="0.1335" y="3" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-9" value="Once auto ends, teleop begins and controls are given to operator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="335" y="890" width="120" height="60" as="geometry" />
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-9"
+          value="Once auto ends, teleop begins and controls are given to operator"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          vertex="1" parent="1">
+          <mxGeometry x="335" y="890" width="120" height="60"
+            as="geometry" />
         </mxCell>
-        <mxCell id="AWNUibVXNIHxa7QeQl6d-16" value="shooter motors stop once sensors detect that there is no more piece loaded" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="70" y="590" width="120" height="60" as="geometry" />
+        <mxCell id="AWNUibVXNIHxa7QeQl6d-16"
+          value="shooter motors stop once sensors detect that there is no more piece loaded"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
+          vertex="1" parent="1">
+          <mxGeometry x="70" y="590" width="120" height="60"
+            as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

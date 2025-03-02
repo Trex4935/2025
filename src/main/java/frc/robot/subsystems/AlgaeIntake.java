@@ -15,7 +15,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Creates a new AlgaeIntake Subsystem. */
   public AlgaeIntake() {
-    algaeIntakeMotor = new TalonFX(99);
+    algaeIntakeMotor = new TalonFX(13);
   }
 
   public void runIntakeMotor(double speed) {
