@@ -166,14 +166,10 @@ public class RobotContainer {
 
     // operator board bindings
     // manually moves elevator down
-    operatorBoard
-        .button(1)
-        .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(-0.5))));
+    operatorBoard.button(1).whileTrue((m_elevator.run(() -> m_elevator.moveElevator(-0.5))));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     operatorBoard.button(2).onTrue(getAutonomousCommand());
-    operatorBoard
-    .button(3)
-    .whileTrue((m_elevator.run(() -> m_elevator.moveElevator(0.5))));
+    operatorBoard.button(3).whileTrue((m_elevator.run(() -> m_elevator.moveElevator(0.5))));
     // manually moves elevator up
     // operatorBoard.button(3).onTrue((m_elevator.runOnce(() ->
     // m_elevator.cm_elevatorMovement(0.1))));
