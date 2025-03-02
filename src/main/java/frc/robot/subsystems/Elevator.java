@@ -49,11 +49,11 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setControl(m_brake);
   }
 
-  public void stopElevator(){
+  public void stopElevator() {
     leftElevatorMotor.stopMotor();
   }
 
-  public void moveElevator(double speed){
+  public void moveElevator(double speed) {
     leftElevatorMotor.set(speed);
   }
 
@@ -70,8 +70,8 @@ public class Elevator extends SubsystemBase {
         () -> setElevatorPosition(Constants.StateMachineConstant.getState().elevatorPosition));
   }
 
-  public final Command cm_moveElevator(double speed){
-    return runEnd(() -> moveElevator(speed), () -> stopElevator());
+  public final Command cm_moveElevator(double speed) {
+    return startEnd(() -> moveElevator(speed), () -> stopElevator());
   }
 
   public void initSendable(SendableBuilder builder) {
