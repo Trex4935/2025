@@ -26,26 +26,25 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(0.37, 0, 0, Color.kRed), // field state, default state, no game pieces
-    INTAKECORAL(0.520, 5, 0, Color.kOrange), // preparing to intake coral
-    INTAKEALGAE(0.37, 0, 0, Color.kYellow), // preparing to intake algae
-    STORAGE(0.37, 0, 0, Color.kGreen), // intaked, coral or algae in
-    L1(7, -5, 0.1, Color.kBlue), // scoring coral
-    L2(25, -5, 0.3, Color.kBlue), // scoring coral
-    L3(0, -5, 0.3, Color.kBlue), // scoring coral
-    PROCESSOR(0.37, 0, 0, Color.kPurple), // scoring algae
-    CLIMB(0.37, 0, 0, Color.kPink), // climbing
-    EJECT(0.37, -5, 0, Color.kWhite); // everything out
+    DEFAULT(0, 0, 0, Color.kRed), // field state, default state, no game pieces
+    INTAKECORAL(0, 5, 0, Color.kOrange), // preparing to intake coral
+    INTAKEALGAE(40, -0.5, 0, Color.kYellow), // preparing to intake algae
+    STORAGE(0, 0, 0, Color.kGreen), // intaked, coral or algae in
+    L1(6, -0.5, 0.1, Color.kBlue), // scoring coral
+    L2(20, -0.2, 0.3, Color.kBlue), // scoring coral
+    L3(40, -0.2, 0.3, Color.kBlue), // scoring coral
+    CLIMB(0, 0, 0, Color.kPink), // climbing
+    EJECT(0, -0.2, 0, Color.kWhite); // everything out
 
     public final double elevatorPosition;
-    public final double coralIntakePosition;
+    public final double coralIntakeSpeed;
     public final Color colorDisplay;
     public final double pivotAngle;
 
     private BotState(
-        double elevatorPosition, double coralIntakePosition, double pivotAngle, Color color) {
+        double elevatorPosition, double coralIntakeSpeed, double pivotAngle, Color color) {
       this.elevatorPosition = elevatorPosition;
-      this.coralIntakePosition = coralIntakePosition;
+      this.coralIntakeSpeed = coralIntakeSpeed;
       this.pivotAngle = pivotAngle;
       this.colorDisplay = color;
     }

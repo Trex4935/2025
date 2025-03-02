@@ -6,21 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.CoralIntake;
+import frc.robot.subsystems.Elevator;
 
 /** An example command that uses an example subsystem. */
-public class cm_SetCoralIntakeVelocity extends Command {
-  private final CoralIntake m_coralIntake;
+public class cm_SetElevatorSpeed extends Command {
+  private final Elevator m_elevator;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public cm_SetCoralIntakeVelocity(CoralIntake coralIntake) {
-    m_coralIntake = coralIntake;
+  public cm_SetElevatorSpeed(Elevator elevator) {
+    m_elevator = elevator;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(coralIntake);
+    addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -30,19 +30,18 @@ public class cm_SetCoralIntakeVelocity extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntake.coralIntakeMotorVelocity(
-        Constants.StateMachineConstant.botState.coralIntakeSpeed);
+    m_elevator.moveElevator(0.1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_coralIntake.coralIntakeMotorVelocity(0);
+    m_elevator.stopElevator();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

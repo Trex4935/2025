@@ -29,6 +29,7 @@ import frc.robot.Constants.StateMachineConstant;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Shooting;
 import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.commands.cm_SetElevatorPosition;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -93,13 +94,19 @@ public class RobotContainer {
 
   private final Shooting cmd_shooting;
   private final cm_SetElevatorPosition cmd_SetElevatorPosition;
-  private final cm_FullSequence cmd_FullSequence;
+  private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
+  private final cm_MoveAndEject cmd_MoveAndEject;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     cmd_shooting = new Shooting(m_elevator, m_coralIntake);
     cmd_SetElevatorPosition = new cm_SetElevatorPosition(m_elevator);
-    cmd_FullSequence = new cm_FullSequence(m_elevator, m_coralIntake);
+    cmd_FullSequenceL1 = new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake);
+    cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
+    cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
+
+    cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
 
@@ -168,32 +175,24 @@ public class RobotContainer {
 
     // operator board bindings
     // manually moves elevator down
-    operatorBoard.button(1).whileTrue((m_elevator.cm_moveElevator(-0.5)));
+    operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(getAutonomousCommand());
-    operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.5));
+    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
-        .button(3)
-        .onTrue(
-            (m_coralIntake.runOnce(
-                () ->
-                    m_coralIntake.cm_runCoralPivotMotor(
-                        0.3)))); // Change this to run the pivot for now
+        .button(4)
+        .whileTrue(
+            m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(4).onTrue(getAutonomousCommand());
     // ejects game piece (coral for now)
-    operatorBoard
+     operatorBoard
         .button(5)
-        .onTrue(
-            m_coralIntake.runOnce(
-                () ->
-                    m_coralIntake.cm_intakeCoral(
-                        0.3))); // Cannot be an onTrue, should not be a runOnce
+        .whileTrue(cmd_MoveAndEject);
     // goes to default
     operatorBoard
         .button(6)
-        .onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen(cmd_FullSequence));
+        .onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard
         .button(7)
@@ -209,21 +208,19 @@ public class RobotContainer {
     // coral intake
     operatorBoard
         .button(10)
-        .onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen(cmd_FullSequence));
+        .onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen());
     // shoots L3
     operatorBoard
         .button(12)
-        .onTrue(StateMachine.setGlobalState(BotState.L3).andThen(cmd_FullSequence));
+        .onTrue(cmd_FullSequenceL3);
     // shoots L2
     operatorBoard
         .button(13)
-        .onTrue(StateMachine.setGlobalState(BotState.L2).andThen(cmd_FullSequence));
+        .onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard
         .button(14)
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L1)
-                .andThen(cmd_FullSequence)); // Change this to run full sequence
+        .onTrue(cmd_FullSequenceL1); // Change this to run full sequence
     // Configure the trigger bindings
 
     configureBindings();
