@@ -92,7 +92,7 @@ public class CoralIntake extends SubsystemBase {
 
   public Command cm_coralIntakeState() {
     return startEnd(
-        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakePosition),
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
         () -> stopIntakeMotor());
   }
 
