@@ -21,9 +21,8 @@ public class cm_MoveAndEject extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      StateMachine.setGlobalState(BotState.INTAKEALGAE),
-      elevator.cm_moveElevator(0.3),
-      coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed)
-    );
+        StateMachine.setGlobalState(BotState.INTAKEALGAE),
+        elevator.cm_moveElevator(0.3),
+        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
   }
 }
