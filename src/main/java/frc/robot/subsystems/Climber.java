@@ -7,12 +7,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
+  Solenoid solenoid;
 
   /** Creates a new Climber. */
   public Climber() {
@@ -27,8 +29,16 @@ public class Climber extends SubsystemBase {
     climberMotor.setControl(motionMagicVoltage.withPosition(velocity));
   }
 
+  public void climberOpen() {
+    solenoid.set(true);
+  }
+
   public void stopClimberMotor() {
     climberMotor.stopMotor();
+  }
+
+  public void climberClose() {
+    solenoid.set(false);
   }
 
   public Command climberMovement() {
@@ -37,6 +47,10 @@ public class Climber extends SubsystemBase {
 
   public Command cm_climberVelocity(double velocity) {
     return startEnd(() -> climberMotorVelocity(velocity), () -> stopClimberMotor());
+  }
+
+  public boolean getClimberState() {
+    return solenoid.get();
   }
 
   public void initSendable(SendableBuilder builder) {
