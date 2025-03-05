@@ -23,6 +23,10 @@ public class Climber extends SubsystemBase {
     climberMotor.setControl(motionMagicVoltage.withPosition(speed));
   }
 
+  public void climberMotorVelocity(double velocity) {
+    climberMotor.setControl(motionMagicVoltage.withPosition(velocity));
+  }
+
   public void stopClimberMotor() {
     climberMotor.stopMotor();
   }
@@ -31,9 +35,16 @@ public class Climber extends SubsystemBase {
     return runEnd(() -> moveClimberMotor(0.5), () -> stopClimberMotor());
   }
 
+  public Command cm_climberVelocity(double velocity) {
+    return startEnd(() -> climberMotorVelocity(velocity), () -> stopClimberMotor());
+  }
+
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Climber Encoder Pos", () -> climberMotor.getPosition().getValueAsDouble(), null);
+    builder.addDoubleProperty("Climber motor percent output", () -> climberMotor.get(), null);
+    builder.addDoubleProperty(
+        "Climber motor velocity", () -> climberMotor.getVelocity().getValueAsDouble(), null);
   }
 
   @Override
