@@ -11,7 +11,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,8 +22,9 @@ public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
   public final TalonFXS coralIntakeMotor;
-  public final TalonFX coralPivotMotor;
-  private final SysIdRoutine m_sysIdRoutine;
+  public final TalonFXS coralPivotMotor;
+  private final SysIdRoutine m_sysIdIntake;
+  private final SysIdRoutine m_sysIdPivot;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
   private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
@@ -37,9 +37,9 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFXS(8);
-    coralPivotMotor = new TalonFX(6);
+    coralPivotMotor = new TalonFXS(6);
 
-    m_sysIdRoutine =
+    m_sysIdIntake =
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
@@ -51,14 +51,32 @@ public class CoralIntake extends SubsystemBase {
                 volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
                 null,
                 this));
+    m_sysIdPivot =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null, // Use default ramp rate (1 V/s)
+                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+                state -> SignalLogger.writeString("Pivot SYSID", state.toString())),
+            new SysIdRoutine.Mechanism(
+                volts -> coralPivotMotor.setControl(m_sysIdControl.withOutput(volts)), null, this));
   }
 
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.quasistatic(direction);
+  public Command sysIdQuasistatiIntake(SysIdRoutine.Direction direction) {
+    return m_sysIdIntake.quasistatic(direction);
   }
 
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.dynamic(direction);
+  public Command sysIdDynamicIntake(SysIdRoutine.Direction direction) {
+    return m_sysIdIntake.dynamic(direction);
+  }
+
+  public Command sysIdQuasistaticPivot(SysIdRoutine.Direction direction) {
+    return m_sysIdPivot.quasistatic(direction);
+  }
+
+  public Command sysIdDynamicPivot(SysIdRoutine.Direction direction) {
+    return m_sysIdPivot.dynamic(direction);
   }
 
   public void runCoralPivotMotor(double speed) {
