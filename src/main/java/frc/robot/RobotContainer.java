@@ -10,7 +10,6 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,19 +23,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.StateMachineConstant;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Shooting;
 import frc.robot.commands.cm_FullSequence;
-import frc.robot.commands.cm_SetElevatorPosition;
+import frc.robot.commands.cm_MoveAndEject;
+import frc.robot.extensions.StateMachine;
+import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Vision;
 
@@ -64,42 +60,35 @@ public class RobotContainer {
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  // Subsystems
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  Vision m_vision = new Vision();
-  CoralIntake m_coralIntake = new CoralIntake();
-  Elevator m_elevator = new Elevator();
-  AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
+  public final Vision m_vision = new Vision();
+  public final CoralIntake m_coralIntake = new CoralIntake();
+  public final Elevator m_elevator = new Elevator();
+  public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
-  private final CommandXboxController operator = new CommandXboxController(1);
-  private final CommandXboxController sysid = new CommandXboxController(3);
-  private final CommandGenericHID operatorBoard = new CommandGenericHID(2);
-
   public final CommandSwerveDrivetrain drivetrain;
-
   private final DigitalInput drivetrainDIO = new DigitalInput(0);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
+  // Controllers
+  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandGenericHID operatorBoard = new CommandGenericHID(1);
+  private final CommandXboxController operator = new CommandXboxController(2);
+  private final CommandXboxController sysid = new CommandXboxController(3);
   private final SendableChooser<Command> autoChooser;
 
-  private final Shooting cmd_shooting;
-  private final cm_SetElevatorPosition cmd_SetElevatorPosition;
-  private final cm_FullSequence cmd_FullSequence;
+  // Commands
+  private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
+  private final cm_MoveAndEject cmd_MoveAndEject;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    cmd_shooting = new Shooting(m_elevator, m_coralIntake);
-    cmd_SetElevatorPosition = new cm_SetElevatorPosition(m_elevator);
-    cmd_FullSequence = new cm_FullSequence(m_elevator, m_coralIntake);
-    // Note that X is defined as forward according to WPILib convention,
-    // and Y is defined as to the left according to WPILib convention.
+    cmd_FullSequenceL1 = new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake);
+    cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
+    cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
+    cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -108,6 +97,8 @@ public class RobotContainer {
       drivetrain = TunerConstantsBOW.createDrivetrain();
     }
 
+    // Note that X is defined as forward according to WPILib convention,
+    // and Y is defined as to the left according to WPILib convention.
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
         drivetrain.applyRequest(
@@ -164,24 +155,44 @@ public class RobotContainer {
         .povDown()
         .whileTrue(Commands.run(() -> drivetrain.pidAutoAlign(new Pose2d(3, 7, new Rotation2d()))));
 
+    // Configure the trigger bindings
+    configureBindings();
+    SmartDashboard.putData(m_vision);
+    SmartDashboard.putData(m_elevator);
+    SmartDashboard.putData(m_coralIntake);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+  }
+
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  private void configureBindings() {
+    // Trigger binding example
+    /* new Trigger(m_exampleSubsystem::exampleCondition)
+    .onTrue(new ExampleCommand(m_exampleSubsystem)); */
+
     // operator board bindings
     // manually moves elevator down
-    operatorBoard
-        .button(1)
-        .onTrue((m_elevator.runOnce(() -> m_elevator.cm_setElevatorPosition(-0.1))));
+    operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(getAutonomousCommand());
+    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
-    // operatorBoard.button(3).onTrue((m_elevator.runOnce(() ->
-    // m_elevator.cm_elevatorMovement(0.1))));
-    // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(4).onTrue(getAutonomousCommand());
-    // ejects game piece (coral for now)
-    operatorBoard.button(5).onTrue(m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(0.3)));
-    // goes to default
     operatorBoard
-        .button(6)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkViolet))));
+        .button(4)
+        .whileTrue(
+            m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
+    // n/a for now... not sure what i want to do with this just yet (likely climber)
+    // ejects game piece (coral for now)
+    operatorBoard.button(5).whileTrue(cmd_MoveAndEject);
+    // goes to default
+    operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard
         .button(7)
@@ -195,76 +206,19 @@ public class RobotContainer {
         .button(9)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
     // coral intake
-    operatorBoard
-        .button(10)
-        .onTrue((m_coralIntake.runOnce(() -> m_coralIntake.cm_intakeCoral(-0.5))));
+    operatorBoard.button(10).onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen());
     // shoots L3
-    operatorBoard
-        .button(12)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDarkOrange))));
+    operatorBoard.button(12).onTrue(cmd_FullSequenceL3);
     // shoots L2
-    operatorBoard
-        .button(13)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kDenim))));
+    operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
-    operatorBoard
-        .button(14)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kRed))));
-    // Configure the trigger bindings
+    operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
 
-    configureBindings();
-    SmartDashboard.putData(m_vision);
-    SmartDashboard.putData(m_elevator);
-    SmartDashboard.putData(m_coralIntake);
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-    SmartDashboard.putString(
-        "Bot State", StateMachineConstant.getState().toString()); // TODO: Needs further testing
-  }
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
-    /*
-    State machine wont work unless a button is pressed
-     If b button is pressed, elevator moves in wrong direction and x button won't work
-    */
-    /*
-    operator
-        .x()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L1)
-                .andThen(StateMachine.scoringSequence(m_elevator, m_coralIntake)));
-    operator
-        .b()
-        .onTrue(
-            StateMachine.setGlobalState(BotState.L2)
-                .andThen((StateMachine.scoringSequence(m_elevator, m_coralIntake))));
-    operator.a().onTrue(m_elevator.cm_setElevatorPosition(BotState.L1.elevatorPosition));
-    operator.leftBumper().whileTrue(m_coralIntake.cm_intakeCoral(0.25));
-    operator.rightBumper().whileTrue(m_coralIntake.cm_intakeCoral(-0.1));
-    */
-    //  operator.a().onTrue(StateMachine.setGlobalState(BotState.L1));
-    // operator.x().onTrue(StateMachine.setGlobalState(BotState.L2));
-    // operator.y().onTrue(cmd_SetElevatorPosition);
-    // operator.b().onTrue(cmd_FullSequence);
-
-    new Trigger(() -> m_elevator.leftElevatorMotor.getPosition().getValueAsDouble() > 20)
+    // Test operator controls
+    new Trigger(
+            () ->
+                m_elevator.leftElevatorMotor.getPosition().getValueAsDouble()
+                    >= BotState.L3.elevatorPosition)
         .whileTrue(
             Commands.startEnd(
                 () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.15,
@@ -273,14 +227,15 @@ public class RobotContainer {
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
     operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
 
-    operator.povRight().onTrue(Commands.runOnce(SignalLogger::start));
-    operator.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
+    // SysID test controls
+    sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));
+    sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
-    operator.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    operator.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    sysid.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
-    operator.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    operator.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    sysid.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    sysid.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**
@@ -292,10 +247,6 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto("Forward");
-  }
-
-  public Command autoChooserCommand() {
     return autoChooser.getSelected();
   }
 }
