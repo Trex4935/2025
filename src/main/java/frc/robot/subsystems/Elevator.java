@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.*;
+// import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -61,10 +61,10 @@ public class Elevator extends SubsystemBase {
     return run(() -> setElevatorPosition(position));
   }
 
-  public Command cm_setElevatorPositionRunOnce(double position) {
+  /*public Command cm_setElevatorPositionRunOnce(double position) {
     return runOnce(() -> setElevatorPosition(position));
   }
-
+  */
   public final Command cm_setElevatorToState() {
     return run(
         () -> setElevatorPosition(Constants.StateMachineConstant.getState().elevatorPosition));

@@ -10,7 +10,6 @@ import frc.robot.subsystems.CoralIntake;
 
 /** An example command that uses an example subsystem. */
 public class cm_SetCoralIntakeVelocity extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CoralIntake m_coralIntake;
 
   /**
@@ -32,7 +31,7 @@ public class cm_SetCoralIntakeVelocity extends Command {
   @Override
   public void execute() {
     m_coralIntake.coralIntakeMotorVelocity(
-        Constants.StateMachineConstant.botState.coralIntakePosition);
+        Constants.StateMachineConstant.botState.coralIntakeSpeed);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +43,6 @@ public class cm_SetCoralIntakeVelocity extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -32,8 +31,8 @@ public class CoralIntake extends SubsystemBase {
 
   private final NeutralOut m_brake = new NeutralOut();
 
-  private MotionMagicVelocityVoltage mmVelocityVoltage =
-      new MotionMagicVelocityVoltage(0).withSlot(0);
+  /*private MotionMagicVelocityVoltage mmVelocityVoltage =
+  new MotionMagicVelocityVoltage(0).withSlot(0); */
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
@@ -92,7 +91,7 @@ public class CoralIntake extends SubsystemBase {
 
   public Command cm_coralIntakeState() {
     return startEnd(
-        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakePosition),
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
         () -> stopIntakeMotor());
   }
 
