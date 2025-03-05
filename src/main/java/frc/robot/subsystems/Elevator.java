@@ -23,7 +23,7 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public final TalonFX leftElevatorMotor, rightElevatorMotor;
 
-  final VoltageOut m_sysIdControl = new VoltageOut(0);
+  final VoltageOut m_sysIdControlE = new VoltageOut(0);
 
   public final double maxElevatorRotation = 20;
 
@@ -50,14 +50,22 @@ public class Elevator extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Ele SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
-                volts -> leftElevatorMotor.setControl(m_sysIdControl.withOutput(volts)),
+                volts -> leftElevatorMotor.setControl(m_sysIdControlE.withOutput(volts)),
                 null,
                 this));
+  }
+
+  public Command sysIdQuasistaticEle(SysIdRoutine.Direction direction) {
+    return m_sysIdEle.quasistatic(direction);
+  }
+
+  public Command sysIdDynamicEle(SysIdRoutine.Direction direction) {
+    return m_sysIdEle.dynamic(direction);
   }
 
   public void setElevatorPosition(double position) {

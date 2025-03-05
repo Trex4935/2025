@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
-  final VoltageOut m_sysIdControl = new VoltageOut(0);
+  final VoltageOut m_sysIdControlC = new VoltageOut(0);
+  final VoltageOut m_sysIdControlP = new VoltageOut(0);
 
   public final TalonFXS coralIntakeMotor;
   public final TalonFXS coralPivotMotor;
@@ -43,24 +44,24 @@ public class CoralIntake extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Coral SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
-                volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
+                volts -> coralIntakeMotor.setControl(m_sysIdControlC.withOutput(volts)),
                 null,
                 this));
     m_sysIdPivot =
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Pivot SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
-                volts -> coralPivotMotor.setControl(m_sysIdControl.withOutput(volts)), null, this));
+                volts -> coralPivotMotor.setControl(m_sysIdControlP.withOutput(volts)), null, this));
   }
 
   public Command sysIdQuasistatiIntake(SysIdRoutine.Direction direction) {
