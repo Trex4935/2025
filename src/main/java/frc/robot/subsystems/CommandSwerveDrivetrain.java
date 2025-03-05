@@ -110,6 +110,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
+  PhoenixPIDController swervePIDx = new PhoenixPIDController(0.5, 0, 0);
+  PhoenixPIDController swervePIDy = new PhoenixPIDController(0.5, 0, 0);
+  PhoenixPIDController swervePIDtheta = new PhoenixPIDController(0.3, 0, 0);
+
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
    *
@@ -359,10 +363,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             .withRotationalDeadband(0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
             .withSteerRequestType(SteerRequestType.MotionMagicExpo);
-
-    PhoenixPIDController swervePIDx = new PhoenixPIDController(0.5, 0, 0);
-    PhoenixPIDController swervePIDy = new PhoenixPIDController(0.5, 0, 0);
-    PhoenixPIDController swervePIDtheta = new PhoenixPIDController(0.3, 0, 0);
 
     swervePIDtheta.enableContinuousInput(-Math.PI, Math.PI);
 
