@@ -10,7 +10,6 @@ import frc.robot.subsystems.CoralIntake;
 
 /** An example command that uses an example subsystem. */
 public class cm_SetCoralIntake extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CoralIntake m_coralIntake;
 
   /**
@@ -31,7 +30,7 @@ public class cm_SetCoralIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntake.runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakePosition);
+    m_coralIntake.runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed);
   }
 
   // Called once the command ends or is interrupted.

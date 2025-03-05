@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
+// import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +22,8 @@ public class LEDSubsystem extends SubsystemBase {
   boolean ledToggle;
   int counter, ledBufferLength;
   private int walkStartingPosition = 0;
-  private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+
+  // private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
 
   /** Creates a new LEDControl. */
   public LEDSubsystem() {
@@ -107,13 +108,13 @@ public class LEDSubsystem extends SubsystemBase {
   // }
 
   /**
-   * @param pirmaryColor Primary color of LED strip e.g Color.kRed
+   * @param primaryColor Primary color of LED strip e.g Color.kRed
    * @param secondaryColor Secondary color of LED strip e.g. Color.kBlack
    * @param startPosition Initial position of Primary color
    * @param lengthOfPrimary Number of LEDs to set to Primary Color
    */
   public void setLEDSectionOn(
-      Color pirmaryColor, Color secondaryColor, int startPosition, int lengthOfPrimary) {
+      Color primaryColor, Color secondaryColor, int startPosition, int lengthOfPrimary) {
 
     // set all of the leds to the secondary color
     for (int i = 0; i < ledBufferLength; i++) {
@@ -128,7 +129,7 @@ public class LEDSubsystem extends SubsystemBase {
         startPosition = 0;
       }
 
-      ledBuffer.setLED(startPosition, pirmaryColor);
+      ledBuffer.setLED(startPosition, primaryColor);
       startPosition++;
     }
   }

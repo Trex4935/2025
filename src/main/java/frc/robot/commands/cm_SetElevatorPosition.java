@@ -12,7 +12,6 @@ import frc.robot.subsystems.Elevator;
 
 /** An example command that uses an example subsystem. */
 public class cm_SetElevatorPosition extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Elevator m_elevator;
 
   /**
