@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.Autos;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.extensions.StateMachine;
@@ -64,8 +66,8 @@ public class RobotContainer {
   // Subsystems
   private final Telemetry logger = new Telemetry(MaxSpeed);
   public final Vision m_vision = new Vision();
-  public final CoralIntake m_coralIntake = new CoralIntake();
-  public final Elevator m_elevator = new Elevator();
+  public static final CoralIntake m_coralIntake = new CoralIntake();
+  public static final Elevator m_elevator = new Elevator();
   public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
@@ -80,7 +82,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
-  private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
+  public final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
   private final cm_MoveAndEject cmd_MoveAndEject;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -89,6 +91,13 @@ public class RobotContainer {
     cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
     cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
     cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
+    // Auto Commands
+    NamedCommands.registerCommand("L1", Autos.L1);
+    NamedCommands.registerCommand("L2", Autos.L2);
+    NamedCommands.registerCommand("L3", Autos.L3);
+    // NamedCommands.registerCommand("L4", Autos.L4);
+    NamedCommands.registerCommand("Shoot Coral", Autos.Default);
+    NamedCommands.registerCommand("Run Intake", Autos.runIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -181,7 +190,7 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
