@@ -5,29 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.StateMachineConstant;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
-import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LEDSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class cm_FullSequence extends SequentialCommandGroup {
-  /** Creates a new cm_FullSequence. */
-  public cm_FullSequence(
-      BotState botState, Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
+public class cm_SetToDefault extends SequentialCommandGroup {
+  /** Creates a new cm_SetToDefault. */
+  public cm_SetToDefault(Elevator elevator, LEDSubsystem leds) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        // Sets the state
-        StateMachine.setGlobalState(botState),
-        leds.cm_setLedToColor(botState.colorDisplay),
+        StateMachine.setGlobalState(BotState.DEFAULT),
         new cm_SetElevatorPosition(elevator).withTimeout(5),
-        new cm_SetCoralIntake(coralIntake).withTimeout(3),
-
-        // Resets the state to default
-        new cm_SetToDefault(elevator, leds));
+        leds.cm_setLedToColor(StateMachineConstant.botState.colorDisplay));
   }
 }
