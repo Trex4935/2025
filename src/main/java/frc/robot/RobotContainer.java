@@ -231,21 +231,20 @@ public class RobotContainer {
     sysid.x().whileTrue(m_coralIntake.sysIdDynamicIntake(SysIdRoutine.Direction.kReverse));
     */
     /*
-    //this for pivot
-    sysid.y().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kForward));
-    sysid.a().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kReverse));
+       //this for pivot
+       sysid.y().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kForward));
+       sysid.a().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kReverse));
 
-    sysid.b().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kForward));
-    sysid.x().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kReverse));
- */
+       sysid.b().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kForward));
+       sysid.x().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kReverse));
+    */
 
-    //this for ele
+    // this for ele
     sysid.y().whileTrue(m_elevator.sysIdQuasistaticEle(SysIdRoutine.Direction.kForward));
     sysid.a().whileTrue(m_elevator.sysIdQuasistaticEle(SysIdRoutine.Direction.kReverse));
 
     sysid.b().whileTrue(m_elevator.sysIdDynamicEle(SysIdRoutine.Direction.kForward));
     sysid.x().whileTrue(m_elevator.sysIdDynamicEle(SysIdRoutine.Direction.kReverse));
-
   }
 
   /**

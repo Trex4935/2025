@@ -23,7 +23,8 @@ public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControlP = new VoltageOut(0);
 
   public final TalonFXS coralIntakeMotor, coralPivotMotor;
-  private final SysIdRoutine m_sysIdRoutine;
+  private final SysIdRoutine m_sysIdIntake;
+  private final SysIdRoutine m_sysIdPivot;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
   private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
@@ -36,7 +37,6 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFXS(8);
-    coralPivotMotor = new TalonFXS(6);
     coralPivotMotor = new TalonFXS(6);
 
     m_sysIdIntake =
@@ -60,7 +60,9 @@ public class CoralIntake extends SubsystemBase {
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Pivot SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
-                volts -> coralPivotMotor.setControl(m_sysIdControlP.withOutput(volts)), null, this));
+                volts -> coralPivotMotor.setControl(m_sysIdControlP.withOutput(volts)),
+                null,
+                this));
   }
 
   public Command sysIdQuasistatiIntake(SysIdRoutine.Direction direction) {
