@@ -22,10 +22,8 @@ public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControlC = new VoltageOut(0);
   final VoltageOut m_sysIdControlP = new VoltageOut(0);
 
-  public final TalonFXS coralIntakeMotor;
-  public final TalonFXS coralPivotMotor;
-  private final SysIdRoutine m_sysIdIntake;
-  private final SysIdRoutine m_sysIdPivot;
+  public final TalonFXS coralIntakeMotor, coralPivotMotor;
+  private final SysIdRoutine m_sysIdRoutine;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
   private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
@@ -38,6 +36,7 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFXS(8);
+    coralPivotMotor = new TalonFXS(6);
     coralPivotMotor = new TalonFXS(6);
 
     m_sysIdIntake =
