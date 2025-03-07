@@ -7,10 +7,12 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,17 +22,22 @@ import frc.robot.Constants;
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFX coralIntakeMotor;
+  public final TalonFXS coralIntakeMotor;
+  public final TalonFX coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
+  private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
 
-  private MotionMagicVelocityVoltage mmVelocityVoltage =
-      new MotionMagicVelocityVoltage(0).withSlot(0);
+  private final NeutralOut m_brake = new NeutralOut();
+
+  /*private MotionMagicVelocityVoltage mmVelocityVoltage =
+  new MotionMagicVelocityVoltage(0).withSlot(0); */
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFX(8);
+    coralIntakeMotor = new TalonFXS(8);
+    coralPivotMotor = new TalonFX(6);
 
     m_sysIdRoutine =
         new SysIdRoutine(
@@ -54,12 +61,24 @@ public class CoralIntake extends SubsystemBase {
     return m_sysIdRoutine.dynamic(direction);
   }
 
+  public void runCoralPivotMotor(double speed) {
+    coralPivotMotor.set(speed);
+  }
+
+  public void stopCoralPivotMotor() {
+    coralPivotMotor.stopMotor();
+  }
+
   public void runIntakeMotor(double speed) {
     coralIntakeMotor.set(speed);
   }
 
   public void stopIntakeMotor() {
     coralIntakeMotor.stopMotor();
+  }
+
+  public Command cm_runCoralPivotMotor(double speed) {
+    return startEnd(() -> runCoralPivotMotor(speed), () -> stopCoralPivotMotor());
   }
 
   public void coralIntakeMotorVelocity(double velocity) {
@@ -72,12 +91,24 @@ public class CoralIntake extends SubsystemBase {
 
   public Command cm_coralIntakeState() {
     return startEnd(
-        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakePosition),
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
         () -> stopIntakeMotor());
   }
 
   public Command cm_intakeCoralVelocity(double velocity) {
-    return run(() -> coralIntakeMotorVelocity(velocity));
+    return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
+  }
+
+  public void setIntakePivotPosition(double position) {
+    coralPivotMotor.setControl(mmVoltage.withPosition(position));
+  }
+
+  public void setBrake() {
+    coralPivotMotor.setControl(m_brake);
+  }
+
+  public Command cm_setIntakePivotPosition(double position) {
+    return startEnd(() -> setIntakePivotPosition(position), () -> setBrake());
   }
 
   public void initSendable(SendableBuilder builder) {
