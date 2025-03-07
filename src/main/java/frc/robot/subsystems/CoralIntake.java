@@ -7,23 +7,23 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFXS coralIntakeMotor;
-  public final TalonFX coralPivotMotor;
+  public final TalonFXS coralIntakeMotor, coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
@@ -37,7 +37,7 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
     coralIntakeMotor = new TalonFXS(8);
-    coralPivotMotor = new TalonFX(6);
+    coralPivotMotor = new TalonFXS(6);
 
     m_sysIdRoutine =
         new SysIdRoutine(
@@ -52,7 +52,10 @@ public class CoralIntake extends SubsystemBase {
                 null,
                 this));
 
-    // PhysicsSim.getInstance().addTalonFX(coralIntakeMotor, 0.2);
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFXS(coralIntakeMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFXS(coralPivotMotor, 0.2);
+    }
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

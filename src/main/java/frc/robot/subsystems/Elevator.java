@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
-// import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -41,8 +42,10 @@ public class Elevator extends SubsystemBase {
 
     canRange = new CANrange(2);
 
-    PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
-    PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
+    }
   }
 
   public void setElevatorPosition(double position) {

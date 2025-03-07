@@ -2,6 +2,7 @@ package frc.robot.extensions;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 import java.util.ArrayList;
 
 /** Manages physics simulation for CTRE products. */
@@ -23,6 +24,19 @@ public class PhysicsSim {
     if (talonFX != null) {
       TalonFXSimProfile simTalonFX = new TalonFXSimProfile(talonFX, rotorInertia);
       _simProfiles.add(simTalonFX);
+    }
+  }
+
+  /**
+   * Adds a TalonFXS controller to the simulator.
+   *
+   * @param talonFXS The TalonFX device
+   * @param rotorInertia Rotational Inertia of the mechanism at the rotor
+   */
+  public void addTalonFXS(TalonFXS talonFXS, final double rotorInertia) {
+    if (talonFXS != null) {
+      TalonFXSSimProfile simTalonFXS = new TalonFXSSimProfile(talonFXS, rotorInertia);
+      _simProfiles.add(simTalonFXS);
     }
   }
 
