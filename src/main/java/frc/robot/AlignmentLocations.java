@@ -74,22 +74,24 @@ public class AlignmentLocations {
     }
   }
 
+  private static final double xReefDist = 0.25;
+
   // TODO: Adjust values as needed
   public static AlignmentPose coralStationLeft =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(13).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(1).get().toPose2d(),
-          new double[] {0.05, 0.05 * Math.tan(Math.toRadians(126)), 126});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(126)), 126});
   public static AlignmentPose coralStationRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(12).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(2).get().toPose2d(),
-          new double[] {0.05, 0.05 * Math.tan(Math.toRadians(-126)), -126});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(-126)), -126});
   public static AlignmentPose processor =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(3).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(16).get().toPose2d(),
-          new double[] {0, -0.1, 90});
+          new double[] {0, -0.35, 90});
   public static AlignmentPose bargeOpposingView =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(4).get().toPose2d(),
@@ -104,30 +106,30 @@ public class AlignmentLocations {
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(19).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(6).get().toPose2d(),
-          new double[] {-0.05, -0.05 * Math.tan(Math.toRadians(-60)), -60});
+          new double[] {-xReefDist, -xReefDist * Math.tan(Math.toRadians(-60)), -60});
   public static AlignmentPose reefCloseMid =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(18).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(7).get().toPose2d(),
-          new double[] {-0.1, 0, 0});
+          new double[] {-xReefDist * 2, 0, 0});
   public static AlignmentPose reefCloseRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(17).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(8).get().toPose2d(),
-          new double[] {-0.05, -0.05 * Math.tan(Math.toRadians(60)), 60});
+          new double[] {-xReefDist, -xReefDist * Math.tan(Math.toRadians(60)), 60});
   public static AlignmentPose reefFarRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(22).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(9).get().toPose2d(),
-          new double[] {0.05, 0.05 * Math.tan(Math.toRadians(120)), 120});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(120)), 120});
   public static AlignmentPose reefFarMid =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(21).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(10).get().toPose2d(),
-          new double[] {0.1, 0, -180});
+          new double[] {xReefDist * 2, 0, -180});
   public static AlignmentPose reefFarLeft =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(20).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(11).get().toPose2d(),
-          new double[] {0.05, 0.05 * Math.tan(Math.toRadians(-120)), -120});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(-120)), -120});
 }
