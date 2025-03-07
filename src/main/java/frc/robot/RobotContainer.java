@@ -243,6 +243,27 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  // auto named commands
+  public static Command L1 =
+      Commands.sequence(new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake))
+          .andThen(() -> System.out.println("Run L1 Auto"));
+
+  public static Command L2 =
+      Commands.sequence(new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake))
+          .andThen(() -> System.out.println("Run L2 Auto"));
+
+  public static Command L3 =
+      Commands.sequence(new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake))
+          .andThen(() -> System.out.println("Running L3 Auto"));
+  // public static Command L4 =
+  //  Commands.runOnce(StateMachine.setGlobalState(BotState.).andThen());
+  public static Command Default =
+      Commands.sequence(new cm_FullSequence(BotState.DEFAULT, m_elevator, m_coralIntake))
+          .andThen(() -> System.out.println("Running Default Auto"));
+  public static Command runIntake =
+      Commands.sequence(new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake))
+          .andThen(() -> System.out.println("Running Intake Auto"));
+
   public Command getAutonomousCommand() {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
