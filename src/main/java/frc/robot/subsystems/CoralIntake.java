@@ -44,7 +44,7 @@ public class CoralIntake extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Coral SYSID", state.toString())),
@@ -56,7 +56,7 @@ public class CoralIntake extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Pivot SYSID", state.toString())),
