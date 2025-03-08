@@ -5,12 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,25 +26,45 @@ public class Elevator extends SubsystemBase {
 
   public final CANrange canRange;
 
+  private final Slot0Configs slot0Elevator = new Slot0Configs();
+
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
-  TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
-  MotionMagicConfigs motionMagicConfigs = new TalonFXConfiguration().MotionMagic;
+
+  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
   private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
-    leftElevatorMotor = new TalonFX(9);
-    rightElevatorMotor = new TalonFX(10);
+    leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
+    rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
+
+    slot0Elevator.GravityType = GravityTypeValue.Elevator_Static;
+    slot0Elevator.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    slot0Elevator.kG = 0.0;
+    slot0Elevator.kS = 0.0;
+    slot0Elevator.kV = 0.0;
+    slot0Elevator.kA = 0.0;
+    slot0Elevator.kP = 0.0;
+    slot0Elevator.kI = 0.0;
+    slot0Elevator.kD = 0.0;
+
+    mmConfigs.MotionMagicCruiseVelocity = 0;
+    mmConfigs.MotionMagicAcceleration = 0;
+    mmConfigs.MotionMagicJerk = 0;
+
+    leftElevatorMotor.getConfigurator().apply(slot0Elevator);
+    leftElevatorMotor.getConfigurator().apply(mmConfigs);
+
+    rightElevatorMotor.getConfigurator().apply(slot0Elevator);
+    rightElevatorMotor.getConfigurator().apply(mmConfigs);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
     rightElevatorMotor.setPosition(0);
 
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
-    canRange = new CANrange(2);
 
-    motionMagicConfigs.MotionMagicCruiseVelocity = 5;
-    leftElevatorMotor.getConfigurator().apply(talonFXConfigs);
+    canRange = new CANrange(Constants.canRange);
   }
 
   public void setElevatorPosition(double position) {
