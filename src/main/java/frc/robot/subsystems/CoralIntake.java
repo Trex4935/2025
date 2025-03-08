@@ -7,12 +7,16 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,10 +30,14 @@ public class CoralIntake extends SubsystemBase {
   public final TalonFX coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
+  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
+
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
   private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
 
   private final NeutralOut m_brake = new NeutralOut();
+
+  private final Slot0Configs slot0Pivot = new Slot0Configs();
 
   /*private MotionMagicVelocityVoltage mmVelocityVoltage =
   new MotionMagicVelocityVoltage(0).withSlot(0); */
@@ -38,6 +46,22 @@ public class CoralIntake extends SubsystemBase {
   public CoralIntake() {
     coralIntakeMotor = new TalonFXS(Constants.coralIntakeMotor);
     coralPivotMotor = new TalonFX(Constants.coralPivotMotor);
+
+    slot0Pivot.GravityType = GravityTypeValue.Arm_Cosine;
+    slot0Pivot.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    slot0Pivot.kG = 0.0;
+    slot0Pivot.kS = 0.0;
+    slot0Pivot.kV = 0.0;
+    slot0Pivot.kP = 0.0;
+    slot0Pivot.kI = 0.0;
+    slot0Pivot.kD = 0.0;
+
+    mmConfigs.MotionMagicCruiseVelocity = 0;
+    mmConfigs.MotionMagicAcceleration = 0;
+    mmConfigs.MotionMagicJerk = 0;
+
+    coralPivotMotor.getConfigurator().apply(slot0Pivot);
+    coralPivotMotor.getConfigurator().apply(mmConfigs);
 
     m_sysIdRoutine =
         new SysIdRoutine(
