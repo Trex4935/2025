@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_FullSequence;
-import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
@@ -81,14 +81,17 @@ public class RobotContainer {
 
   // Commands
   private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
-  private final cm_MoveAndEject cmd_MoveAndEject;
+  private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    cmd_FullSequenceL1 = new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake);
-    cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
-    cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
-    cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
+    cmd_FullSequenceL1 =
+        new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL2 =
+        new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL3 =
+        new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -190,7 +193,7 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(5).whileTrue(cmd_MoveAndEject);
+    operatorBoard.button(5).whileTrue(cmd_AlgaeRemoval);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
