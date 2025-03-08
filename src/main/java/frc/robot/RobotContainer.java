@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -93,8 +94,10 @@ public class RobotContainer {
         new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL3 =
         new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
-    cmd_FullSequenceL4 = new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake);
-    cmd_HumanIntake = new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake);
+    cmd_FullSequenceL4 =
+        new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HumanIntake =
+        new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
     cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake);
 
