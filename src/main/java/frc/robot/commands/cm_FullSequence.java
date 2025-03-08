@@ -20,8 +20,9 @@ public class cm_FullSequence extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         StateMachine.setGlobalState(botState),
-        new cm_SetElevatorPosition(elevator).withTimeout(10),
-        new cm_SetPivotAngle(coralIntake).withTimeout(3),
+        new cm_SetElevatorPosition(elevator)
+            .withTimeout(10)
+            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(3)),
         new cm_SetCoralIntake(coralIntake).withTimeout(3));
   }
 }
