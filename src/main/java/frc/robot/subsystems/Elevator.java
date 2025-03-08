@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -23,6 +25,8 @@ public class Elevator extends SubsystemBase {
   public final CANrange canRange;
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+  TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+  MotionMagicConfigs motionMagicConfigs = new TalonFXConfiguration().MotionMagic;
 
   private final NeutralOut m_brake = new NeutralOut();
 
@@ -35,11 +39,14 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor.setPosition(0);
 
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
-
     canRange = new CANrange(2);
+
+    motionMagicConfigs.MotionMagicCruiseVelocity = 5;
+    leftElevatorMotor.getConfigurator().apply(talonFXConfigs);
   }
 
   public void setElevatorPosition(double position) {
+    ;
     leftElevatorMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
