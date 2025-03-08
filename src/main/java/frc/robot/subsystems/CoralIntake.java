@@ -13,6 +13,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
@@ -25,7 +26,8 @@ import frc.robot.Constants;
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFXS coralIntakeMotor, coralPivotMotor;
+  public final TalonFXS coralIntakeMotor;
+  public final TalonFX coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
@@ -42,8 +44,8 @@ public class CoralIntake extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFXS(8);
-    coralPivotMotor = new TalonFXS(6);
+    coralIntakeMotor = new TalonFXS(Constants.coralIntakeMotor);
+    coralPivotMotor = new TalonFX(Constants.coralPivotMotor);
 
     slot0Pivot.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Pivot.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
