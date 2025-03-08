@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import frc.robot.Constants.StateMachineConstant;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -14,15 +14,15 @@ import frc.robot.subsystems.Elevator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class cm_MoveAndEject extends ParallelCommandGroup {
-  /** Creates a new cm_MoveAndEject. */
-  // TODO: Change to elevator velocity control request
-  public cm_MoveAndEject(Elevator elevator, CoralIntake coralIntake) {
-    // Add your commands in the addCommands() call, e.g.
+public class cm_AlgaeRemoval extends ParallelDeadlineGroup {
+  /** Creates a new cm_AlgaeRemoval. */
+  public cm_AlgaeRemoval(Elevator elevator, CoralIntake coralIntake) {
+    // Add the deadline command in the super() call. Add other commands using
+    // addCommands().
+    super(new cm_SetElevatorPosition(elevator));
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        elevator.cm_moveElevator(0.3),
         coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
   }
 }
