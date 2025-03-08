@@ -38,18 +38,18 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
     rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
 
+    // TODO: Adjust feedback values
     slot0Elevator.GravityType = GravityTypeValue.Elevator_Static;
     slot0Elevator.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    slot0Elevator.kG = 0.0;
-    slot0Elevator.kS = 0.0;
-    slot0Elevator.kV = 0.0;
-    slot0Elevator.kA = 0.0;
+    slot0Elevator.kG = 0.2;
+    slot0Elevator.kV = 0.5;
+    slot0Elevator.kA = 0.1;
     slot0Elevator.kP = 0.0;
     slot0Elevator.kI = 0.0;
     slot0Elevator.kD = 0.0;
 
-    mmConfigs.MotionMagicCruiseVelocity = 0;
-    mmConfigs.MotionMagicAcceleration = 0;
+    mmConfigs.MotionMagicCruiseVelocity = 3;
+    mmConfigs.MotionMagicAcceleration = 3;
     mmConfigs.MotionMagicJerk = 0;
 
     leftElevatorMotor.getConfigurator().apply(slot0Elevator);
