@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-// import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
