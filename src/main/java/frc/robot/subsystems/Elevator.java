@@ -27,8 +27,8 @@ public class Elevator extends SubsystemBase {
   private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
-    leftElevatorMotor = new TalonFX(9);
-    rightElevatorMotor = new TalonFX(10);
+    leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
+    rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
@@ -36,7 +36,7 @@ public class Elevator extends SubsystemBase {
 
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
-    canRange = new CANrange(2);
+    canRange = new CANrange(Constants.canRange);
   }
 
   public void setElevatorPosition(double position) {
