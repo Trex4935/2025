@@ -231,13 +231,12 @@ public class RobotContainer {
     sysid.x().whileTrue(m_coralIntake.sysIdDynamicIntake(SysIdRoutine.Direction.kReverse));
     */
 
-       //this for pivot
-       sysid.y().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kForward));
-       sysid.a().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kReverse));
+    // this for pivot
+    sysid.y().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kForward));
+    sysid.a().whileTrue(m_coralIntake.sysIdQuasistaticPivot(SysIdRoutine.Direction.kReverse));
 
-       sysid.b().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kForward));
-       sysid.x().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kReverse));
-
+    sysid.b().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kForward));
+    sysid.x().whileTrue(m_coralIntake.sysIdDynamicPivot(SysIdRoutine.Direction.kReverse));
 
     // this for ele
     /*

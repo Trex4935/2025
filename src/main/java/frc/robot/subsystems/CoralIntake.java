@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -55,13 +58,30 @@ public class CoralIntake extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, // Use default ramp rate (1 V/s)
-                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                Volts.of(1), // Reduce dynamic voltage to 4 to prevent brownout
                 null, // Use default timeout (10 s)
                 // Log state with Phoenix SignalLogger class
                 state -> SignalLogger.writeString("Pivot SYSID", state.toString())),
             new SysIdRoutine.Mechanism(
                 volts -> coralPivotMotor.setControl(m_sysIdControlP.withOutput(volts)),
-                null,
+                log -> {
+                  // Record a frame for the left motors.  Since these share an encoder, we consider
+                  // the entire group to be one motor.
+                  log.motor("coralPivotMotor")
+                      .voltage(
+                          Volts.mutable(0)
+                              .mut_replace(
+                                  coralPivotMotor.getMotorVoltage().getValueAsDouble(), Volts))
+                      .angularPosition(
+                          Radians.mutable(0)
+                              .mut_replace(
+                                  coralPivotMotor.getPosition().getValueAsDouble(), Rotations))
+                      .angularVelocity(
+                          RadiansPerSecond.mutable(0)
+                              .mut_replace(
+                                  coralPivotMotor.getVelocity().getValueAsDouble(),
+                                  RadiansPerSecond));
+                },
                 this));
   }
 
