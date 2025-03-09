@@ -59,7 +59,7 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Slot0.kI = 0.0;
     coralPivotconfigs.Slot0.kD = 0.0;
 
-    coralPivotconfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    coralPivotconfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
     coralPivotconfigs.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;

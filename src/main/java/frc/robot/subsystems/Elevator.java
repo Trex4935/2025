@@ -42,19 +42,23 @@ public class Elevator extends SubsystemBase {
     elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
     elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
     elevatorConfigs.Slot0.kG = 0.2;
-    elevatorConfigs.Slot0.kV = 0.5;
+    elevatorConfigs.Slot0.kV = 0.9;
     elevatorConfigs.Slot0.kA = 0.1;
-    elevatorConfigs.Slot0.kP = 0.0;
+    elevatorConfigs.Slot0.kP = 7.0;
     elevatorConfigs.Slot0.kI = 0.0;
     elevatorConfigs.Slot0.kD = 0.0;
 
     elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 3;
-    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 3;
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 24;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 10;
     elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
 
-    leftElevatorMotor.getConfigurator().apply(elevatorConfigs);
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+
     rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
 
     /* Make sure we start at 0 */
