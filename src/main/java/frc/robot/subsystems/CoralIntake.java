@@ -157,6 +157,10 @@ public class CoralIntake extends SubsystemBase {
         "Coral intake motor velocity",
         () -> coralIntakeMotor.getVelocity().getValueAsDouble(),
         null);
+    builder.addDoubleProperty(
+        "Coral pivot motor percent output", () -> coralPivotMotor.get(), null);
+    builder.addDoubleProperty(
+        "Coral pivot motor position", () -> coralPivotMotor.getPosition().getValueAsDouble(), null);
   }
 
   /**
