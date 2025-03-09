@@ -68,7 +68,6 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorPosition(double position) {
-    ;
     leftElevatorMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
