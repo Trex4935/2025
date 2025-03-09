@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Constants.StateMachineConstant;
 import frc.robot.subsystems.CoralIntake;
 
@@ -29,7 +28,7 @@ public class cm_SetPivotAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntake.setIntakePivotPosition(Constants.StateMachineConstant.botState.pivotAngle);
+    m_coralIntake.setIntakePivotPosition(0.5);
   }
 
   // Called once the command ends or is interrupted.

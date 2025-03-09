@@ -184,13 +184,13 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
         .button(4)
         .whileTrue(
-            m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
+            m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
     operatorBoard.button(5).whileTrue(cmd_AlgaeRemoval);

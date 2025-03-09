@@ -60,8 +60,8 @@ public class CoralIntake extends SubsystemBase {
     mmConfigs.MotionMagicAcceleration = 0;
     mmConfigs.MotionMagicJerk = 0;
 
-    coralPivotMotor.getConfigurator().apply(slot0Pivot);
-    coralPivotMotor.getConfigurator().apply(mmConfigs);
+    // coralPivotMotor.getConfigurator().apply(slot0Pivot);
+    // coralPivotMotor.getConfigurator().apply(mmConfigs);
 
     m_sysIdRoutine =
         new SysIdRoutine(
