@@ -63,8 +63,6 @@ public class CoralIntake extends SubsystemBase {
     // coralPivotMotor.getConfigurator().apply(slot0Pivot);
     // coralPivotMotor.getConfigurator().apply(mmConfigs);
 
-    coralPivotMotor.setPosition(-0.3);
-
     m_sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
