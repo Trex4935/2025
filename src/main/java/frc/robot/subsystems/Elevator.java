@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -18,6 +19,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -41,18 +43,18 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
     rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
 
+    // TODO: Adjust feedback values
     elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
     elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    elevatorConfigs.Slot0.kG = 0.0;
-    elevatorConfigs.Slot0.kS = 0.0;
-    elevatorConfigs.Slot0.kV = 0.0;
-    elevatorConfigs.Slot0.kA = 0.0;
+    elevatorConfigs.Slot0.kG = 0.2;
+    elevatorConfigs.Slot0.kV = 0.5;
+    elevatorConfigs.Slot0.kA = 0.1;
     elevatorConfigs.Slot0.kP = 0.0;
     elevatorConfigs.Slot0.kI = 0.0;
     elevatorConfigs.Slot0.kD = 0.0;
 
-    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 0;
-    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 0;
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 3;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 3;
     elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
 
     leftElevatorMotor.getConfigurator().apply(slot0Elevator);
@@ -68,6 +70,11 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
     canRange = new CANrange(Constants.canRange);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
+    }
   }
 
   public void setElevatorPosition(double position) {
