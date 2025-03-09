@@ -7,8 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -26,39 +25,37 @@ import frc.robot.Constants;
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFXS coralIntakeMotor;
-  public final TalonFX coralPivotMotor;
+  public final TalonFX coralIntakeMotor;
+  public final TalonFXS coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
-  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
+  private final TalonFXSConfiguration coralPivotconfigs = new TalonFXSConfiguration();
 
   private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
   private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
 
   private final NeutralOut m_brake = new NeutralOut();
 
-  private final Slot0Configs slot0Pivot = new Slot0Configs();
-
   /*private MotionMagicVelocityVoltage mmVelocityVoltage =
   new MotionMagicVelocityVoltage(0).withSlot(0); */
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFXS(Constants.coralIntakeMotor);
-    coralPivotMotor = new TalonFX(Constants.coralPivotMotor);
+    coralIntakeMotor = new TalonFX(Constants.coralIntakeMotor);
+    coralPivotMotor = new TalonFXS(Constants.coralPivotMotor);
 
-    slot0Pivot.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Pivot.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    slot0Pivot.kG = 0.0;
-    slot0Pivot.kS = 0.0;
-    slot0Pivot.kV = 0.0;
-    slot0Pivot.kP = 0.0;
-    slot0Pivot.kI = 0.0;
-    slot0Pivot.kD = 0.0;
+    coralPivotconfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+    coralPivotconfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    coralPivotconfigs.Slot0.kG = 0.0;
+    coralPivotconfigs.Slot0.kS = 0.0;
+    coralPivotconfigs.Slot0.kV = 0.0;
+    coralPivotconfigs.Slot0.kP = 0.0;
+    coralPivotconfigs.Slot0.kI = 0.0;
+    coralPivotconfigs.Slot0.kD = 0.0;
 
-    mmConfigs.MotionMagicCruiseVelocity = 0;
-    mmConfigs.MotionMagicAcceleration = 0;
-    mmConfigs.MotionMagicJerk = 0;
+    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 0;
+    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 0;
+    coralPivotconfigs.MotionMagic.MotionMagicJerk = 0;
 
     // coralPivotMotor.getConfigurator().apply(slot0Pivot);
     // coralPivotMotor.getConfigurator().apply(mmConfigs);

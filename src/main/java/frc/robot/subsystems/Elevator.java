@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -26,6 +27,8 @@ public class Elevator extends SubsystemBase {
 
   public final CANrange canRange;
 
+  private final TalonFXConfiguration elevatorConfigs = new TalonFXConfiguration();
+
   private final Slot0Configs slot0Elevator = new Slot0Configs();
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
@@ -38,19 +41,19 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
     rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
 
-    slot0Elevator.GravityType = GravityTypeValue.Elevator_Static;
-    slot0Elevator.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    slot0Elevator.kG = 0.0;
-    slot0Elevator.kS = 0.0;
-    slot0Elevator.kV = 0.0;
-    slot0Elevator.kA = 0.0;
-    slot0Elevator.kP = 0.0;
-    slot0Elevator.kI = 0.0;
-    slot0Elevator.kD = 0.0;
+    elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+    elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    elevatorConfigs.Slot0.kG = 0.0;
+    elevatorConfigs.Slot0.kS = 0.0;
+    elevatorConfigs.Slot0.kV = 0.0;
+    elevatorConfigs.Slot0.kA = 0.0;
+    elevatorConfigs.Slot0.kP = 0.0;
+    elevatorConfigs.Slot0.kI = 0.0;
+    elevatorConfigs.Slot0.kD = 0.0;
 
-    mmConfigs.MotionMagicCruiseVelocity = 0;
-    mmConfigs.MotionMagicAcceleration = 0;
-    mmConfigs.MotionMagicJerk = 0;
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 0;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 0;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
 
     leftElevatorMotor.getConfigurator().apply(slot0Elevator);
     leftElevatorMotor.getConfigurator().apply(mmConfigs);
