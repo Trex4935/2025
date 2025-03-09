@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -22,12 +23,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
 
-  public final TalonFXS coralIntakeMotor;
-  public final TalonFX coralPivotMotor;
+  public final TalonFX coralIntakeMotor;
+  public final TalonFXS coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
 
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
@@ -44,8 +46,8 @@ public class CoralIntake extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFXS(Constants.coralIntakeMotor);
-    coralPivotMotor = new TalonFX(Constants.coralPivotMotor);
+    coralIntakeMotor = new TalonFX(Constants.coralIntakeMotor);
+    coralPivotMotor = new TalonFXS(Constants.coralPivotMotor);
 
     slot0Pivot.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Pivot.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -75,6 +77,11 @@ public class CoralIntake extends SubsystemBase {
                 volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
                 null,
                 this));
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(coralIntakeMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFXS(coralPivotMotor, 0.2);
+    }
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -14,6 +15,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
@@ -44,6 +46,10 @@ public class Climber extends SubsystemBase {
 
     climberMotor.getConfigurator().apply(slot0Climber);
     climberMotor.getConfigurator().apply(mmConfigs);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
+    }
   }
 
   public void moveClimberMotor(double speed) {
