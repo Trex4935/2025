@@ -7,10 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.CoralIntake;
+import java.time.Duration;
+import java.time.Instant;
 
 /** An example command that uses an example subsystem. */
 public class cm_SetCoralIntake extends Command {
   private final CoralIntake m_coralIntake;
+  private Instant startTime;
 
   /**
    * Creates a new ExampleCommand.
@@ -25,7 +28,9 @@ public class cm_SetCoralIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    startTime = Instant.now();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -42,6 +47,6 @@ public class cm_SetCoralIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Duration.between(startTime, Instant.now()).toMillis() > 2000;
   }
 }
