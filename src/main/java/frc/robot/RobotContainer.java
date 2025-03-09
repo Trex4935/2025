@@ -80,11 +80,16 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
-  private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
+  private final cm_FullSequence cmd_FullSequenceCoralIntake,
+      cmd_FullSequenceL1,
+      cmd_FullSequenceL2,
+      cmd_FullSequenceL3;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    cmd_FullSequenceCoralIntake =
+        new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL1 =
         new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL2 =
@@ -209,7 +214,7 @@ public class RobotContainer {
         .button(9)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
     // coral intake
-    operatorBoard.button(10).onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen());
+    operatorBoard.button(10).onTrue(cmd_FullSequenceCoralIntake);
     // shoots L3
     operatorBoard.button(12).onTrue(cmd_FullSequenceL3);
     // shoots L2

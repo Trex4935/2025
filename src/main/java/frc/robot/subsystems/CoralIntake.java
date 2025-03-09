@@ -44,12 +44,13 @@ public class CoralIntake extends SubsystemBase {
     coralIntakeMotor = new TalonFX(Constants.coralIntakeMotor);
     coralPivotMotor = new TalonFXS(Constants.coralPivotMotor);
 
+    // TODO: Tune
     coralPivotconfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     coralPivotconfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
     coralPivotconfigs.Slot0.kG = 0.0;
     coralPivotconfigs.Slot0.kS = 0.0;
-    coralPivotconfigs.Slot0.kV = 0.0;
-    coralPivotconfigs.Slot0.kP = 0.0;
+    coralPivotconfigs.Slot0.kV = 1.0;
+    coralPivotconfigs.Slot0.kP = 3.0;
     coralPivotconfigs.Slot0.kI = 0.0;
     coralPivotconfigs.Slot0.kD = 0.0;
 
@@ -59,6 +60,8 @@ public class CoralIntake extends SubsystemBase {
 
     // coralPivotMotor.getConfigurator().apply(slot0Pivot);
     // coralPivotMotor.getConfigurator().apply(mmConfigs);
+
+    coralPivotMotor.setPosition(-0.3);
 
     m_sysIdRoutine =
         new SysIdRoutine(

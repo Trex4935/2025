@@ -43,6 +43,6 @@ public class cm_SetPivotAngle extends Command {
     return MathUtil.isNear(
         StateMachineConstant.botState.pivotAngle,
         m_coralIntake.coralPivotMotor.getPosition().getValueAsDouble(),
-        0.1);
+        0.2);
   }
 }
