@@ -5,14 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +28,9 @@ public class Elevator extends SubsystemBase {
 
   public final CANrange canRange;
 
-  private final Slot0Configs slot0Elevator = new Slot0Configs();
+  private final TalonFXConfiguration elevatorConfigs = new TalonFXConfiguration();
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
-
-  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
   private final NeutralOut m_brake = new NeutralOut();
 
@@ -41,24 +39,27 @@ public class Elevator extends SubsystemBase {
     rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
 
     // TODO: Adjust feedback values
-    slot0Elevator.GravityType = GravityTypeValue.Elevator_Static;
-    slot0Elevator.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    slot0Elevator.kG = 0.2;
-    slot0Elevator.kV = 0.5;
-    slot0Elevator.kA = 0.1;
-    slot0Elevator.kP = 0.0;
-    slot0Elevator.kI = 0.0;
-    slot0Elevator.kD = 0.0;
+    elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+    elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    elevatorConfigs.Slot0.kG = 0.2;
+    elevatorConfigs.Slot0.kV = 0.9;
+    elevatorConfigs.Slot0.kA = 0.1;
+    elevatorConfigs.Slot0.kP = 7.0;
+    elevatorConfigs.Slot0.kI = 0.0;
+    elevatorConfigs.Slot0.kD = 0.0;
 
-    mmConfigs.MotionMagicCruiseVelocity = 3;
-    mmConfigs.MotionMagicAcceleration = 3;
-    mmConfigs.MotionMagicJerk = 0;
+    elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-    leftElevatorMotor.getConfigurator().apply(slot0Elevator);
-    leftElevatorMotor.getConfigurator().apply(mmConfigs);
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 24;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 10;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
 
-    rightElevatorMotor.getConfigurator().apply(slot0Elevator);
-    rightElevatorMotor.getConfigurator().apply(mmConfigs);
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+
+    rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
