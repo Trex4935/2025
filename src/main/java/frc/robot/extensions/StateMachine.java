@@ -31,7 +31,7 @@ public class StateMachine {
     REMOVEALGAE(40, -0.5, 0, Color.kYellow), // preparing to intake algae
     STORAGE(0, 0, 0, Color.kGreen), // intaked, coral or algae in
     L1(6, -0.5, 0, Color.kBlue), // scoring coral
-    L2(20, -0.2, 0.9, Color.kBlue), // scoring coral
+    L2(20, -0.2, 1.4, Color.kBlue), // scoring coral
     L3(40, -0.2, 1.7, Color.kBlue), // scoring coral
     CLIMB(0, 0, 0, Color.kPink), // climbing
     EJECT(0, -0.2, 0, Color.kWhite); // everything out

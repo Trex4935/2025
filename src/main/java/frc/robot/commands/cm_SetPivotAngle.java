@@ -28,7 +28,7 @@ public class cm_SetPivotAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntake.setIntakePivotPosition(0.5);
+    m_coralIntake.setIntakePivotPosition(StateMachineConstant.botState.pivotAngle);
   }
 
   // Called once the command ends or is interrupted.
