@@ -15,7 +15,10 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.AdvancedHallSupportValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,12 +59,17 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Slot0.kI = 0.0;
     coralPivotconfigs.Slot0.kD = 0.0;
 
-    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 0;
-    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 0;
+    coralPivotconfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
+    coralPivotconfigs.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;
+
+    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 3;
+    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 3;
     coralPivotconfigs.MotionMagic.MotionMagicJerk = 0;
 
-    // coralPivotMotor.getConfigurator().apply(slot0Pivot);
-    // coralPivotMotor.getConfigurator().apply(mmConfigs);
+    coralPivotMotor.getConfigurator().apply(coralPivotconfigs);
+    coralPivotMotor.setPosition(0);
 
     m_sysIdRoutine =
         new SysIdRoutine(

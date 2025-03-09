@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -14,6 +12,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,11 +30,7 @@ public class Elevator extends SubsystemBase {
 
   private final TalonFXConfiguration elevatorConfigs = new TalonFXConfiguration();
 
-  private final Slot0Configs slot0Elevator = new Slot0Configs();
-
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
-
-  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
   private final NeutralOut m_brake = new NeutralOut();
 
@@ -53,15 +48,14 @@ public class Elevator extends SubsystemBase {
     elevatorConfigs.Slot0.kI = 0.0;
     elevatorConfigs.Slot0.kD = 0.0;
 
+    elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
     elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 3;
     elevatorConfigs.MotionMagic.MotionMagicAcceleration = 3;
     elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
 
-    leftElevatorMotor.getConfigurator().apply(slot0Elevator);
-    leftElevatorMotor.getConfigurator().apply(mmConfigs);
-
-    rightElevatorMotor.getConfigurator().apply(slot0Elevator);
-    rightElevatorMotor.getConfigurator().apply(mmConfigs);
+    leftElevatorMotor.getConfigurator().apply(elevatorConfigs);
+    rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
