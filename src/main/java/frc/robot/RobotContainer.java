@@ -30,6 +30,7 @@ import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
@@ -68,6 +69,7 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
+  public final Climber m_Climber = new Climber();
 
   public final CommandSwerveDrivetrain drivetrain;
   private final DigitalInput drivetrainDIO = new DigitalInput(0);
@@ -211,10 +213,11 @@ public class RobotContainer {
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-    // shoots processor
+    // Climbs (hopefully)
     operatorBoard
         .button(10)
-        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+        .onTrue((m_Climber.cm_solenoidToggle()))
+        .onFalse(m_Climber.cm_climberMovement());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
