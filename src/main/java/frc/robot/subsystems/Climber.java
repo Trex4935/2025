@@ -12,8 +12,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,21 +19,12 @@ import frc.robot.extensions.PhysicsSim;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
-<<<<<<< HEAD
-  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
-  Solenoid climberSolenoid;
-
-  /** Creates a new Climber. */
-  public Climber() {
-    climberMotor = new TalonFX(7);
-    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
-=======
 
   private final Slot0Configs slot0Climber = new Slot0Configs();
 
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
-  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
 
   /** Creates a new Climber. */
   public Climber() {
@@ -61,7 +50,6 @@ public class Climber extends SubsystemBase {
     if (Utils.isSimulation()) {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
->>>>>>> 414df26c6e2aaf014f92204aea0dd9265049fdd1
   }
 
   public void moveClimberMotor(double speed) {

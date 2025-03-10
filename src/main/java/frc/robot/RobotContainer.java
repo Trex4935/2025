@@ -211,7 +211,7 @@ public class RobotContainer {
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
     // shoots processor
-    operatorBoard.button(10).onTrue((m_Climber.cm_solenoidToggle()));
+    operatorBoard.button(10).onTrue((m_Climber.cm_solenoidToggle())).onFalse();
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
