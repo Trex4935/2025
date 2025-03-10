@@ -4,17 +4,21 @@
 
 package frc.robot.subsystems;
 
-// import static edu.wpi.first.units.Units.*;
-
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -24,13 +28,38 @@ public class Elevator extends SubsystemBase {
 
   public final CANrange canRange;
 
+  private final TalonFXConfiguration elevatorConfigs = new TalonFXConfiguration();
+
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
 
   private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
-    leftElevatorMotor = new TalonFX(9);
-    rightElevatorMotor = new TalonFX(10);
+    leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
+    rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
+
+    // TODO: Adjust feedback values
+    elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+    elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    elevatorConfigs.Slot0.kG = 0.2;
+    elevatorConfigs.Slot0.kV = 0.9;
+    elevatorConfigs.Slot0.kA = 0.1;
+    elevatorConfigs.Slot0.kP = 7.0;
+    elevatorConfigs.Slot0.kI = 0.0;
+    elevatorConfigs.Slot0.kD = 0.0;
+
+    elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 24;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 10;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
+
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+
+    rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);
@@ -38,7 +67,12 @@ public class Elevator extends SubsystemBase {
 
     rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
 
-    canRange = new CANrange(2);
+    canRange = new CANrange(Constants.canRange);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
+    }
   }
 
   public void setElevatorPosition(double position) {
