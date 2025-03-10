@@ -27,7 +27,7 @@ public class cm_FullSequence extends SequentialCommandGroup {
         new cm_SetElevatorPosition(elevator)
             .withTimeout(5)
             .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
-        new cm_SetCoralIntake(coralIntake),
+        new cm_SetCoralEject(coralIntake),
 
         // Resets the state to default
         new cm_SetToDefault(elevator, leds));
