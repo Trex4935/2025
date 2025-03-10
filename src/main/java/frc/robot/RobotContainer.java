@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -80,7 +79,11 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
-  private final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
+  private final cm_FullSequence cmd_FullSequenceL1,
+      cmd_FullSequenceL2,
+      cmd_FullSequenceL3,
+      cmd_FullSequenceL4,
+      cmd_HumanIntake;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -91,6 +94,11 @@ public class RobotContainer {
         new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL3 =
         new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL4 =
+        new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HumanIntake =
+        new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
+
     cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake);
 
     // Determine which drivetrain we are using
@@ -184,13 +192,13 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
         .button(4)
         .whileTrue(
-            m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
+            m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
     operatorBoard.button(5).whileTrue(cmd_AlgaeRemoval);
@@ -200,16 +208,16 @@ public class RobotContainer {
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-    // shoots L4
-    operatorBoard
-        .button(8)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kBlack))));
     // shoots processor
     operatorBoard
-        .button(9)
+        .button(10)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+
     // coral intake
-    operatorBoard.button(10).onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen());
+    operatorBoard.button(9).onTrue(cmd_HumanIntake);
+
+    // shoots L4
+    operatorBoard.button(8).onTrue(cmd_FullSequenceL4);
     // shoots L3
     operatorBoard.button(12).onTrue(cmd_FullSequenceL3);
     // shoots L2
