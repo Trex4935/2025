@@ -101,7 +101,8 @@ public class RobotContainer {
     cmd_HumanIntake =
         new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
-    cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake);
+    cmd_AlgaeRemoval =
+        new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
 
     // Determine which drivetrain we are using
