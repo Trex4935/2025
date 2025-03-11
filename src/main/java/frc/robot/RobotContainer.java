@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.Autos;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.extensions.StateMachine;
@@ -91,13 +90,12 @@ public class RobotContainer {
     cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
     cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
     cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
+
     // Auto Commands
-    NamedCommands.registerCommand("L1", Autos.L1);
-    NamedCommands.registerCommand("L2", Autos.L2);
-    NamedCommands.registerCommand("L3", Autos.L3);
-    // NamedCommands.registerCommand("L4", Autos.L4);
-    NamedCommands.registerCommand("Shoot Coral", Autos.Default);
-    NamedCommands.registerCommand("Run Intake", Autos.runIntake);
+    NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
+    NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
+    NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
+    // NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
