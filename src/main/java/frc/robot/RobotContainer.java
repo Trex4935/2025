@@ -207,7 +207,7 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(10).whileTrue(cmd_SetCoralEject);
+    operatorBoard.button(5).whileTrue(cmd_SetCoralEject);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
@@ -231,6 +231,8 @@ public class RobotContainer {
     operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
+    // algae removal
+    operatorBoard.button(10).onTrue(cmd_AlgaeRemoval);
 
     // Test operator controls
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
