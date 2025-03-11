@@ -46,6 +46,6 @@ public class cm_SetCoralIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_coralIntake.coralIntakeMotor.getVelocity().getValueAsDouble() < 0);
+    return (m_coralIntake.coralIntakeMotor.getVelocity().getValueAsDouble() < 1);
   }
 }
