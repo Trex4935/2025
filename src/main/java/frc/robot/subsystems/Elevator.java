@@ -59,7 +59,7 @@ public class Elevator extends SubsystemBase {
     elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
 
-    rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
+    leftElevatorMotor.getConfigurator().apply(elevatorConfigs);
 
     /* Make sure we start at 0 */
     leftElevatorMotor.setPosition(0);

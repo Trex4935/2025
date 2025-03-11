@@ -24,11 +24,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
@@ -67,6 +69,7 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
+  public final Climber m_Climber = new Climber();
 
   public final CommandSwerveDrivetrain drivetrain;
   private final DigitalInput drivetrainDIO = new DigitalInput(0);
@@ -84,6 +87,7 @@ public class RobotContainer {
       cmd_FullSequenceL3,
       cmd_FullSequenceL4,
       cmd_HumanIntake;
+  private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -99,7 +103,9 @@ public class RobotContainer {
     cmd_HumanIntake =
         new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
-    cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake);
+    cmd_AlgaeRemoval =
+        new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -201,17 +207,18 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(5).whileTrue(cmd_AlgaeRemoval);
+    operatorBoard.button(10).whileTrue(cmd_SetCoralEject);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-    // shoots processor
+    // Climbs (hopefully)
     operatorBoard
         .button(10)
-        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+        .onTrue((m_Climber.cm_solenoidToggle()))
+        .onFalse(m_Climber.cm_climberMovement());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
