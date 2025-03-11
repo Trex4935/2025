@@ -240,11 +240,11 @@ public class RobotContainer {
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
-    sysid.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    sysid.y().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kForward));
+    sysid.a().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kReverse));
 
-    sysid.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    sysid.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    sysid.b().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kForward));
+    sysid.x().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kReverse));
   }
 
   /**
