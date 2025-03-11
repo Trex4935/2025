@@ -4,47 +4,132 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
-  public final TalonFX elevatorMotor;
+  public final TalonFX leftElevatorMotor, rightElevatorMotor;
+
+  public final double maxElevatorRotation = 20;
+
+  public final CANrange canRange;
+
+  private final TalonFXConfiguration elevatorConfigs = new TalonFXConfiguration();
+
+  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+
+  private final NeutralOut m_brake = new NeutralOut();
 
   public Elevator() {
-    elevatorMotor = new TalonFX(9);
+    leftElevatorMotor = new TalonFX(Constants.elevatorLeftID);
+    rightElevatorMotor = new TalonFX(Constants.elevatorRightID);
+
+    // TODO: Adjust feedback values
+    elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+    elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    elevatorConfigs.Slot0.kG = 0.2;
+    elevatorConfigs.Slot0.kV = 0.9;
+    elevatorConfigs.Slot0.kA = 0.1;
+    elevatorConfigs.Slot0.kP = 7.0;
+    elevatorConfigs.Slot0.kI = 0.0;
+    elevatorConfigs.Slot0.kD = 0.0;
+
+    elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 24;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 10;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
+
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    elevatorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+
+    rightElevatorMotor.getConfigurator().apply(elevatorConfigs);
+
+    /* Make sure we start at 0 */
+    leftElevatorMotor.setPosition(0);
+    rightElevatorMotor.setPosition(0);
+
+    rightElevatorMotor.setControl(new Follower(leftElevatorMotor.getDeviceID(), false));
+
+    canRange = new CANrange(Constants.canRange);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
+    }
   }
 
-  public void runElevatorMotor(double speed) {
-    elevatorMotor.set(speed);
+  public void setElevatorPosition(double position) {
+    leftElevatorMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
-  public void stopElevatorMotor() {
-    elevatorMotor.stopMotor();
+  public void setBrake() {
+    leftElevatorMotor.setControl(m_brake);
   }
 
-  // method to set the position of the elevator
-  public void setElevatorPosition(double position){
-    elevatorMotor.setPosition(position);
+  public void stopElevator() {
+    leftElevatorMotor.stopMotor();
   }
 
-  public Command cm_elevatorMovement(double speed) {
-    return startEnd(() -> runElevatorMotor(speed), () -> stopElevatorMotor());
+  public void moveElevator(double speed) {
+    leftElevatorMotor.set(speed);
+  }
+
+  public Command cm_setElevatorPosition(double position) {
+    return run(() -> setElevatorPosition(position));
+  }
+
+  /*public Command cm_setElevatorPositionRunOnce(double position) {
+    return runOnce(() -> setElevatorPosition(position));
+  }
+  */
+  public final Command cm_setElevatorToState() {
+    return run(
+        () -> setElevatorPosition(Constants.StateMachineConstant.getState().elevatorPosition));
+  }
+
+  public final Command cm_moveElevator(double speed) {
+    return startEnd(() -> moveElevator(speed), () -> stopElevator());
   }
 
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
-        "Left Climber Encoder Position",
-        () -> elevatorMotor.getPosition().getValueAsDouble(),
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
         null);
-        builder.addDoubleProperty("Elevator percent output", () -> elevatorMotor.get(), null);
-
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Left Elevator Encoder Position",
+        () -> leftElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty(
+        "Right Elevator Encoder Position",
+        () -> rightElevatorMotor.getPosition().getValueAsDouble(),
+        null);
+    builder.addDoubleProperty("Left Elevator percent output", () -> leftElevatorMotor.get(), null);
+    builder.addDoubleProperty(
+        "Right Elevator percent output", () -> rightElevatorMotor.get(), null);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }

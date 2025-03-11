@@ -4,12 +4,19 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
+import frc.robot.extensions.PhysicsSim;
+import frc.robot.generated.TunerConstants;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -18,7 +25,7 @@ import frc.robot.extensions.LimelightHelpers;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
   /**
@@ -29,20 +36,31 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // CANrangeConfiguration configs = new CANrangeConfiguration();
+    // CANrange = new CANrange(0);
+
+    // Write these configs to the CANrange
+    // CANrange.getConfigurator().apply(configs);
   }
 
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
+  private double getYawInverted() {
+    if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
+    } else {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
+    }
+  }
+
   @Override
   public void robotPeriodic() {
+    // var distance = CANrange.getDistance();
+
+    // Refresh and print these values
+    // System.out.println("Distance is " + distance.refresh().toString());
+
     CommandScheduler.getInstance().run();
     var driveState = m_robotContainer.drivetrain.getState();
-    double headingDeg = driveState.Pose.getRotation().getDegrees();
+    double headingDeg = getYawInverted();
     double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
     LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
@@ -73,12 +91,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
+
+    SignalLogger.setPath("/media/sda1/ctre-logs/");
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -90,7 +109,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if (m_robotContainer.m_elevator.leftElevatorMotor.getPosition().getValueAsDouble()
+        >= m_robotContainer.m_elevator.maxElevatorRotation) {
+      m_robotContainer.MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.15;
+    } else {
+      m_robotContainer.MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5;
+    }
+  }
 
   @Override
   public void testInit() {
@@ -108,5 +134,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    PhysicsSim.getInstance().run();
+  }
 }

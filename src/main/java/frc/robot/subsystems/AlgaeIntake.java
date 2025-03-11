@@ -4,18 +4,24 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.extensions.PhysicsSim;
 
 public class AlgaeIntake extends SubsystemBase {
   public final TalonFX algaeIntakeMotor;
 
   /** Creates a new AlgaeIntake Subsystem. */
   public AlgaeIntake() {
-    algaeIntakeMotor = new TalonFX(99);
+    algaeIntakeMotor = new TalonFX(13);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(algaeIntakeMotor, 0.2);
+    }
   }
 
   public void runIntakeMotor(double speed) {
@@ -34,10 +40,10 @@ public class AlgaeIntake extends SubsystemBase {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
-  public Command cm_intakeAlgaeVelocity(double velocity) {
-    return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
-  }
-
+  /* public Command cm_intakeAlgaeVelocity(double velocity) {
+      return startEnd(() -> algaeIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
+    }
+  */
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Algae intake motor percent output", () -> algaeIntakeMotor.get(), null);

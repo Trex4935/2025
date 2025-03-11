@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.extensions.StateMachine.BotState;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,4 +18,24 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class StateMachineConstant {
+    public static BotState botState = BotState.DEFAULT;
+
+    public static BotState getState() {
+      return StateMachineConstant.botState;
+    }
+
+    public static void setState(BotState state) {
+      StateMachineConstant.botState = state;
+    }
+  }
+
+  // Phoenix Tuner Motor IDs
+  public static final int elevatorLeftID = 9;
+  public static final int elevatorRightID = 10;
+  public static final int climberMotor = 7;
+  public static final int coralIntakeMotor = 8;
+  public static final int coralPivotMotor = 6;
+  public static final int canRange = 2;
 }

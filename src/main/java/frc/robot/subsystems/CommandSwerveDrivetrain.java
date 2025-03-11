@@ -5,8 +5,11 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -106,6 +109,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
+
+  PhoenixPIDController swervePIDx = new PhoenixPIDController(0.5, 0, 0);
+  PhoenixPIDController swervePIDy = new PhoenixPIDController(0.5, 0, 0);
+  PhoenixPIDController swervePIDtheta = new PhoenixPIDController(0.3, 0, 0);
 
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -296,6 +303,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   public Command ppSimple(Pose2d goToPose) {
     return AutoBuilder.pathfindToPose(goToPose, new PathConstraints(0.5, 0.5, 0.5, 0.5), 0);
   }
+
+  /** Shifts the robot left or right */
+  public void shiftAlign(boolean shiftLeft) {
+    // copied from documentation so might not be right
+    final SwerveRequest.RobotCentric m_driveRequest = new SwerveRequest.RobotCentric();
+
+    double shift = shiftLeft ? 1 : -1;
+
+    // shift the robot
+    this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
+  }
+
   @Override
   public void periodic() {
     /*
@@ -333,5 +352,43 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               updateSimState(deltaTime, RobotController.getBatteryVoltage());
             });
     m_simNotifier.startPeriodic(kSimLoopPeriod);
+  }
+
+  /** Moves robot to a pose using a PID */
+  public void pidAutoAlign(Pose2d targetPose) {
+    // copied from documentation so might not be right
+    final SwerveRequest.FieldCentric m_driveRequest =
+        new SwerveRequest.FieldCentric()
+            .withDeadband(0.1) // dont understand what these mean
+            .withRotationalDeadband(0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+            .withSteerRequestType(SteerRequestType.MotionMagicExpo);
+
+    swervePIDtheta.enableContinuousInput(-Math.PI, Math.PI);
+
+    swervePIDx.setTolerance(0.05);
+    swervePIDy.setTolerance(0.05);
+    swervePIDtheta.setTolerance(Math.toRadians(0.1));
+
+    Pose2d currentPose = this.getState().Pose;
+
+    targetPose.getRotation().minus(currentPose.getRotation()).getRadians();
+    // sets a control with the ratio between the x and y times the max speed
+
+    double xApplied =
+        -swervePIDx.calculate(currentPose.getX(), targetPose.getX(), this.getState().Timestamp);
+    double yApplied =
+        -swervePIDy.calculate(currentPose.getY(), targetPose.getY(), this.getState().Timestamp);
+    double rotationApplied =
+        swervePIDtheta.calculate(
+            currentPose.getRotation().getDegrees(),
+            targetPose.getRotation().getDegrees(),
+            this.getState().Timestamp);
+
+    this.setControl(
+        m_driveRequest
+            .withVelocityX(xApplied)
+            .withVelocityY(yApplied)
+            .withRotationalRate(rotationApplied));
   }
 }

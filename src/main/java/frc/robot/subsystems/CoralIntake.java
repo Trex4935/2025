@@ -4,18 +4,106 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import static edu.wpi.first.units.Units.Volts;
+
+import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.AdvancedHallSupportValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class CoralIntake extends SubsystemBase {
+  final VoltageOut m_sysIdControl = new VoltageOut(0);
+
   public final TalonFX coralIntakeMotor;
+  public final TalonFXS coralPivotMotor;
+  private final SysIdRoutine m_sysIdRoutine;
+
+  private final TalonFXSConfiguration coralPivotconfigs = new TalonFXSConfiguration();
+
+  private VelocityVoltage velocityVoltage = new VelocityVoltage(0).withSlot(0);
+  private MotionMagicVoltage mmVoltage = new MotionMagicVoltage(0).withSlot(0);
+
+  private final NeutralOut m_brake = new NeutralOut();
+
+  /*private MotionMagicVelocityVoltage mmVelocityVoltage =
+  new MotionMagicVelocityVoltage(0).withSlot(0); */
 
   /** Creates a new ExampleSubsystem. */
   public CoralIntake() {
-    coralIntakeMotor = new TalonFX(0);
+    coralIntakeMotor = new TalonFX(Constants.coralIntakeMotor);
+    coralPivotMotor = new TalonFXS(Constants.coralPivotMotor);
+
+    // TODO: Tune
+    coralPivotconfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+    coralPivotconfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    coralPivotconfigs.Slot0.kG = 0.0;
+    coralPivotconfigs.Slot0.kS = 0.0;
+    coralPivotconfigs.Slot0.kV = 1.0;
+    coralPivotconfigs.Slot0.kP = 3.0;
+    coralPivotconfigs.Slot0.kI = 0.0;
+    coralPivotconfigs.Slot0.kD = 0.0;
+
+    coralPivotconfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+    coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
+    coralPivotconfigs.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;
+
+    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 18;
+    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 3;
+    coralPivotconfigs.MotionMagic.MotionMagicJerk = 0;
+
+    coralPivotMotor.getConfigurator().apply(coralPivotconfigs);
+    coralPivotMotor.setPosition(0);
+
+    m_sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null, // Use default ramp rate (1 V/s)
+                Volts.of(2), // Reduce dynamic voltage to 4 to prevent brownout
+                null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+                state -> SignalLogger.writeString("Coral SYSID", state.toString())),
+            new SysIdRoutine.Mechanism(
+                volts -> coralIntakeMotor.setControl(m_sysIdControl.withOutput(volts)),
+                null,
+                this));
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(coralIntakeMotor, 0.2);
+      PhysicsSim.getInstance().addTalonFXS(coralPivotMotor, 0.2);
+    }
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.dynamic(direction);
+  }
+
+  public void runCoralPivotMotor(double speed) {
+    coralPivotMotor.set(speed);
+  }
+
+  public void stopCoralPivotMotor() {
+    coralPivotMotor.stopMotor();
   }
 
   public void runIntakeMotor(double speed) {
@@ -26,25 +114,53 @@ public class CoralIntake extends SubsystemBase {
     coralIntakeMotor.stopMotor();
   }
 
+  public Command cm_runCoralPivotMotor(double speed) {
+    return startEnd(() -> runCoralPivotMotor(speed), () -> stopCoralPivotMotor());
+  }
+
   public void coralIntakeMotorVelocity(double velocity) {
-    coralIntakeMotor.setControl(new MotionMagicVelocityVoltage(velocity));
+    coralIntakeMotor.setControl(velocityVoltage.withVelocity(velocity));
   }
 
   public Command cm_intakeCoral(double speed) {
     return startEnd(() -> runIntakeMotor(speed), () -> stopIntakeMotor());
   }
 
+  public Command cm_coralIntakeState() {
+    return startEnd(
+        () -> runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed),
+        () -> stopIntakeMotor());
+  }
+
   public Command cm_intakeCoralVelocity(double velocity) {
     return startEnd(() -> coralIntakeMotorVelocity(velocity), () -> stopIntakeMotor());
   }
 
+  public void setIntakePivotPosition(double position) {
+    coralPivotMotor.setControl(mmVoltage.withPosition(position));
+  }
+
+  public void setBrake() {
+    coralPivotMotor.setControl(m_brake);
+  }
+
+  public Command cm_setIntakePivotPosition(double position) {
+    return startEnd(() -> setIntakePivotPosition(position), () -> setBrake());
+  }
+
   public void initSendable(SendableBuilder builder) {
+    builder.addStringProperty(
+        "botState", () -> Constants.StateMachineConstant.botState.toString(), null);
     builder.addDoubleProperty(
         "Coral intake motor percent output", () -> coralIntakeMotor.get(), null);
     builder.addDoubleProperty(
         "Coral intake motor velocity",
         () -> coralIntakeMotor.getVelocity().getValueAsDouble(),
         null);
+    builder.addDoubleProperty(
+        "Coral pivot motor percent output", () -> coralPivotMotor.get(), null);
+    builder.addDoubleProperty(
+        "Coral pivot motor position", () -> coralPivotMotor.getPosition().getValueAsDouble(), null);
   }
 
   /**

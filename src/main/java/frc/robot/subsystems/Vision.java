@@ -27,11 +27,13 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.addDoubleArrayProperty("Pose", () -> getPose(), null);
-    builder.addDoubleProperty("tx", () -> LimelightHelpers.getTX("limelight-bow"), null);
-    builder.addDoubleProperty("ty", () -> LimelightHelpers.getTY("limelight-bow"), null);
-    builder.addDoubleProperty("ta", () -> LimelightHelpers.getTA("limelight-bow"), null);
-    builder.addBooleanProperty("tv", () -> LimelightHelpers.getTV("limelight-bow"), null);
+    if (LimelightHelpers.getLatestResults("limelight-bow").error == null) {
+      builder.addDoubleArrayProperty("Pose", () -> getPose(), null);
+      builder.addDoubleProperty("tx", () -> LimelightHelpers.getTX("limelight-bow"), null);
+      builder.addDoubleProperty("ty", () -> LimelightHelpers.getTY("limelight-bow"), null);
+      builder.addDoubleProperty("ta", () -> LimelightHelpers.getTA("limelight-bow"), null);
+      builder.addBooleanProperty("tv", () -> LimelightHelpers.getTV("limelight-bow"), null);
+    }
   }
 
   @Override
