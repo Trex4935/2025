@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -25,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
-import frc.robot.extensions.PhysicsSim;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
@@ -84,10 +82,12 @@ public class CoralIntake extends SubsystemBase {
                 null,
                 this));
 
+    /*
     if (Utils.isSimulation()) {
       PhysicsSim.getInstance().addTalonFX(coralIntakeMotor, 0.2);
       PhysicsSim.getInstance().addTalonFXS(coralPivotMotor, 0.2);
     }
+      */
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
