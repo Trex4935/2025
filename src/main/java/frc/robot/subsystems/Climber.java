@@ -4,39 +4,92 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.extensions.PhysicsSim;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
+  public final Solenoid climberSolenoid;
+
+  private final Slot0Configs slot0Climber = new Slot0Configs();
+
+  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
+
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
 
   /** Creates a new Climber. */
   public Climber() {
-    climberMotor = new TalonFX(7);
+    climberMotor = new TalonFX(Constants.climberMotor);
+    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+
+    slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
+    slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    slot0Climber.kG = 0.0;
+    slot0Climber.kS = 0.0;
+    slot0Climber.kV = 0.0;
+    slot0Climber.kA = 0.0;
+    slot0Climber.kP = 0.0;
+    slot0Climber.kI = 0.0;
+    slot0Climber.kD = 0.0;
+
+    mmConfigs.MotionMagicCruiseVelocity = 0;
+    mmConfigs.MotionMagicAcceleration = 0;
+    mmConfigs.MotionMagicJerk = 0;
+
+    climberMotor.getConfigurator().apply(slot0Climber);
+    climberMotor.getConfigurator().apply(mmConfigs);
+
+    if (Utils.isSimulation()) {
+      PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
+    }
   }
 
-  public void moveClimberMotor(double speed) {
-    climberMotor.setControl(motionMagicVoltage.withPosition(speed));
+  public void moveClimberMotor(double position) {
+    climberMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
   public void climberMotorVelocity(double velocity) {
     climberMotor.setControl(motionMagicVoltage.withPosition(velocity));
   }
 
+  public void climberOpen() {
+    climberSolenoid.set(true);
+  }
+
   public void stopClimberMotor() {
     climberMotor.stopMotor();
   }
 
-  public Command climberMovement() {
-    return runEnd(() -> moveClimberMotor(0.5), () -> stopClimberMotor());
+  public void climberClose() {
+    climberSolenoid.set(false);
+  }
+
+  public Command cm_climberMovement() {
+    return runEnd(() -> moveClimberMotor(5), () -> stopClimberMotor());
   }
 
   public Command cm_climberVelocity(double velocity) {
     return startEnd(() -> climberMotorVelocity(velocity), () -> stopClimberMotor());
+  }
+
+  public Command cm_solenoidToggle() {
+    return runOnce(() -> climberOpen()).withTimeout(1).andThen(runOnce(() -> climberClose()));
+  }
+
+  public boolean getClimberState() {
+    return climberSolenoid.get();
   }
 
   public void initSendable(SendableBuilder builder) {

@@ -30,4 +30,12 @@ public final class Constants {
       StateMachineConstant.botState = state;
     }
   }
+
+  // Phoenix Tuner Motor IDs
+  public static final int elevatorLeftID = 9;
+  public static final int elevatorRightID = 10;
+  public static final int climberMotor = 7;
+  public static final int coralIntakeMotor = 8;
+  public static final int coralPivotMotor = 6;
+  public static final int canRange = 2;
 }
