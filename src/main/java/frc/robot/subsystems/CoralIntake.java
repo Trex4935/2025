@@ -28,7 +28,7 @@ import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
-  private final DigitalInput coralDIO = new DigitalInput(0);
+  private final DigitalInput coralDIO = new DigitalInput(1);
   public final TalonFX coralIntakeMotor;
   public final TalonFXS coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
@@ -190,14 +190,14 @@ public class CoralIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // if (coralDIO.get()) {
+    // coralPivotMotor.setPosition(16.6);
+    // }
     // This method will be called once per scheduler run
   }
 
   @Override
   public void simulationPeriodic() {
-    if (coralDIO.get()) {
-      coralPivotMotor.setPosition(16.6);
-    }
     // This method will be called once per scheduler run during simulation
   }
 }
