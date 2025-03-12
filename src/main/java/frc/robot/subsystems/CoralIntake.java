@@ -20,6 +20,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -27,7 +28,7 @@ import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
-
+  private final DigitalInput coralDIO = new DigitalInput(0);
   public final TalonFX coralIntakeMotor;
   public final TalonFXS coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;
@@ -194,6 +195,9 @@ public class CoralIntake extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
+    if (coralDIO.get()) {
+      coralPivotMotor.setPosition(16.6);
+    }
     // This method will be called once per scheduler run during simulation
   }
 }
