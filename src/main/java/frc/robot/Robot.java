@@ -28,7 +28,7 @@ import frc.robot.generated.TunerConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   // CANrange CANrange;
-  PowerDistribution climberSolenoid;
+  PowerDistribution solenoidSwitch;
   private final RobotContainer m_robotContainer;
 
   /**
@@ -73,10 +73,9 @@ public class Robot extends TimedRobot {
           llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
     // sets the switchable channel state using the shuffleboard value
-    climberSolenoid.setSwitchableChannel(
-        SmartDashboard.getBoolean("set switchable channel", false));
+    solenoidSwitch.setSwitchableChannel(SmartDashboard.getBoolean("set switchable channel", false));
     // displays the switchable channel state to shuffleboard
-    SmartDashboard.putBoolean("get switchable channel", climberSolenoid.getSwitchableChannel());
+    SmartDashboard.putBoolean("get switchable channel", solenoidSwitch.getSwitchableChannel());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
