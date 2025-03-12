@@ -167,7 +167,7 @@ public class RobotContainer {
     joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
     joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
-    joystick.povDown().whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseMid));
+    joystick.povUpLeft().whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft));
 
     // Configure the trigger bindings
     configureBindings();
