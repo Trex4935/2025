@@ -14,9 +14,9 @@ import frc.robot.subsystems.LEDSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class cm_FullSequence extends SequentialCommandGroup {
+public class cm_HalfSequence extends SequentialCommandGroup {
   /** Creates a new cm_FullSequence. */
-  public cm_FullSequence(
+  public cm_HalfSequence(
       BotState botState, Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -26,9 +26,6 @@ public class cm_FullSequence extends SequentialCommandGroup {
         leds.cm_setLedToColor(botState.colorDisplay),
         new cm_SetElevatorPosition(elevator)
             .withTimeout(5)
-            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
-        new cm_SetCoralIntake(coralIntake).withTimeout(3),
-        // Resets the state to default
-        new cm_SetToDefault(elevator, leds));
+            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)));
   }
 }

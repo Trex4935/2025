@@ -23,7 +23,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_FullSequence;
-import frc.robot.commands.cm_SetCoralEject;
+import frc.robot.commands.cm_HalfSequence;
+import frc.robot.commands.cm_SetCoralIntake;
+import frc.robot.commands.cm_SetToDefault;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
@@ -81,16 +83,29 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
+  private final cm_HalfSequence cmd_HalfSequenceL1,
+      cmd_HalfSequenceL2,
+      cmd_HalfSequenceL3,
+      cmd_HalfSequenceL4;
   private final cm_FullSequence cmd_FullSequenceL1,
       cmd_FullSequenceL2,
       cmd_FullSequenceL3,
       cmd_FullSequenceL4,
       cmd_HumanIntake;
-  private final cm_SetCoralEject cmd_SetCoralEject;
+  private final Command cmd_Eject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    cmd_HalfSequenceL1 =
+        new cm_HalfSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL2 =
+        new cm_HalfSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL3 =
+        new cm_HalfSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL4 =
+        new cm_HalfSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+
     cmd_FullSequenceL1 =
         new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL2 =
@@ -102,9 +117,12 @@ public class RobotContainer {
     cmd_HumanIntake =
         new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
+    cmd_Eject =
+        Commands.sequence(
+            new cm_SetCoralIntake(m_coralIntake), new cm_SetToDefault(m_elevator, m_ledSubsystem));
+
     cmd_AlgaeRemoval =
         new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
-    cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -204,7 +222,7 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(10).whileTrue(cmd_SetCoralEject);
+    operatorBoard.button(5).onTrue(cmd_Eject);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
@@ -221,13 +239,15 @@ public class RobotContainer {
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
 
     // shoots L4
-    operatorBoard.button(8).onTrue(cmd_FullSequenceL4);
+    operatorBoard.button(8).onTrue(cmd_HalfSequenceL4);
     // shoots L3
-    operatorBoard.button(12).onTrue(cmd_FullSequenceL3);
+    operatorBoard.button(12).onTrue(cmd_HalfSequenceL3);
     // shoots L2
-    operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
+    operatorBoard.button(13).onTrue(cmd_HalfSequenceL2);
     // shoots L1
-    operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
+    operatorBoard.button(14).onTrue(cmd_HalfSequenceL1); // Change this to run full sequence
+    // algae removal
+    operatorBoard.button(10).onTrue(cmd_AlgaeRemoval);
 
     // Test operator controls
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
