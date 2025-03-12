@@ -65,8 +65,8 @@ public class RobotContainer {
   // Subsystems
   private final Telemetry logger = new Telemetry(MaxSpeed);
   public final Vision m_vision = new Vision();
-  public static final CoralIntake m_coralIntake = new CoralIntake();
-  public static final Elevator m_elevator = new Elevator();
+  public final CoralIntake m_coralIntake = new CoralIntake();
+  public final Elevator m_elevator = new Elevator();
   public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
   public final Climber m_Climber = new Climber();
