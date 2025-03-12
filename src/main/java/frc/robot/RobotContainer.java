@@ -11,12 +11,10 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -24,13 +22,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_FullSequence;
-import frc.robot.commands.cm_MoveAndEject;
+import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
@@ -69,6 +69,7 @@ public class RobotContainer {
   public static final Elevator m_elevator = new Elevator();
   public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
+  public final Climber m_Climber = new Climber();
 
   public final CommandSwerveDrivetrain drivetrain;
   private final DigitalInput drivetrainDIO = new DigitalInput(0);
@@ -81,15 +82,30 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
-  public final cm_FullSequence cmd_FullSequenceL1, cmd_FullSequenceL2, cmd_FullSequenceL3;
-  private final cm_MoveAndEject cmd_MoveAndEject;
+  private final cm_FullSequence cmd_FullSequenceL1,
+      cmd_FullSequenceL2,
+      cmd_FullSequenceL3,
+      cmd_FullSequenceL4,
+      cmd_HumanIntake;
+  private final cm_SetCoralEject cmd_SetCoralEject;
+  private final cm_AlgaeRemoval cmd_AlgaeRemoval;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    cmd_FullSequenceL1 = new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake);
-    cmd_FullSequenceL2 = new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake);
-    cmd_FullSequenceL3 = new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake);
-    cmd_MoveAndEject = new cm_MoveAndEject(m_elevator, m_coralIntake);
+    cmd_FullSequenceL1 =
+        new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL2 =
+        new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL3 =
+        new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_FullSequenceL4 =
+        new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HumanIntake =
+        new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
+
+    cmd_AlgaeRemoval =
+        new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
 
     // Auto Commands
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
@@ -158,9 +174,7 @@ public class RobotContainer {
     joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
     joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
-    joystick
-        .povDown()
-        .whileTrue(Commands.run(() -> drivetrain.pidAutoAlign(new Pose2d(3, 7, new Rotation2d()))));
+    joystick.povDown().whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseMid));
 
     // Configure the trigger bindings
     configureBindings();
@@ -188,32 +202,33 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.4));
+    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
         .button(4)
         .whileTrue(
-            m_coralIntake.cm_runCoralPivotMotor(0.4)); // Change this to run the pivot for now
+            m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(5).whileTrue(cmd_MoveAndEject);
+    operatorBoard.button(10).whileTrue(cmd_SetCoralEject);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-    // shoots L4
+    // Climbs (hopefully)
     operatorBoard
-        .button(8)
-        .onTrue((m_ledSubsystem.runOnce(() -> m_ledSubsystem.cm_setLedToColor(Color.kBlack))));
-    // shoots processor
-    operatorBoard
-        .button(9)
-        .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(0.5))));
+        .button(10)
+        .onTrue((m_Climber.cm_solenoidToggle()))
+        .onFalse(m_Climber.cm_climberMovement());
+
     // coral intake
-    operatorBoard.button(10).onTrue(StateMachine.setGlobalState(BotState.INTAKECORAL).andThen());
+    operatorBoard.button(9).onTrue(cmd_HumanIntake);
+
+    // shoots L4
+    operatorBoard.button(8).onTrue(cmd_FullSequenceL4);
     // shoots L3
     operatorBoard.button(12).onTrue(cmd_FullSequenceL3);
     // shoots L2
@@ -241,27 +256,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // auto named commands
-  public static Command L1 =
-      Commands.sequence(new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake))
-          .andThen(() -> System.out.println("Run L1 Auto"));
-
-  public static Command L2 =
-      Commands.sequence(new cm_FullSequence(BotState.L2, m_elevator, m_coralIntake))
-          .andThen(() -> System.out.println("Run L2 Auto"));
-
-  public static Command L3 =
-      Commands.sequence(new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake))
-          .andThen(() -> System.out.println("Running L3 Auto"));
-  // public static Command L4 =
-  //  Commands.runOnce(StateMachine.setGlobalState(BotState.).andThen());
-  public static Command Default =
-      Commands.sequence(new cm_FullSequence(BotState.DEFAULT, m_elevator, m_coralIntake))
-          .andThen(() -> System.out.println("Running Default Auto"));
-  public static Command runIntake =
-      Commands.sequence(new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake))
-          .andThen(() -> System.out.println("Running Intake Auto"));
-
   public Command getAutonomousCommand() {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the

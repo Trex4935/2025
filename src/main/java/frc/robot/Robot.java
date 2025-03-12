@@ -9,10 +9,13 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
+import frc.robot.extensions.PhysicsSim;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -40,6 +43,14 @@ public class Robot extends TimedRobot {
     // CANrange.getConfigurator().apply(configs);
   }
 
+  private double getYawInverted() {
+    if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
+    } else {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
+    }
+  }
+
   @Override
   public void robotPeriodic() {
     // var distance = CANrange.getDistance();
@@ -49,7 +60,7 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
     var driveState = m_robotContainer.drivetrain.getState();
-    double headingDeg = driveState.Pose.getRotation().getDegrees();
+    double headingDeg = getYawInverted();
     double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
     LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
@@ -123,5 +134,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    PhysicsSim.getInstance().run();
+  }
 }
