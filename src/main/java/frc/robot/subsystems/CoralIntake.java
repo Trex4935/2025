@@ -60,10 +60,6 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Slot0.kI = 0.0;
     coralPivotconfigs.Slot0.kD = 0.0;
 
-    if (coralDIO.get()) {
-      coralPivotMotor.setPosition(18.5);
-    }
-
     coralPivotconfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
@@ -195,6 +191,9 @@ public class CoralIntake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (coralDIO.get()) {
+      coralPivotMotor.setPosition(16.6);
+    }
   }
 
   @Override
