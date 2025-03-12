@@ -27,8 +27,11 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.AlignmentLocations;
 import frc.robot.AlignmentLocations.AlignmentPose;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -271,6 +274,57 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     double targetX = tagPose.getX() + (addOrSubtract * pose.offsetX);
     double targetY = tagPose.getY() + (addOrSubtract * pose.offsetY);
     Rotation2d targetTheta = pose.offsetTheta.plus(yawOffset);
+
+    // Create the target pose with the target translation and offset theta
+    Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
+
+    // Create and return the auto-generated pathfinding command
+    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
+  }
+
+  /**
+   * Automatically drives to the closest reef pose
+   *
+   * @return A command that drives to a location using PathPlanner
+   */
+  public Command ppAutoDriveNearest() {
+    // Default to Blue alliance if none is specified
+    Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    // Add lists for poses and offsets
+    List<Pose2d> poseList = new ArrayList<>();
+    List<Double> xOffsetList = new ArrayList<>();
+    List<Double> yOffsetList = new ArrayList<>();
+    List<Rotation2d> thetaOffsetList = new ArrayList<>();
+
+    // Determine necessary tag pose list
+    for (AlignmentPose pose : AlignmentLocations.reefTags) {
+      if (ally == Alliance.Blue) {
+        poseList.add(pose.aprilTagPoseBlue);
+      } else {
+        poseList.add(pose.aprilTagPoseRed);
+      }
+
+      xOffsetList.add(pose.offsetX);
+      yOffsetList.add(pose.offsetY);
+      thetaOffsetList.add(pose.offsetTheta);
+    }
+
+    Pose2d tagPose = this.getState().Pose.nearest(poseList);
+    System.out.println(this.getState().Pose);
+
+    double xOffset = xOffsetList.get(poseList.indexOf(tagPose));
+    double yOffset = yOffsetList.get(poseList.indexOf(tagPose));
+    Rotation2d heading = thetaOffsetList.get(poseList.indexOf(tagPose));
+
+    // Depending on the alliance, the offsets will either be added or subtracted
+    double addOrSubtract = (ally == Alliance.Blue ? 1 : -1);
+    Rotation2d yawOffset = (ally == Alliance.Blue ? new Rotation2d() : new Rotation2d(Math.PI));
+
+    // Gets target values from the tag poses and the offset
+    double targetX = tagPose.getX() + (addOrSubtract * xOffset);
+    double targetY = tagPose.getY() + (addOrSubtract * yOffset);
+    Rotation2d targetTheta = heading.plus(yawOffset);
 
     // Create the target pose with the target translation and offset theta
     Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
