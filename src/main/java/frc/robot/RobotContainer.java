@@ -229,10 +229,6 @@ public class RobotContainer {
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
 
-    // Test operator controls
-    operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
-    operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
-
     // SysID test controls
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
