@@ -11,7 +11,9 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
@@ -26,6 +28,7 @@ import frc.robot.generated.TunerConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   // CANrange CANrange;
+  PowerDistribution climberSolenoid;
   private final RobotContainer m_robotContainer;
 
   /**
@@ -69,6 +72,11 @@ public class Robot extends TimedRobot {
       m_robotContainer.drivetrain.addVisionMeasurement(
           llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
+    // sets the switchable channel state using the shuffleboard value
+    climberSolenoid.setSwitchableChannel(
+        SmartDashboard.getBoolean("set switchable channel", false));
+    // displays the switchable channel state to shuffleboard
+    SmartDashboard.putBoolean("get switchable channel", climberSolenoid.getSwitchableChannel());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
