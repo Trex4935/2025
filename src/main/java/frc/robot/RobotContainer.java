@@ -230,6 +230,15 @@ public class RobotContainer {
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
 
     // Test operator controls
+    new Trigger(
+            () ->
+                m_elevator.leftElevatorMotor.getPosition().getValueAsDouble()
+                    >= BotState.L3.elevatorPosition)
+        .whileTrue(
+            Commands.startEnd(
+                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.15,
+                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
+
     operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
     operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
 
