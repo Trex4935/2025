@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   }
 
   private double getYawInverted() {
-    if (DriverStation.getAlliance().get() == null) {
+    if (DriverStation.getAlliance() == null) {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
     if (DriverStation.getAlliance().get() == Alliance.Blue) {
