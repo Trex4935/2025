@@ -265,16 +265,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     // Depending on the alliance, the offsets will either be added or subtracted
     double addOrSubtract = (ally == Alliance.Blue ? 1 : -1);
+    Rotation2d yawOffset = (ally == Alliance.Blue ? new Rotation2d() : new Rotation2d(Math.PI));
 
     // Gets target values from the tag poses and the offset
     double targetX = tagPose.getX() + (addOrSubtract * pose.offsetX);
     double targetY = tagPose.getY() + (addOrSubtract * pose.offsetY);
+    Rotation2d targetTheta = pose.offsetTheta.plus(yawOffset);
 
     // Create the target pose with the target translation and offset theta
-    Pose2d targetPose = new Pose2d(targetX, targetY, pose.offsetTheta);
+    Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
 
     // Create and return the auto-generated pathfinding command
-    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(0.1, 0.1, 0.1, 0.1), 0);
+    return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
   }
 
   /**
