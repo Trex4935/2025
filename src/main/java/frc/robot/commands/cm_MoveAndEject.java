@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.StateMachineConstant;
-import frc.robot.extensions.StateMachine;
-import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 
@@ -21,8 +19,8 @@ public class cm_MoveAndEject extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        elevator.cm_moveElevator(0.3),
-        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
+        new cm_SetElevatorPosition(elevator).withTimeout(7),
+        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed).withTimeout(7),
+        new cm_SetPivotAngle(coralIntake).withTimeout(7));
   }
 }

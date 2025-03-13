@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.StateMachineConstant;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.subsystems.CoralIntake;
@@ -23,10 +22,7 @@ public class cm_AlgaeRemoval extends SequentialCommandGroup {
     addCommands(
         // Sets the state
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        new cm_SetElevatorPosition(elevator)
-            .withTimeout(5)
-            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7))
-            .alongWith(new cm_SetCoralEjectNoEnd(coralIntake).withTimeout(5)),
+        new cm_MoveAndEject(elevator, coralIntake),
         // Resets the state to default
         new cm_SetToDefault(elevator, leds));
   }
