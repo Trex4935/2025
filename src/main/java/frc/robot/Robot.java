@@ -28,8 +28,8 @@ import frc.robot.generated.TunerConstants;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  public static PowerDistribution solenoidSwitch = new PowerDistribution(1, ModuleType.kRev);
   // CANrange CANrange;
-  PowerDistribution solenoidSwitch = new PowerDistribution(1, ModuleType.kRev);
   private final RobotContainer m_robotContainer;
 
   /**
@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
     // CANrangeConfiguration configs = new CANrangeConfiguration();
     // CANrange = new CANrange(0);
 
@@ -53,6 +54,11 @@ public class Robot extends TimedRobot {
     } else {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
+  }
+
+  @Override
+  public void robotInit() {
+    SmartDashboard.setDefaultBoolean("Set Switchable Channel", false);
   }
 
   @Override
@@ -73,10 +79,6 @@ public class Robot extends TimedRobot {
       m_robotContainer.drivetrain.addVisionMeasurement(
           llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
-    // sets the switchable channel state using the shuffleboard value
-    solenoidSwitch.setSwitchableChannel(SmartDashboard.getBoolean("set switchable channel", false));
-    // displays the switchable channel state to shuffleboard
-    SmartDashboard.putBoolean("get switchable channel", solenoidSwitch.getSwitchableChannel());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
