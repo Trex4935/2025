@@ -23,7 +23,6 @@ public class cm_MoveAndEject extends ParallelCommandGroup {
     addCommands(
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
         new cm_SetElevatorPosition(elevator),
-        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed),
-        new cm_SetPivotAngle(coralIntake));
+        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
   }
 }
