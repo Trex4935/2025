@@ -17,14 +17,13 @@ import frc.robot.subsystems.LEDSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class cm_AlgaeRemoval extends SequentialCommandGroup {
   /** Creates a new cm_FullSequence. */
-  public cm_AlgaeRemoval(
-      BotState botState, Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
+  public cm_AlgaeRemoval(Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Sets the state
-        StateMachine.setGlobalState(botState),
-        coralIntake.cm_intakeCoral(StateMachineConstant.botState.REMOVEALGAE.coralIntakeSpeed),
+        StateMachine.setGlobalState(BotState.REMOVEALGAE),
+        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed),
         new cm_SetElevatorPosition(elevator)
             .withTimeout(5)
             .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
