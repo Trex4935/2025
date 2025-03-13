@@ -31,6 +31,7 @@ import frc.robot.AlignmentLocations;
 import frc.robot.AlignmentLocations.AlignmentPose;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -292,19 +293,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
     // Add lists for poses and offsets
-    List<Pose2d> poseList = new ArrayList<>();
+    List<Pose2d> poseList =
+        ally == Alliance.Blue
+            ? Arrays.asList(AlignmentLocations.reefPoseListBlue)
+            : Arrays.asList(AlignmentLocations.reefPoseListRed);
     List<Double> xOffsetList = new ArrayList<>();
     List<Double> yOffsetList = new ArrayList<>();
     List<Rotation2d> thetaOffsetList = new ArrayList<>();
 
-    // Determine necessary tag pose list
+    // Determine necessary tag pose list and apply necessary offsets
     for (AlignmentPose pose : AlignmentLocations.reefTags) {
-      if (ally == Alliance.Blue) {
-        poseList.add(pose.aprilTagPoseBlue);
-      } else {
-        poseList.add(pose.aprilTagPoseRed);
-      }
-
       xOffsetList.add(pose.offsetX);
       yOffsetList.add(pose.offsetY);
       thetaOffsetList.add(pose.offsetTheta);
