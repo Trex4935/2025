@@ -26,14 +26,7 @@ public class cm_AlgaeRemoval extends SequentialCommandGroup {
         new cm_SetElevatorPosition(elevator)
             .withTimeout(5)
             .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7))
-            .alongWith(
-                coralIntake
-                    .startEnd(
-                        () ->
-                            coralIntake.runIntakeMotor(
-                                StateMachineConstant.botState.coralIntakeSpeed),
-                        () -> coralIntake.stopIntakeMotor())
-                    .withTimeout(5)),
+            .alongWith(new cm_SetCoralEjectNoEnd(coralIntake).withTimeout(5)),
         // Resets the state to default
         new cm_SetToDefault(elevator, leds));
   }
