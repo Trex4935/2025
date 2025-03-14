@@ -11,6 +11,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -34,6 +35,8 @@ public class Climber extends SubsystemBase {
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
+  private final NeutralOut m_brake = new NeutralOut();
+
 
   /** Creates a new Climber. */
   public Climber() {
@@ -94,12 +97,16 @@ public class Climber extends SubsystemBase {
     Robot.solenoidSwitch.setSwitchableChannel(true);
   }
 
+  public void climberClose() {
+    Robot.solenoidSwitch.setSwitchableChannel(false);
+  }
+
   public void stopClimberMotor() {
     climberMotor.stopMotor();
   }
 
-  public void climberClose() {
-    Robot.solenoidSwitch.setSwitchableChannel(false);
+  public void setBrake(){
+    climberMotor.setControl(m_brake);
   }
 
   public Command cm_climberMovement(double position) {
