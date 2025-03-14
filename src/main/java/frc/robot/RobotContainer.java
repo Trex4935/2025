@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
+import frc.robot.commands.cm_ClimbStart;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
@@ -88,6 +89,7 @@ public class RobotContainer {
       cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
+  private final cm_ClimbStart cmd_ClimbStart;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -105,6 +107,7 @@ public class RobotContainer {
     cmd_AlgaeRemoval =
         new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
+    cmd_ClimbStart = new cm_ClimbStart(m_Climber, 5, 3);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -211,11 +214,11 @@ public class RobotContainer {
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-    // Climbs (hopefully)
+
+    // Climbs (Motion Magic Needs tuning before this is tested. Could also use SysId for time being)
     operatorBoard
         .button(10)
-        .onTrue((m_Climber.cm_solenoidToggle()))
-        .onFalse(m_Climber.cm_climberMovement());
+        .onTrue(cmd_ClimbStart);
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);

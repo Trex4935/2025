@@ -102,8 +102,8 @@ public class Climber extends SubsystemBase {
     Robot.solenoidSwitch.setSwitchableChannel(false);
   }
 
-  public Command cm_climberMovement() {
-    return runEnd(() -> moveClimberMotor(5), () -> stopClimberMotor());
+  public Command cm_climberMovement(double position) {
+    return runEnd(() -> moveClimberMotor(position), () -> stopClimberMotor());
   }
 
   public Command cm_climberVelocity(double velocity) {
