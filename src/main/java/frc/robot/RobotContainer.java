@@ -151,7 +151,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .leftTrigger()
+        .leftBumper()
         .whileTrue(
             Commands.startEnd(
                 () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
@@ -159,7 +159,8 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest()));
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(-0.1)));
+    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(0.1)));
 
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 

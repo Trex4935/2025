@@ -18,6 +18,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -283,12 +284,24 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
   }
 
+
+  public static Pose2d shiftPoseRobotCentricX(Pose2d pose, double distance) {
+        Rotation2d heading = pose.getRotation();
+
+        double deltaX = -distance * heading.getSin();
+        double deltaY = distance * heading.getCos();
+
+        Translation2d newTranslation = pose.getTranslation().plus(new Translation2d(deltaX, deltaY));
+
+        return new Pose2d(newTranslation, heading);
+    }
+
   /**
    * Automatically drives to the closest reef pose
    *
    * @return A command that drives to a location using PathPlanner
    */
-  public Command ppAutoDriveNearest() {
+  public Command ppAutoDriveNearest(double robotCentricOffsetX) {
     // Default to Blue alliance if none is specified
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
@@ -325,7 +338,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     Rotation2d targetTheta = heading.plus(yawOffset);
 
     // Create the target pose with the target translation and offset theta
-    Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
+    Pose2d targetPose = shiftPoseRobotCentricX(new Pose2d(targetX, targetY, targetTheta), robotCentricOffsetX);
 
     // Create and return the auto-generated pathfinding command
     return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
