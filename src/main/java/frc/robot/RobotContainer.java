@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.commands.cm_SetCoralEject;
-import frc.robot.extensions.StateMachine;
+import frc.robot.commands.cm_SetToDefault;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstantsBOW;
@@ -82,6 +82,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Commands
+  private final cm_SetToDefault cmd_SetToDefault;
   private final cm_FullSequence cmd_FullSequenceL1,
       cmd_FullSequenceL2,
       cmd_FullSequenceL3,
@@ -105,6 +106,7 @@ public class RobotContainer {
 
     cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
+    cmd_SetToDefault = new cm_SetToDefault(m_elevator, m_ledSubsystem);
 
     // Auto Commands
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
@@ -217,7 +219,7 @@ public class RobotContainer {
     // ejects game piece (coral for now)
     operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
     // goes to default
-    operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
+    operatorBoard.button(6).onTrue(cmd_SetToDefault);
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
