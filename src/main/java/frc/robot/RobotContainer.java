@@ -151,11 +151,11 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .leftBumper()
+        .rightBumper()
         .whileTrue(
             Commands.startEnd(
-                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
-                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -168,8 +168,6 @@ public class RobotContainer {
 
     joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
     joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
-
-    joystick.povUpLeft().whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefFarLeft));
 
     // Configure the trigger bindings
     configureBindings();
