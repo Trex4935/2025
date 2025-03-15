@@ -37,7 +37,6 @@ public class Climber extends SubsystemBase {
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(1);
   private final NeutralOut m_brake = new NeutralOut();
 
-
   /** Creates a new Climber. */
   public Climber() {
 
@@ -105,7 +104,7 @@ public class Climber extends SubsystemBase {
     climberMotor.stopMotor();
   }
 
-  public void setBrake(){
+  public void setBrake() {
     climberMotor.setControl(m_brake);
   }
 

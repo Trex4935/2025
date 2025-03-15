@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     SmartDashboard.setDefaultBoolean("Set Switchable Channel", false);
+    solenoidSwitch.setSwitchableChannel(false);
   }
 
   @Override
