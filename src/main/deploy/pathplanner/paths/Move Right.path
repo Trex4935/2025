@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5855,
-        "y": 2.620999999999999
+        "x": 9.722301136363637,
+        "y": 2.621
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.57575,
-        "y": 3.1377500000000005
+        "x": 9.712551136363636,
+        "y": 3.1377500000000014
       },
       "isLocked": false,
       "linkedName": "Test Start"
