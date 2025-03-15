@@ -11,10 +11,7 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.extensions.LimelightHelpers;
@@ -28,7 +25,6 @@ import frc.robot.generated.TunerConstants;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  public static PowerDistribution solenoidSwitch = new PowerDistribution(1, ModuleType.kRev);
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
@@ -60,10 +56,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotInit() {
-    SmartDashboard.setDefaultBoolean("Set Switchable Channel", false);
-    solenoidSwitch.setSwitchableChannel(false);
-  }
+  public void robotInit() {}
 
   @Override
   public void robotPeriodic() {

@@ -17,8 +17,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -29,11 +30,13 @@ public class Climber extends SubsystemBase {
   private final SysIdRoutine m_sysIdCilmb;
 
   public final TalonFX climberMotor;
-  public final Solenoid climberSolenoid;
 
   private final Slot0Configs slot0Climber = new Slot0Configs();
 
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
+
+  public static PowerDistribution powerDistributionSwitch =
+      new PowerDistribution(1, ModuleType.kRev);
 
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
@@ -43,7 +46,6 @@ public class Climber extends SubsystemBase {
   public Climber() {
 
     climberMotor = new TalonFX(Constants.climberMotor);
-    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
 
     slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -105,11 +107,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberOpen() {
-    climberSolenoid.set(true);
+    powerDistributionSwitch.setSwitchableChannel(true);
   }
 
   public void climberClose() {
-    climberSolenoid.set(false);
+    powerDistributionSwitch.setSwitchableChannel(false);
   }
 
   public void setBrake() {
@@ -117,7 +119,7 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean getClimberState() {
-    return climberSolenoid.get();
+    return powerDistributionSwitch.getSwitchableChannel();
   }
 
   public Command cm_climberMovement(double position) {
@@ -133,6 +135,9 @@ public class Climber extends SubsystemBase {
   }
 
   public void initSendable(SendableBuilder builder) {
+    SmartDashboard.setDefaultBoolean("Set Switchable Channel", false);
+    powerDistributionSwitch.setSwitchableChannel(false);
+
     builder.addDoubleProperty(
         "Climber Encoder Pos", () -> climberMotor.getPosition().getValueAsDouble(), null);
     builder.addDoubleProperty("Climber motor percent output", () -> climberMotor.get(), null);
