@@ -22,7 +22,8 @@ public class cm_AlgaeRemoval extends SequentialCommandGroup {
     addCommands(
         // Sets the state
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        new cm_MoveAndEject(elevator, coralIntake),
+        new cm_SetPivotAngle(coralIntake).withTimeout(4),
+        new cm_MoveAndEject(elevator, coralIntake).withTimeout(5),
         // Resets the state to default
         new cm_SetToDefault(elevator, leds));
   }
