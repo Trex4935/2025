@@ -58,6 +58,8 @@ public class Climber extends SubsystemBase {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
     */
+
+    climberClose();
   }
 
   public void moveClimberMotor(double position) {
