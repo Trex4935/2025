@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.Utils;
+import static edu.wpi.first.units.Units.Volts;
+
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -15,17 +17,19 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
-import frc.robot.extensions.PhysicsSim;
 
 public class Climber extends SubsystemBase {
   final VoltageOut m_sysIdControlCilmb = new VoltageOut(0);
   private final SysIdRoutine m_sysIdCilmb;
 
   public final TalonFX climberMotor;
+  public final Solenoid climberSolenoid;
 
   private final Slot0Configs slot0Climber = new Slot0Configs();
 
@@ -35,11 +39,11 @@ public class Climber extends SubsystemBase {
   private DutyCycleOut dutyCycleOut;
   private final NeutralOut m_brake = new NeutralOut();
 
-
   /** Creates a new Climber. */
   public Climber() {
 
     climberMotor = new TalonFX(Constants.climberMotor);
+    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
 
     slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -64,18 +68,36 @@ public class Climber extends SubsystemBase {
     if (Utils.isSimulation()) {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
+    */
+    m_sysIdCilmb =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null, // Use default ramp rate (1 V/s)
+                Volts.of(1), // Reduce dynamic voltage to 4 to prevent brownout
+                null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+                state -> SignalLogger.writeString("something SYSID", state.toString())),
+            new SysIdRoutine.Mechanism(
+                volts -> climberMotor.setControl(m_sysIdControlCilmb.withOutput(volts)),
+                null,
+                this));
+  }
+
+  public Command sysIdQuasistatiClim(SysIdRoutine.Direction direction) {
+    return m_sysIdCilmb.quasistatic(direction);
+  }
+
+  public Command sysIdDynamicCilm(SysIdRoutine.Direction direction) {
+    return m_sysIdCilmb.dynamic(direction);
   }
 
   public void moveClimberMotor(double position) {
     climberMotor.setControl(motionMagicVoltage.withPosition(position));
   }
 
-  public void climberMotorVelocity(double velocity) {
-    climberMotor.setControl(motionMagicVoltage.withPosition(velocity));
-  }
-
-  public void climberOpen() {
-    climberSolenoid.set(true);
+  public void climberMotorDutyCycle(double dutyCycle) {
+    climberMotor.setControl(dutyCycleOut.withOutput(dutyCycle));
+    // climberMotor.setControl(motionMagicVoltage.withPosition(velocity));
   }
 
   public void stopClimberMotor() {
@@ -86,7 +108,11 @@ public class Climber extends SubsystemBase {
     climberSolenoid.set(true);
   }
 
-  public void setBrake(){
+  public void climberClose() {
+    climberSolenoid.set(false);
+  }
+
+  public void setBrake() {
     climberMotor.setControl(m_brake);
   }
 
@@ -104,10 +130,6 @@ public class Climber extends SubsystemBase {
 
   public Command cm_solenoidToggle() {
     return runOnce(() -> climberOpen()).withTimeout(1).andThen(runOnce(() -> climberClose()));
-  }
-
-  public boolean getClimberState() {
-    return climberSolenoid.get();
   }
 
   public void initSendable(SendableBuilder builder) {

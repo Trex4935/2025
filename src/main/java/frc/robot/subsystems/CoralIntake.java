@@ -28,11 +28,7 @@ import frc.robot.Constants;
 
 public class CoralIntake extends SubsystemBase {
   final VoltageOut m_sysIdControl = new VoltageOut(0);
-<<<<<<< HEAD
-  private final DigitalInput coralDIO = new DigitalInput(0);
-=======
   private final DigitalInput coralDIO = new DigitalInput(1);
->>>>>>> e3ac8c4a3fe85a9709b9f7648d926fec38191436
   public final TalonFX coralIntakeMotor;
   public final TalonFXS coralPivotMotor;
   private final SysIdRoutine m_sysIdRoutine;

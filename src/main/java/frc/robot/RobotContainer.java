@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
@@ -243,11 +243,11 @@ public class RobotContainer {
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
-    sysid.y().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kForward));
-    sysid.a().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kReverse));
+    // sysid.y().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kForward));
+    // sysid.a().whileTrue(m_Climber.sysIdQuasistatiClim(SysIdRoutine.Direction.kReverse));
 
-    sysid.b().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kForward));
-    sysid.x().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kReverse));
+    // sysid.b().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kForward));
+    // sysid.x().whileTrue(m_Climber.sysIdDynamicCilm(SysIdRoutine.Direction.kReverse));
   }
 
   /**
