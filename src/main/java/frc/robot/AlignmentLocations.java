@@ -132,4 +132,26 @@ public class AlignmentLocations {
           fieldAprilTagLayout.getTagPose(20).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(11).get().toPose2d(),
           new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(-120)), -120});
+
+  public static AlignmentPose[] reefTags = {
+    reefCloseLeft, reefCloseMid, reefCloseRight, reefFarLeft, reefFarMid, reefFarRight
+  };
+
+  public static Pose2d[] reefPoseListRed = {
+    reefCloseLeft.aprilTagPoseRed,
+    reefCloseMid.aprilTagPoseRed,
+    reefCloseRight.aprilTagPoseRed,
+    reefFarLeft.aprilTagPoseRed,
+    reefFarMid.aprilTagPoseRed,
+    reefFarRight.aprilTagPoseRed
+  };
+
+  public static Pose2d[] reefPoseListBlue = {
+    reefCloseLeft.aprilTagPoseBlue,
+    reefCloseMid.aprilTagPoseBlue,
+    reefCloseRight.aprilTagPoseBlue,
+    reefFarLeft.aprilTagPoseBlue,
+    reefFarMid.aprilTagPoseBlue,
+    reefFarRight.aprilTagPoseBlue
+  };
 }
