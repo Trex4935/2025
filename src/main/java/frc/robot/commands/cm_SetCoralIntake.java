@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.CoralIntake;
+import java.time.Duration;
 import java.time.Instant;
 
 /** An example command that uses an example subsystem. */
@@ -46,6 +47,7 @@ public class cm_SetCoralIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_coralIntake.coralIntakeMotor.getVelocity().getValueAsDouble() < 1);
+    return (m_coralIntake.coralIntakeMotor.getVelocity().getValueAsDouble() < 1
+        && (Duration.between(startTime, Instant.now()).toMillis() > 200));
   }
 }
