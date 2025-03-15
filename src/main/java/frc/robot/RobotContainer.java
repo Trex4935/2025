@@ -111,6 +111,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
     NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
     NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+    NamedCommands.registerCommand("HP", cmd_HumanIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
