@@ -226,7 +226,7 @@ public class RobotContainer {
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
 
     // Climbs (Motion Magic Needs tuning before this is tested. Could also use SysId for time being)
-    operatorBoard.button(10).onTrue(cmd_ClimbSequence);
+    operatorBoard.button(10).onTrue(m_Climber.cm_solenoidToggle());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
