@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -18,7 +17,6 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.extensions.PhysicsSim;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -69,10 +67,12 @@ public class Elevator extends SubsystemBase {
 
     canRange = new CANrange(Constants.canRange);
 
+    /*
     if (Utils.isSimulation()) {
       PhysicsSim.getInstance().addTalonFX(leftElevatorMotor, 0.2);
       PhysicsSim.getInstance().addTalonFX(rightElevatorMotor, 0.2);
     }
+    */
   }
 
   public void setElevatorPosition(double position) {

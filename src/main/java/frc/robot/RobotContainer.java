@@ -21,9 +21,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -88,7 +88,7 @@ public class RobotContainer {
       cmd_FullSequenceL4,
       cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
-  private final cm_AlgaeRemoval cmd_AlgaeRemoval;
+  private final cm_MoveAndEject cmd_AlgaeRemoval;
   private final cm_ClimbSequence cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -104,10 +104,15 @@ public class RobotContainer {
     cmd_HumanIntake =
         new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
-    cmd_AlgaeRemoval =
-        new cm_AlgaeRemoval(BotState.REMOVEALGAE, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
     cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
+
+    // Auto Commands
+    NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
+    NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
+    NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
+    NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -155,13 +160,16 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .leftTrigger()
+        .rightBumper()
         .whileTrue(
             Commands.startEnd(
-                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
-                () -> MaxSpeed = TunerConstantsBOW.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
+                () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(-0.15)));
+    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(0.15)));
 
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
@@ -170,7 +178,9 @@ public class RobotContainer {
     joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
     joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
-    joystick.povDown().whileTrue(drivetrain.ppAutoDrive(AlignmentLocations.reefCloseMid));
+    // Will align with PID
+    // joystick.povLeft().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+    // joystick.povRight().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
 
     // Configure the trigger bindings
     configureBindings();
@@ -198,7 +208,7 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
+    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
@@ -207,18 +217,15 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(10).whileTrue(cmd_SetCoralEject);
+    operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard
         .button(7)
         .onTrue((m_AlgaeIntake.runOnce(() -> m_AlgaeIntake.cm_intakeAlgae(-0.5))));
-
-    // Climbs (Motion Magic Needs tuning before this is tested. Could also use SysId for time being)
-    operatorBoard
-        .button(10)
-        .onTrue(cmd_ClimbSequence);
+    // Climbs (hopefully)
+    operatorBoard.button(10).onTrue(cmd_ClimbSequence);
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -231,10 +238,6 @@ public class RobotContainer {
     operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
-
-    // Test operator controls
-    operator.povUp().whileTrue(m_coralIntake.cm_intakeCoral(.20));
-    operator.povDown().whileTrue(m_coralIntake.cm_intakeCoral(-.20));
 
     // SysID test controls
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));

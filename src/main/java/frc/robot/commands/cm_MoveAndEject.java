@@ -22,7 +22,7 @@ public class cm_MoveAndEject extends ParallelCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        elevator.cm_moveElevator(0.3),
+        new cm_SetElevatorPosition(elevator),
         coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
   }
 }
