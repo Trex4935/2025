@@ -104,7 +104,6 @@ public class Climber extends SubsystemBase {
     climberMotor.stopMotor();
   }
 
-  public void setBrake() {
   public void climberOpen() {
     climberSolenoid.set(true);
   }
