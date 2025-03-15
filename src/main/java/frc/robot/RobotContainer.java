@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -105,6 +106,12 @@ public class RobotContainer {
     cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
 
+    // Auto Commands
+    NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
+    NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
+    NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
+    NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
       drivetrain = TunerConstants.createDrivetrain();
@@ -199,7 +206,7 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
+    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
