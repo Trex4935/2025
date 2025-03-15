@@ -284,17 +284,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
   }
 
-
   public static Pose2d shiftPoseRobotCentricX(Pose2d pose, double distance) {
-        Rotation2d heading = pose.getRotation();
+    Rotation2d heading = pose.getRotation();
 
-        double deltaX = -distance * heading.getSin();
-        double deltaY = distance * heading.getCos();
+    double deltaX = -distance * heading.getSin();
+    double deltaY = distance * heading.getCos();
 
-        Translation2d newTranslation = pose.getTranslation().plus(new Translation2d(deltaX, deltaY));
+    Translation2d newTranslation = pose.getTranslation().plus(new Translation2d(deltaX, deltaY));
 
-        return new Pose2d(newTranslation, heading);
-    }
+    return new Pose2d(newTranslation, heading);
+  }
 
   /**
    * Automatically drives to the closest reef pose
@@ -338,7 +337,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     Rotation2d targetTheta = heading.plus(yawOffset);
 
     // Create the target pose with the target translation and offset theta
-    Pose2d targetPose = shiftPoseRobotCentricX(new Pose2d(targetX, targetY, targetTheta), robotCentricOffsetX);
+    Pose2d targetPose =
+        shiftPoseRobotCentricX(new Pose2d(targetX, targetY, targetTheta), robotCentricOffsetX);
 
     // Create and return the auto-generated pathfinding command
     return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(1, 1, 1, 1), 0);
