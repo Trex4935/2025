@@ -62,16 +62,6 @@ public class Robot extends TimedRobot {
     // System.out.println("Distance is " + distance.refresh().toString());
 
     CommandScheduler.getInstance().run();
-    var driveState = m_robotContainer.drivetrain.getState();
-    double headingDeg = getYawInverted();
-    double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
-
-    LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
-    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
-    if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-      m_robotContainer.drivetrain.addVisionMeasurement(
-          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
-    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -118,6 +108,17 @@ public class Robot extends TimedRobot {
       m_robotContainer.MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.15;
     } else {
       m_robotContainer.MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5;
+    }
+
+    var driveState = m_robotContainer.drivetrain.getState();
+    double headingDeg = getYawInverted();
+    double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+
+    LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
+    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
+    if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
+      m_robotContainer.drivetrain.addVisionMeasurement(
+          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
   }
 
