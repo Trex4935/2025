@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_IntakeSequence;
 import frc.robot.commands.cm_MoveAndEject;
@@ -89,6 +90,7 @@ public class RobotContainer {
   private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_MoveAndEject cmd_AlgaeRemoval;
+  private final cm_ClimbSequence cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -105,6 +107,7 @@ public class RobotContainer {
 
     cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
+    cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -213,10 +216,7 @@ public class RobotContainer {
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard
-        .button(10)
-        .whileTrue(
-            m_Climber.startEnd(() -> m_Climber.climberOpen(), () -> m_Climber.climberClose()));
+    operatorBoard.button(10).onTrue(m_Climber.cm_solenoidToggle());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -229,6 +229,9 @@ public class RobotContainer {
     operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
+
+    sysid.leftBumper().whileTrue(m_Climber.cm_climberVelocity(0.5));
+    sysid.rightBumper().whileTrue(m_Climber.cm_climberVelocity(-0.5));
 
     // SysID test controls
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));

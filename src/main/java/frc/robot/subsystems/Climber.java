@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
@@ -15,6 +16,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,6 +31,7 @@ public class Climber extends SubsystemBase {
   private DutyCycleOut dutyCycleOut;
 
   private PowerDistribution m_pdh;
+  private final NeutralOut m_brake = new NeutralOut();
 
   /** Creates a new Climber. */
   public Climber() {
@@ -84,6 +87,10 @@ public class Climber extends SubsystemBase {
     m_pdh.setSwitchableChannel(false);
   }
 
+  public void setBrake() {
+    climberMotor.setControl(m_brake);
+  }
+
   public Command cm_climberMovement() {
     return runEnd(() -> moveClimberMotor(5), () -> stopClimberMotor());
   }
@@ -93,7 +100,8 @@ public class Climber extends SubsystemBase {
   }
 
   public Command cm_solenoidToggle() {
-    return runOnce(() -> climberOpen()).withTimeout(1).andThen(runOnce(() -> climberClose()));
+    return Commands.sequence(
+        runOnce(() -> climberOpen()).withTimeout(1), runOnce(() -> climberClose()).withTimeout(1));
   }
 
   public void initSendable(SendableBuilder builder) {
