@@ -44,6 +44,7 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber() {
+    powerDistributionSwitch.setSwitchableChannel(false);
 
     climberMotor = new TalonFX(Constants.climberMotor);
 
@@ -136,7 +137,6 @@ public class Climber extends SubsystemBase {
 
   public void initSendable(SendableBuilder builder) {
     SmartDashboard.setDefaultBoolean("Set Switchable Channel", false);
-    powerDistributionSwitch.setSwitchableChannel(false);
 
     builder.addDoubleProperty(
         "Climber Encoder Pos", () -> climberMotor.getPosition().getValueAsDouble(), null);
