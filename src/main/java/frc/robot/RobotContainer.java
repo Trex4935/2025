@@ -169,6 +169,10 @@ public class RobotContainer {
     joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
     joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
 
+    // Will align with PID
+    // joystick.povLeft().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+    // joystick.povRight().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);

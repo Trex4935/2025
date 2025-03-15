@@ -5,11 +5,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -26,10 +23,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.AlignmentLocations;
 import frc.robot.AlignmentLocations.AlignmentPose;
+import frc.robot.commands.cm_PIDAutoAlign;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,10 +113,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
-
-  PhoenixPIDController swervePIDx = new PhoenixPIDController(0.5, 0, 0);
-  PhoenixPIDController swervePIDy = new PhoenixPIDController(0.5, 0, 0);
-  PhoenixPIDController swervePIDtheta = new PhoenixPIDController(0.3, 0, 0);
 
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -295,6 +290,49 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return new Pose2d(newTranslation, heading);
   }
 
+  public Pose2d shiftNearestReefPose(boolean rightShift) {
+    // Default to Blue alliance if none is specified
+    Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    // Add lists for poses and offsets
+    List<Pose2d> poseList =
+        ally == Alliance.Blue
+            ? Arrays.asList(AlignmentLocations.reefPoseListBlue)
+            : Arrays.asList(AlignmentLocations.reefPoseListRed);
+    List<Double> xOffsetList = new ArrayList<>();
+    List<Double> yOffsetList = new ArrayList<>();
+    List<Rotation2d> thetaOffsetList = new ArrayList<>();
+
+    // Determine necessary tag pose list and apply necessary offsets
+    for (AlignmentPose pose : AlignmentLocations.reefTags) {
+      xOffsetList.add(pose.offsetX);
+      yOffsetList.add(pose.offsetY);
+      thetaOffsetList.add(pose.offsetTheta);
+    }
+
+    Pose2d tagPose = this.getState().Pose.nearest(poseList);
+
+    double xOffset = xOffsetList.get(poseList.indexOf(tagPose));
+    double yOffset = yOffsetList.get(poseList.indexOf(tagPose));
+    Rotation2d heading = thetaOffsetList.get(poseList.indexOf(tagPose));
+
+    // Depending on the alliance, the offsets will either be added or subtracted
+    double addOrSubtract = (ally == Alliance.Blue ? 1 : -1);
+    Rotation2d yawOffset = (ally == Alliance.Blue ? new Rotation2d() : new Rotation2d(Math.PI));
+
+    // Gets target values from the tag poses and the offset
+    double targetX = tagPose.getX() + (addOrSubtract * xOffset);
+    double targetY = tagPose.getY() + (addOrSubtract * yOffset);
+    Rotation2d targetTheta = heading.plus(yawOffset);
+
+    // Create the target pose with the target translation and offset theta
+    Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
+
+    double shiftAdjustment = rightShift ? 1 : -1;
+
+    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * 0.1);
+  }
+
   /**
    * Automatically drives to the closest reef pose
    *
@@ -321,7 +359,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     Pose2d tagPose = this.getState().Pose.nearest(poseList);
-    System.out.println(this.getState().Pose);
 
     double xOffset = xOffsetList.get(poseList.indexOf(tagPose));
     double yOffset = yOffsetList.get(poseList.indexOf(tagPose));
@@ -369,7 +406,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     Pose2d tagPose = this.getState().Pose.nearest(poseList);
-    System.out.println(this.getState().Pose);
 
     double xOffset = xOffsetList.get(poseList.indexOf(tagPose));
     double yOffset = yOffsetList.get(poseList.indexOf(tagPose));
@@ -430,6 +466,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
   }
 
+  public Command cm_driveAndAlign(boolean rightShift) {
+    return Commands.sequence(
+        ppAutoDriveNearest(), new cm_PIDAutoAlign(shiftNearestReefPose(rightShift), this));
+  }
+
   @Override
   public void periodic() {
     /*
@@ -467,43 +508,5 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               updateSimState(deltaTime, RobotController.getBatteryVoltage());
             });
     m_simNotifier.startPeriodic(kSimLoopPeriod);
-  }
-
-  /** Moves robot to a pose using a PID */
-  public void pidAutoAlign(Pose2d targetPose) {
-    // copied from documentation so might not be right
-    final SwerveRequest.FieldCentric m_driveRequest =
-        new SwerveRequest.FieldCentric()
-            .withDeadband(0.1) // dont understand what these mean
-            .withRotationalDeadband(0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.Velocity)
-            .withSteerRequestType(SteerRequestType.Position);
-
-    swervePIDtheta.enableContinuousInput(-Math.PI, Math.PI);
-
-    swervePIDx.setTolerance(0.05);
-    swervePIDy.setTolerance(0.05);
-    swervePIDtheta.setTolerance(Math.toRadians(0.1));
-
-    Pose2d currentPose = this.getState().Pose;
-
-    targetPose.getRotation().minus(currentPose.getRotation()).getRadians();
-    // sets a control with the ratio between the x and y times the max speed
-
-    double xApplied =
-        -swervePIDx.calculate(currentPose.getX(), targetPose.getX(), this.getState().Timestamp);
-    double yApplied =
-        -swervePIDy.calculate(currentPose.getY(), targetPose.getY(), this.getState().Timestamp);
-    double rotationApplied =
-        swervePIDtheta.calculate(
-            currentPose.getRotation().getDegrees(),
-            targetPose.getRotation().getDegrees(),
-            this.getState().Timestamp);
-
-    this.setControl(
-        m_driveRequest
-            .withVelocityX(xApplied)
-            .withVelocityY(yApplied)
-            .withRotationalRate(rotationApplied));
   }
 }
