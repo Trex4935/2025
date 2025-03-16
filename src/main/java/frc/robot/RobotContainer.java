@@ -22,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_AlgaeRemoval;
 import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_IntakeSequence;
-import frc.robot.commands.cm_MoveAndEject;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -90,7 +90,7 @@ public class RobotContainer {
       cmd_FullSequenceL4;
   private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
-  private final cm_MoveAndEject cmd_AlgaeRemoval;
+  private final cm_AlgaeRemoval cmd_AlgaeRemoval;
   private final cm_ClimbSequence cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -106,7 +106,7 @@ public class RobotContainer {
     cmd_HumanIntake =
         new cm_IntakeSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
-    cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
+    cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
     cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
 
