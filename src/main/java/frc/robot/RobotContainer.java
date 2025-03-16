@@ -183,8 +183,8 @@ public class RobotContainer {
     // drivetrain.shiftAlign(false)).withTimeout(0.5));
 
     // Will align with PID
-    joystick.povLeft().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
-    joystick.povRight().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
     // Configure the trigger bindings
     configureBindings();
