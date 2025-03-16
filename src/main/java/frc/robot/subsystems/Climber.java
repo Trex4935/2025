@@ -48,6 +48,7 @@ public class Climber extends SubsystemBase {
     slot0Climber.kD = 0.0;
 
     m_pdh = new PowerDistribution(1, ModuleType.kRev);
+    m_pdh.setSwitchableChannel(false);
 
     mmConfigs.MotionMagicCruiseVelocity = 0;
     mmConfigs.MotionMagicAcceleration = 0;
