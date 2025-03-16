@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -108,6 +109,12 @@ public class RobotContainer {
     cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
     cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
+
+    // Auto Commands
+    NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
+    NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
+    NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
+    NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
