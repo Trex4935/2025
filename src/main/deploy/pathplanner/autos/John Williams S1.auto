@@ -1,0 +1,85 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4P S1 to R1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4P R1 to HP1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HP1 Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4P HP to R6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4P R6 to HP"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HP1 Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4P HP to R6(1)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto L4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

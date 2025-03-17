@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.938565340909091,
-        "y": 7.249147727272727
+        "x": 1.295,
+        "y": 0.908
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.727982954545455,
-        "y": 7.21590909090909
+        "x": 2.099562244209325,
+        "y": 1.5018683315288484
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.592613636363636,
-        "y": 4.049928977272727
+        "x": 3.658,
+        "y": 2.979
       },
       "prevControl": {
-        "x": 5.584090909090909,
-        "y": -0.49857954545454586
+        "x": 2.777994722929089,
+        "y": 2.5040360936583186
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 1.591140271194501
+    "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "JR Auto 1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.2151753970081
+    "rotation": 55.0
   },
   "useDefaultConstraints": true
 }
