@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.631107954545453,
-        "y": 3.461605113636363
+        "x": 6.360371486032304,
+        "y": 4.143197958219478
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.994,
-        "y": 2.77
+        "x": 5.853323863636364,
+        "y": 4.18953125
       },
       "prevControl": {
-        "x": 5.82340909090909,
-        "y": 2.9929403409090907
+        "x": 6.702984946826422,
+        "y": 4.1218989175530485
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Reef"
     }
   ],
   "rotationTargets": [],
@@ -42,12 +42,12 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": false

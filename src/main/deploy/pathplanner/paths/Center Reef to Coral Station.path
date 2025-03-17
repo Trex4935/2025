@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.588380681818182,
-        "y": 4.029985795454545
+        "x": 5.853323863636364,
+        "y": 4.18953125
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.631107954545453,
-        "y": 3.461605113636363
+        "x": 6.740795454541582,
+        "y": 5.595525568176893
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Reef"
     },
     {
       "anchor": {
-        "x": 4.994,
-        "y": 2.77
+        "x": 1.2564204545454545,
+        "y": 6.9815767045454535
       },
       "prevControl": {
-        "x": 5.82340909090909,
-        "y": 2.9929403409090907
+        "x": 1.6353409090870359,
+        "y": 6.482997159085983
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
+    "maxVelocity": 1.75,
     "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 126.0
   },
   "reversed": false,
   "folder": null,

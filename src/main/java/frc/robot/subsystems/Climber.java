@@ -8,19 +8,20 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
-  public final Solenoid climberSolenoid;
 
   private final Slot0Configs slot0Climber = new Slot0Configs();
 
@@ -29,10 +30,12 @@ public class Climber extends SubsystemBase {
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
+  private PowerDistribution m_pdh;
+  private final NeutralOut m_brake = new NeutralOut();
+
   /** Creates a new Climber. */
   public Climber() {
     climberMotor = new TalonFX(Constants.climberMotor);
-    climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
 
     slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -43,6 +46,9 @@ public class Climber extends SubsystemBase {
     slot0Climber.kP = 0.0;
     slot0Climber.kI = 0.0;
     slot0Climber.kD = 0.0;
+
+    m_pdh = new PowerDistribution(1, ModuleType.kRev);
+    m_pdh.setSwitchableChannel(false);
 
     mmConfigs.MotionMagicCruiseVelocity = 0;
     mmConfigs.MotionMagicAcceleration = 0;
@@ -58,7 +64,6 @@ public class Climber extends SubsystemBase {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
     */
-
     climberClose();
   }
 
@@ -76,15 +81,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberOpen() {
-    climberSolenoid.set(true);
+    m_pdh.setSwitchableChannel(true);
   }
 
   public void climberClose() {
-    climberSolenoid.set(false);
+    m_pdh.setSwitchableChannel(false);
   }
 
-  public boolean getClimberState() {
-    return climberSolenoid.get();
+  public void setBrake() {
+    climberMotor.setControl(m_brake);
   }
 
   public Command cm_climberMovement() {
@@ -96,7 +101,8 @@ public class Climber extends SubsystemBase {
   }
 
   public Command cm_solenoidToggle() {
-    return runOnce(() -> climberOpen()).withTimeout(1).andThen(runOnce(() -> climberClose()));
+    return Commands.sequence(
+        runOnce(() -> climberOpen()).withTimeout(1), runOnce(() -> climberClose()).withTimeout(1));
   }
 
   public void initSendable(SendableBuilder builder) {

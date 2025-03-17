@@ -22,8 +22,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.cm_AlgaeRemoval;
+import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
-import frc.robot.commands.cm_MoveAndEject;
+import frc.robot.commands.cm_IntakeSequence;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -85,10 +87,11 @@ public class RobotContainer {
   private final cm_FullSequence cmd_FullSequenceL1,
       cmd_FullSequenceL2,
       cmd_FullSequenceL3,
-      cmd_FullSequenceL4,
-      cmd_HumanIntake;
+      cmd_FullSequenceL4;
+  private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
-  private final cm_MoveAndEject cmd_AlgaeRemoval;
+  private final cm_AlgaeRemoval cmd_AlgaeRemoval;
+  private final cm_ClimbSequence cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,16 +104,18 @@ public class RobotContainer {
     cmd_FullSequenceL4 =
         new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_HumanIntake =
-        new cm_FullSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
+        new cm_IntakeSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
-    cmd_AlgaeRemoval = new cm_MoveAndEject(m_elevator, m_coralIntake);
+    cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
+    cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
 
     // Auto Commands
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
     NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
     NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
     NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+    NamedCommands.registerCommand("Coral Intake", cmd_HumanIntake);
 
     // Determine which drivetrain we are using
     if (drivetrainDIO.get()) {
@@ -158,7 +163,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     // speed limiter button that slows the speed down if needed
     joystick
-        .rightBumper()
+        .leftBumper()
         .whileTrue(
             Commands.startEnd(
                 () -> MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25,
@@ -166,19 +171,20 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(-0.15)));
-    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(0.15)));
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(-0.1)));
+    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(0.1)));
 
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
-    joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
-    joystick.povRight().onTrue(Commands.run(() -> drivetrain.shiftAlign(false)).withTimeout(0.5));
+    // joystick.povLeft().onTrue(Commands.run(() -> drivetrain.shiftAlign(true)).withTimeout(0.5));
+    // joystick.povRight().onTrue(Commands.run(() ->
+    // drivetrain.shiftAlign(false)).withTimeout(0.5));
 
     // Will align with PID
-    // joystick.povLeft().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
-    // joystick.povRight().onTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
     // Configure the trigger bindings
     configureBindings();
@@ -206,7 +212,7 @@ public class RobotContainer {
     // manually moves elevator down
     operatorBoard.button(1).whileTrue(m_elevator.cm_moveElevator(-0.1));
     // n/a for now... not sure what i want to do with this just yet (likely climber)
-    operatorBoard.button(2).whileTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
+    operatorBoard.button(2).onTrue(m_coralIntake.cm_runCoralPivotMotor(-0.1));
     operatorBoard.button(3).whileTrue(m_elevator.cm_moveElevator(0.1));
     // manually moves elevator up
     operatorBoard
@@ -215,16 +221,13 @@ public class RobotContainer {
             m_coralIntake.cm_runCoralPivotMotor(0.1)); // Change this to run the pivot for now
     // n/a for now... not sure what i want to do with this just yet (likely climber)
     // ejects game piece (coral for now)
-    operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
+    // operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
     // goes to default
     operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard
-        .button(10)
-        .onTrue((m_Climber.cm_solenoidToggle()))
-        .onFalse(m_Climber.cm_climberMovement());
+    operatorBoard.button(10).onTrue(m_Climber.cm_solenoidToggle());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -237,6 +240,9 @@ public class RobotContainer {
     operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
+
+    sysid.leftBumper().whileTrue(m_Climber.cm_climberVelocity(0.5));
+    sysid.rightBumper().whileTrue(m_Climber.cm_climberVelocity(-0.5));
 
     // SysID test controls
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));

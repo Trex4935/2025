@@ -14,16 +14,21 @@ import frc.robot.subsystems.LEDSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class cm_AlgaeRemoval extends SequentialCommandGroup {
+public class cm_IntakeSequence extends SequentialCommandGroup {
   /** Creates a new cm_FullSequence. */
-  public cm_AlgaeRemoval(Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
+  public cm_IntakeSequence(
+      BotState botState, Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Sets the state
-        StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        new cm_SetPivotAngle(coralIntake).withTimeout(4),
-        new cm_MoveAndEject(elevator, coralIntake).withTimeout(3),
+        StateMachine.setGlobalState(botState),
+        leds.cm_setLedToColor(botState.colorDisplay),
+        new cm_SetElevatorPosition(elevator)
+            .withTimeout(5)
+            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
+        new cm_SetCoralIntake(coralIntake),
+
         // Resets the state to default
         new cm_SetToDefault(elevator, leds));
   }

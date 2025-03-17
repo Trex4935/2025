@@ -4,50 +4,46 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.CoralIntake;
-import java.time.Duration;
-import java.time.Instant;
+import frc.robot.subsystems.Climber;
 
 /** An example command that uses an example subsystem. */
-public class cm_SetCoralIntake extends Command {
-  private final CoralIntake m_coralIntake;
-  private Instant startTime;
+public class cm_SetClimberPosition extends Command {
+  private final Climber m_climber;
+  private final double position;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public cm_SetCoralIntake(CoralIntake coralIntake) {
-    m_coralIntake = coralIntake;
+  public cm_SetClimberPosition(Climber climber, double setPosition) {
+    m_climber = climber;
+    position = setPosition;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(coralIntake);
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    startTime = Instant.now();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntake.runIntakeMotor(Constants.StateMachineConstant.botState.coralIntakeSpeed);
+    m_climber.moveClimberMotor(position);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_coralIntake.stopIntakeMotor();
+    m_climber.run(() -> m_climber.setBrake());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_coralIntake.coralIntakeMotor.getVelocity().getValueAsDouble() < 1
-        && (Duration.between(startTime, Instant.now()).toMillis() > 200));
+    return MathUtil.isNear(position, m_climber.climberMotor.getPosition().getValueAsDouble(), 0.2);
   }
 }
