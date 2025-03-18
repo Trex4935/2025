@@ -171,8 +171,21 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(-0.1)));
-    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearest(0.1)));
+    joystick
+        .leftTrigger()
+        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-0.1)));
+    joystick
+        .rightTrigger()
+        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(0.1)));
+
+    joystick
+        .back()
+        .and(joystick.leftTrigger())
+        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestStation()));
+    joystick
+        .back()
+        .and(joystick.rightTrigger())
+        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestStation()));
 
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
