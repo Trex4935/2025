@@ -13,8 +13,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +21,7 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
+  public final Servo climberServo;
 
   private final Slot0Configs slot0Climber = new Slot0Configs();
 
@@ -30,12 +30,13 @@ public class Climber extends SubsystemBase {
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
-  private PowerDistribution m_pdh;
   private final NeutralOut m_brake = new NeutralOut();
 
   /** Creates a new Climber. */
   public Climber() {
     climberMotor = new TalonFX(Constants.climberMotor);
+    climberServo = new Servo(0);
+    climberServo.setDisabled();
 
     slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -47,8 +48,6 @@ public class Climber extends SubsystemBase {
     slot0Climber.kI = 0.0;
     slot0Climber.kD = 0.0;
 
-    m_pdh = new PowerDistribution(1, ModuleType.kRev);
-    m_pdh.setSwitchableChannel(false);
 
     mmConfigs.MotionMagicCruiseVelocity = 0;
     mmConfigs.MotionMagicAcceleration = 0;
@@ -81,11 +80,13 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberOpen() {
-    m_pdh.setSwitchableChannel(true);
+    climberServo.setDisabled();
+    climberServo.setAngle(180);
   }
 
   public void climberClose() {
-    m_pdh.setSwitchableChannel(false);
+    climberServo.setAngle(0);
+    climberServo.setDisabled();
   }
 
   public void setBrake() {
