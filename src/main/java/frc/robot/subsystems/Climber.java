@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
@@ -27,7 +28,7 @@ public class Climber extends SubsystemBase {
 
   private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
 
-  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+  private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
   private final NeutralOut m_brake = new NeutralOut();
@@ -44,7 +45,7 @@ public class Climber extends SubsystemBase {
     slot0Climber.kS = 0.0;
     slot0Climber.kV = 0.0;
     slot0Climber.kA = 0.0;
-    slot0Climber.kP = 0.0;
+    slot0Climber.kP = 1.0;
     slot0Climber.kI = 0.0;
     slot0Climber.kD = 0.0;
 
@@ -63,11 +64,12 @@ public class Climber extends SubsystemBase {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
     */
+    climberMotor.setPosition(0);
     climberClose();
   }
 
   public void moveClimberMotor(double position) {
-    climberMotor.setControl(motionMagicVoltage.withPosition(position));
+    climberMotor.setControl(positionVoltage.withPosition(position));
   }
 
   public void climberMotorDutyCycle(double dutyCycle) {
