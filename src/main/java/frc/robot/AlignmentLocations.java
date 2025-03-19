@@ -154,4 +154,14 @@ public class AlignmentLocations {
     reefFarMid.aprilTagPoseBlue,
     reefFarRight.aprilTagPoseBlue
   };
+
+  public static AlignmentPose[] coralStationTags = {coralStationLeft, coralStationRight};
+
+  public static Pose2d[] coralStationPoseListBlue = {
+    coralStationLeft.aprilTagPoseBlue, coralStationRight.aprilTagPoseBlue
+  };
+
+  public static Pose2d[] coralStationPoseListRed = {
+    coralStationLeft.aprilTagPoseRed, coralStationRight.aprilTagPoseRed
+  };
 }

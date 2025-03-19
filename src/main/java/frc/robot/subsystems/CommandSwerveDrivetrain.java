@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.AlignmentLocations;
 import frc.robot.AlignmentLocations.AlignmentPose;
+import frc.robot.Constants;
 import frc.robot.commands.cm_PIDAutoAlign;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import java.util.ArrayList;
@@ -290,7 +291,25 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return new Pose2d(newTranslation, heading);
   }
 
-  public Pose2d shiftNearestReefPose(boolean rightShift) {
+  public Command ppAutoDriveNearestStation() {
+    // Default to Blue alliance if none is specified
+    Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    // Add lists for poses and offsets
+    List<Pose2d> poseList =
+        ally == Alliance.Blue
+            ? Arrays.asList(AlignmentLocations.coralStationPoseListBlue)
+            : Arrays.asList(AlignmentLocations.coralStationPoseListRed);
+
+    Pose2d nearestTag = this.getState().Pose.nearest(poseList);
+
+    return Commands.either(
+        ppAutoDrive(AlignmentLocations.coralStationLeft),
+        ppAutoDrive(AlignmentLocations.coralStationRight),
+        () -> nearestTag.equals(poseList.get(0)));
+  }
+
+  public Pose2d shiftNearestReefPose(boolean leftShift) {
     // Default to Blue alliance if none is specified
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
@@ -328,9 +347,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     // Create the target pose with the target translation and offset theta
     Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
 
-    double shiftAdjustment = rightShift ? 1 : -1;
+    double shiftAdjustment = leftShift ? 1 : -1;
 
-    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * 0.1);
+    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * Constants.coralOffset);
   }
 
   /**
@@ -338,7 +357,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
    *
    * @return A command that drives to a location using PathPlanner
    */
-  public Command ppAutoDriveNearest() {
+  public Command ppAutoDriveNearestReef() {
     // Default to Blue alliance if none is specified
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
@@ -385,7 +404,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
    *
    * @return A command that drives to a location using PathPlanner
    */
-  public Command ppAutoDriveNearest(double robotCentricOffsetX) {
+  public Command ppAutoDriveNearestReef(double robotCentricOffsetX) {
     // Default to Blue alliance if none is specified
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
@@ -466,9 +485,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
   }
 
-  public Command cm_driveAndAlign(boolean rightShift) {
+  public Command cm_driveAndAlign(boolean leftShift) {
     return Commands.sequence(
-        ppAutoDriveNearest(), new cm_PIDAutoAlign(shiftNearestReefPose(rightShift), this));
+        ppAutoDriveNearestReef(), new cm_PIDAutoAlign(shiftNearestReefPose(leftShift), this));
   }
 
   @Override
