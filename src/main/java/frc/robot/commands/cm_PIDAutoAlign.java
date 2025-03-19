@@ -36,15 +36,15 @@ public class cm_PIDAutoAlign extends Command {
 
     driveRequest = new SwerveRequest.FieldCentric();
 
-    swervePIDx = new PhoenixPIDController(0.05, 0, 0);
-    swervePIDy = new PhoenixPIDController(0.05, 0, 0);
-    swervePIDtheta = new PhoenixPIDController(0.05, 0, 0);
+    swervePIDx = new PhoenixPIDController(1, 0, 0);
+    swervePIDy = new PhoenixPIDController(1, 0, 0);
+    swervePIDtheta = new PhoenixPIDController(0.1, 0, 0);
 
     swervePIDtheta.enableContinuousInput(-180, 180);
 
-    swervePIDx.setTolerance(0.05);
-    swervePIDy.setTolerance(0.05);
-    swervePIDtheta.setTolerance(Math.toRadians(0.1));
+    swervePIDx.setTolerance(0.02);
+    swervePIDy.setTolerance(0.02);
+    swervePIDtheta.setTolerance(0.2);
   }
 
   // Called when the command is initially scheduled.
@@ -92,7 +92,9 @@ public class cm_PIDAutoAlign extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drivetrain.applyRequest(() -> new SwerveRequest.SwerveDriveBrake());
+  }
 
   // Returns true when the command should end.
   @Override

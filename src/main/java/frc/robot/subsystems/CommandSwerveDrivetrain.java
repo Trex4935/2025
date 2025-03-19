@@ -348,7 +348,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     double shiftAdjustment = leftShift ? 1 : -1;
 
-    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * 0.1);
+    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * 0.15);
   }
 
   /**
