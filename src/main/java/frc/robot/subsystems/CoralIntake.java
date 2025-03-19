@@ -53,7 +53,7 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
     coralPivotconfigs.Slot0.kG = 0.0;
     coralPivotconfigs.Slot0.kS = 0.0;
-    coralPivotconfigs.Slot0.kV = 1.0;
+    coralPivotconfigs.Slot0.kV = 1.3;
     coralPivotconfigs.Slot0.kP = 3.0;
     coralPivotconfigs.Slot0.kI = 0.0;
     coralPivotconfigs.Slot0.kD = 0.0;
@@ -63,7 +63,7 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
     coralPivotconfigs.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;
 
-    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 18;
+    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 35;
     coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 3;
     coralPivotconfigs.MotionMagic.MotionMagicJerk = 0;
 
