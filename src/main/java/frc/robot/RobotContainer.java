@@ -179,13 +179,15 @@ public class RobotContainer {
         .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(0.1)));
 
     joystick
-        .back()
+        .start()
         .and(joystick.leftTrigger())
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestStation()));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft)));
     joystick
-        .back()
+        .start()
         .and(joystick.rightTrigger())
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestStation()));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
 
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
