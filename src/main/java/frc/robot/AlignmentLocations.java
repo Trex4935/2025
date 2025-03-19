@@ -74,7 +74,7 @@ public class AlignmentLocations {
     }
   }
 
-  private static final double xReefDist = 0.25;
+  private static final double xReefDist = 0.3;
 
   // TODO: Adjust values as needed
   public static AlignmentPose coralStationLeft =
