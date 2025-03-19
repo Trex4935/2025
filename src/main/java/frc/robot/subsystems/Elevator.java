@@ -40,7 +40,7 @@ public class Elevator extends SubsystemBase {
     elevatorConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
     elevatorConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
     elevatorConfigs.Slot0.kG = 0.2;
-    elevatorConfigs.Slot0.kV = 0.9;
+    elevatorConfigs.Slot0.kV = 1.0;
     elevatorConfigs.Slot0.kA = 0.1;
     elevatorConfigs.Slot0.kP = 7.0;
     elevatorConfigs.Slot0.kI = 0.0;
@@ -48,9 +48,9 @@ public class Elevator extends SubsystemBase {
 
     elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 100;
-    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 40;
-    elevatorConfigs.MotionMagic.MotionMagicJerk = 0;
+    elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 150;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 75;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 45;
 
     elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;
