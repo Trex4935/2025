@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": " Start 1 to Reef 4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
+            "pathName": "Start 1 to Reef 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef 4 to Coral Station"
+            "pathName": "Reef 2 to Human Player 1"
           }
         }
       ]
