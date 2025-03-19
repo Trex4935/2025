@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.AlignmentLocations;
 import frc.robot.AlignmentLocations.AlignmentPose;
+import frc.robot.Constants;
 import frc.robot.commands.cm_PIDAutoAlign;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import java.util.ArrayList;
@@ -348,7 +349,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     double shiftAdjustment = leftShift ? 1 : -1;
 
-    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * 0.15);
+    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * Constants.coralOffset);
   }
 
   /**
@@ -484,9 +485,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
   }
 
-  public Command cm_driveAndAlign(boolean rightShift) {
+  public Command cm_driveAndAlign(boolean leftShift) {
     return Commands.sequence(
-        ppAutoDriveNearestReef(), new cm_PIDAutoAlign(shiftNearestReefPose(rightShift), this));
+        ppAutoDriveNearestReef(), new cm_PIDAutoAlign(shiftNearestReefPose(leftShift), this));
   }
 
   @Override
