@@ -12,6 +12,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -21,6 +23,8 @@ public class cm_PIDAutoAlign extends Command {
   private final SwerveRequest.FieldCentric driveRequest;
   private PhoenixPIDController swervePIDx, swervePIDy, swervePIDtheta;
   private final Pose2d targetPose;
+  private final Alliance ally;
+  private final double translationAllianceInvert;
 
   /**
    * Aligns to a pose using a PID and feedforward values.
@@ -33,6 +37,10 @@ public class cm_PIDAutoAlign extends Command {
     this.targetPose = targetPose;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
+
+    ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    translationAllianceInvert = (ally == Alliance.Blue ? 1 : -1);
 
     driveRequest = new SwerveRequest.FieldCentric();
 
@@ -85,8 +93,8 @@ public class cm_PIDAutoAlign extends Command {
         driveRequest
             .withDriveRequestType(DriveRequestType.Velocity)
             .withSteerRequestType(SteerRequestType.Position)
-            .withVelocityX(xOut)
-            .withVelocityY(yOut)
+            .withVelocityX(translationAllianceInvert * xOut)
+            .withVelocityY(translationAllianceInvert * yOut)
             .withRotationalRate(rotOut));
   }
 
