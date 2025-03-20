@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.48910047598648,
-        "y": 6.576225890598952
+        "x": 7.813866923233233,
+        "y": 6.243454660162564
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 5.293,
-        "y": 5.045
+        "y": 5.1045
       },
       "prevControl": {
         "x": 6.151548525785201,
-        "y": 5.557732316976469
+        "y": 5.617232316976469
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "S3"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "JR Auto 2",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": -90.0
