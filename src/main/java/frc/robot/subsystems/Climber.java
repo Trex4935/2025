@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -48,7 +47,6 @@ public class Climber extends SubsystemBase {
     slot0Climber.kP = 1.0;
     slot0Climber.kI = 0.0;
     slot0Climber.kD = 0.0;
-
 
     mmConfigs.MotionMagicCruiseVelocity = 0;
     mmConfigs.MotionMagicAcceleration = 0;
