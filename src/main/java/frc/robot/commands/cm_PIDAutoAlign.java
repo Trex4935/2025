@@ -12,6 +12,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -21,6 +23,8 @@ public class cm_PIDAutoAlign extends Command {
   private final SwerveRequest.FieldCentric driveRequest;
   private PhoenixPIDController swervePIDx, swervePIDy, swervePIDtheta;
   private final Pose2d targetPose;
+  private final Alliance ally;
+  private final double translationAllianceInvert;
 
   /**
    * Aligns to a pose using a PID and feedforward values.
@@ -34,17 +38,21 @@ public class cm_PIDAutoAlign extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
 
+    ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    translationAllianceInvert = (ally == Alliance.Blue ? 1 : -1);
+
     driveRequest = new SwerveRequest.FieldCentric();
 
-    swervePIDx = new PhoenixPIDController(0.05, 0, 0);
-    swervePIDy = new PhoenixPIDController(0.05, 0, 0);
-    swervePIDtheta = new PhoenixPIDController(0.05, 0, 0);
+    swervePIDx = new PhoenixPIDController(1, 0, 0);
+    swervePIDy = new PhoenixPIDController(1, 0, 0);
+    swervePIDtheta = new PhoenixPIDController(0.1, 0, 0);
 
     swervePIDtheta.enableContinuousInput(-180, 180);
 
-    swervePIDx.setTolerance(0.05);
-    swervePIDy.setTolerance(0.05);
-    swervePIDtheta.setTolerance(Math.toRadians(0.1));
+    swervePIDx.setTolerance(0.02);
+    swervePIDy.setTolerance(0.02);
+    swervePIDtheta.setTolerance(0.2);
   }
 
   // Called when the command is initially scheduled.
@@ -85,14 +93,16 @@ public class cm_PIDAutoAlign extends Command {
         driveRequest
             .withDriveRequestType(DriveRequestType.Velocity)
             .withSteerRequestType(SteerRequestType.Position)
-            .withVelocityX(xOut)
-            .withVelocityY(yOut)
+            .withVelocityX(translationAllianceInvert * xOut)
+            .withVelocityY(translationAllianceInvert * yOut)
             .withRotationalRate(rotOut));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drivetrain.applyRequest(() -> new SwerveRequest.SwerveDriveBrake());
+  }
 
   // Returns true when the command should end.
   @Override
