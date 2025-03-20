@@ -30,7 +30,7 @@ public class Climber extends SubsystemBase {
   private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
-  private PowerDistribution m_pdh;
+  private final PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
   private final NeutralOut m_brake = new NeutralOut();
 
   /** Creates a new Climber. */
@@ -47,9 +47,6 @@ public class Climber extends SubsystemBase {
     slot0Climber.kI = 0.0;
     slot0Climber.kD = 0.0;
 
-    m_pdh = new PowerDistribution(1, ModuleType.kRev);
-    m_pdh.setSwitchableChannel(false);
-
     mmConfigs.MotionMagicCruiseVelocity = 0;
     mmConfigs.MotionMagicAcceleration = 0;
     mmConfigs.MotionMagicJerk = 0;
@@ -64,7 +61,6 @@ public class Climber extends SubsystemBase {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
     */
-    climberClose();
   }
 
   public void moveClimberMotor(double position) {
@@ -90,6 +86,14 @@ public class Climber extends SubsystemBase {
 
   public void setBrake() {
     climberMotor.setControl(m_brake);
+  }
+
+  public Command cm_open() {
+    return run(() -> climberOpen());
+  }
+
+  public Command cm_close() {
+    return run(() -> climberClose());
   }
 
   public Command cm_climberMovement() {

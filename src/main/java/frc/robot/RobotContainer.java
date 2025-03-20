@@ -173,10 +173,12 @@ public class RobotContainer {
 
     joystick
         .leftTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
     joystick
         .rightTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
     joystick
         .start()
@@ -242,7 +244,8 @@ public class RobotContainer {
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(10).onTrue(m_Climber.cm_solenoidToggle());
+    operatorBoard.button(5).whileTrue(m_Climber.cm_open());
+    operatorBoard.button(10).whileTrue(m_Climber.cm_close());
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
