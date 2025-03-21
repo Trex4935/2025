@@ -35,6 +35,7 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber() {
+    m_pdh.setSwitchableChannel(true);
     climberMotor = new TalonFX(Constants.climberMotor);
 
     slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
