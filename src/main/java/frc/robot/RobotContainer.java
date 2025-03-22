@@ -173,10 +173,12 @@ public class RobotContainer {
 
     joystick
         .leftTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
     joystick
         .rightTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
     joystick
         .start()
