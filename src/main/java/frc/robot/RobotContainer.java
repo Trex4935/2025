@@ -237,6 +237,17 @@ public class RobotContainer {
     joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
     joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
+    /*
+    joystick
+        .povLeft()
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
+    joystick
+        .povRight()
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft)));
+    */
+
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
