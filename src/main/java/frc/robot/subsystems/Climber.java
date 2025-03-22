@@ -12,8 +12,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,13 +28,14 @@ public class Climber extends SubsystemBase {
   private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
-  private final PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
   private final NeutralOut m_brake = new NeutralOut();
+
+  private Solenoid solenoid;
 
   /** Creates a new Climber. */
   public Climber() {
     climberMotor = new TalonFX(Constants.climberMotor);
-    m_pdh.setSwitchableChannel(false);
+    solenoid = new Solenoid(14, PneumaticsModuleType.CTREPCM, 5);
 
     climberConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     climberConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -72,11 +73,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberOpen() {
-    m_pdh.setSwitchableChannel(true);
+    solenoid.set(true);
   }
 
   public void climberClose() {
-    m_pdh.setSwitchableChannel(false);
+    solenoid.set(false);
   }
 
   public void setBrake() {
@@ -110,7 +111,6 @@ public class Climber extends SubsystemBase {
     builder.addDoubleProperty("Climber motor percent output", () -> climberMotor.get(), null);
     builder.addDoubleProperty(
         "Climber motor velocity", () -> climberMotor.getVelocity().getValueAsDouble(), null);
-    builder.addBooleanProperty("Climber solenoid value", () -> m_pdh.getSwitchableChannel(), null);
   }
 
   @Override
