@@ -27,11 +27,12 @@ public class Climber extends SubsystemBase {
   private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
-  private PowerDistribution m_pdh;
+  private final PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
   private final NeutralOut m_brake = new NeutralOut();
 
   /** Creates a new Climber. */
   public Climber() {
+    m_pdh.setSwitchableChannel(false);
     climberMotor = new TalonFX(Constants.climberMotor);
 
     climberConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
@@ -44,9 +45,6 @@ public class Climber extends SubsystemBase {
     climberConfigs.Slot0.kI = 0.0;
     climberConfigs.Slot0.kD = 0.0;
 
-    m_pdh = new PowerDistribution(1, ModuleType.kRev);
-    m_pdh.setSwitchableChannel(false);
-
     dutyCycleOut = new DutyCycleOut(0);
 
     climberMotor.getConfigurator().apply(climberConfigs);
@@ -57,7 +55,6 @@ public class Climber extends SubsystemBase {
     }
     */
     climberMotor.setPosition(0);
-    climberClose();
   }
 
   public void moveClimberMotor(double position) {
@@ -83,6 +80,14 @@ public class Climber extends SubsystemBase {
 
   public void setBrake() {
     climberMotor.setControl(m_brake);
+  }
+
+  public Command cm_open() {
+    return run(() -> climberOpen());
+  }
+
+  public Command cm_close() {
+    return run(() -> climberClose());
   }
 
   public Command cm_climberMovement() {

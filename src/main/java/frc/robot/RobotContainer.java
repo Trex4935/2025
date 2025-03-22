@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -240,11 +241,12 @@ public class RobotContainer {
     // ejects game piece (coral for now)
     // operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
     // goes to default
-    operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
+    operatorBoard.button(5).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(10).onTrue(cmd_ClimbSequence);
+    operatorBoard.button(6).whileTrue(m_climber.cm_open()); // SOl in (climb deploy)
+    operatorBoard.button(10).whileTrue(m_climber.cm_close()); // Sol out (no climber thing)
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -281,6 +283,7 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return autoChooser.getSelected();
+    return new PathPlannerAuto("R3 Two Piece");
+    // return autoChooser.getSelected();
   }
 }

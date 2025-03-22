@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": " Start 1 to Reef 4"
+            "pathName": "S3 to R3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L4"
+            "name": "L2"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "Reef 4 to Coral Station"
+            "waitTime": 4.0
           }
         }
       ]

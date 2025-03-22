@@ -3,14 +3,13 @@
   "robotLength": 0.6858,
   "holonomicMode": true,
   "pathFolders": [
-    "JR Auto 1",
-    "JR Auto 2"
+    "New Folder"
   ],
   "autoFolders": [
     "New Folder"
   ],
-  "defaultMaxVel": 2.0,
-  "defaultMaxAccel": 2.0,
+  "defaultMaxVel": 1.5,
+  "defaultMaxAccel": 1.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
