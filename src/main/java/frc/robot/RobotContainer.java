@@ -174,10 +174,12 @@ public class RobotContainer {
 
     joystick
         .leftTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
     joystick
         .rightTrigger()
-        .whileTrue(drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
     joystick
         .start()
@@ -239,11 +241,12 @@ public class RobotContainer {
     // ejects game piece (coral for now)
     // operatorBoard.button(10).whileTrue(cmd_AlgaeRemoval);
     // goes to default
-    operatorBoard.button(6).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
+    operatorBoard.button(5).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(10).onTrue(m_Climber.cm_solenoidToggle());
+    operatorBoard.button(6).whileTrue(m_Climber.cm_open()); // SOl in (climb deploy)
+    operatorBoard.button(10).whileTrue(m_Climber.cm_close()); // Sol out (no climber thing)
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
