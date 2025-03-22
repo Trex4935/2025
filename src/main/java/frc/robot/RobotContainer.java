@@ -24,8 +24,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
+import frc.robot.commands.cm_EndSequence;
 import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_HalfSequence;
 import frc.robot.commands.cm_IntakeSequence;
+import frc.robot.commands.cm_PIDAutoAlign;
 import frc.robot.commands.cm_SetClimberPosition;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
@@ -89,6 +92,11 @@ public class RobotContainer {
       cmd_FullSequenceL2,
       cmd_FullSequenceL3,
       cmd_FullSequenceL4;
+  private final cm_HalfSequence cmd_HalfSequenceL1,
+      cmd_HalfSequenceL2,
+      cmd_HalfSequenceL3,
+      cmd_HalfSequenceL4;
+  private final cm_EndSequence cmd_EndSequence;
   private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
@@ -96,6 +104,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // Determine which drivetrain we are using
+    if (drivetrainDIO.get()) {
+      drivetrain = TunerConstants.createDrivetrain();
+    } else {
+      drivetrain = TunerConstantsBOW.createDrivetrain();
+    }
+
     cmd_FullSequenceL1 =
         new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL2 =
@@ -104,6 +119,15 @@ public class RobotContainer {
         new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL4 =
         new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL1 =
+        new cm_HalfSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL2 =
+        new cm_HalfSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL3 =
+        new cm_HalfSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL4 =
+        new cm_HalfSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_EndSequence = new cm_EndSequence(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_HumanIntake =
         new cm_IntakeSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
@@ -116,14 +140,20 @@ public class RobotContainer {
     NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
     NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
     NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+    NamedCommands.registerCommand("L1 HalfSeq", cmd_HalfSequenceL1);
+    NamedCommands.registerCommand("L2 HalfSeq", cmd_HalfSequenceL2);
+    NamedCommands.registerCommand("L3 HalfSeq", cmd_HalfSequenceL3);
+    NamedCommands.registerCommand("L4 HalfSeq", cmd_HalfSequenceL4);
+    NamedCommands.registerCommand("EndSeq", cmd_EndSequence);
     NamedCommands.registerCommand("Coral Intake", cmd_HumanIntake);
-
-    // Determine which drivetrain we are using
-    if (drivetrainDIO.get()) {
-      drivetrain = TunerConstants.createDrivetrain();
-    } else {
-      drivetrain = TunerConstantsBOW.createDrivetrain();
-    }
+    NamedCommands.registerCommand(
+        "PID Align Left",
+        drivetrain.defer(
+            () -> new cm_PIDAutoAlign(drivetrain.shiftNearestReefPose(true), drivetrain)));
+    NamedCommands.registerCommand(
+        "PID Align Right",
+        drivetrain.defer(
+            () -> new cm_PIDAutoAlign(drivetrain.shiftNearestReefPose(false), drivetrain)));
 
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
