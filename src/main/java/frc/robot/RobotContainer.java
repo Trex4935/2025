@@ -24,9 +24,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
-import frc.robot.commands.cm_ClimbSequence;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_IntakeSequence;
+import frc.robot.commands.cm_SetClimberPosition;
 import frc.robot.commands.cm_SetCoralEject;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
@@ -92,7 +92,7 @@ public class RobotContainer {
   private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
-  private final cm_ClimbSequence cmd_ClimbSequence;
+  private final cm_SetClimberPosition cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -109,7 +109,7 @@ public class RobotContainer {
 
     cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
-    cmd_ClimbSequence = new cm_ClimbSequence(60, m_climber);
+    cmd_ClimbSequence = new cm_SetClimberPosition(m_climber, 180);
 
     // Auto Commands
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
@@ -209,6 +209,7 @@ public class RobotContainer {
     SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_coralIntake);
+    SmartDashboard.putData(m_climber);
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -243,10 +244,14 @@ public class RobotContainer {
     // goes to default
     operatorBoard.button(5).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
-    operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
+    operatorBoard.button(10).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(6).whileTrue(m_climber.cm_open()); // SOl in (climb deploy)
-    operatorBoard.button(10).whileTrue(m_climber.cm_close()); // Sol out (no climber thing)
+    operatorBoard
+        .button(7)
+        .onTrue(m_climber.cm_open())
+        .onFalse(m_climber.cm_close()); // SOl in (climb deploy)
+
+    operatorBoard.button(6).onTrue(cmd_ClimbSequence); // Sol out (no climber thing)
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);

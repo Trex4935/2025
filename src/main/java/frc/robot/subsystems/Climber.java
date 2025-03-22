@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
@@ -32,8 +33,8 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber() {
-    m_pdh.setSwitchableChannel(false);
     climberMotor = new TalonFX(Constants.climberMotor);
+    m_pdh.setSwitchableChannel(false);
 
     climberConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     climberConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -99,16 +100,17 @@ public class Climber extends SubsystemBase {
   }
 
   public Command cm_solenoidToggle() {
-    return Commands.sequence(
-        runOnce(() -> climberOpen()).withTimeout(1), runOnce(() -> climberClose()).withTimeout(1));
+    return Commands.sequence(cm_open(), new WaitCommand(1), cm_close());
   }
 
+  @Override
   public void initSendable(SendableBuilder builder) {
     builder.addDoubleProperty(
         "Climber Encoder Pos", () -> climberMotor.getPosition().getValueAsDouble(), null);
     builder.addDoubleProperty("Climber motor percent output", () -> climberMotor.get(), null);
     builder.addDoubleProperty(
         "Climber motor velocity", () -> climberMotor.getVelocity().getValueAsDouble(), null);
+    builder.addBooleanProperty("Climber solenoid value", () -> m_pdh.getSwitchableChannel(), null);
   }
 
   @Override
