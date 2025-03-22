@@ -172,14 +172,14 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick
-        .leftTrigger()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
-    joystick
-        .rightTrigger()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
+    // joystick
+    //     .leftTrigger()
+    //     .whileTrue(
+    //         drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
+    // joystick
+    //     .rightTrigger()
+    //     .whileTrue(
+    //         drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
     joystick
         .start()
@@ -203,6 +203,9 @@ public class RobotContainer {
     // Will align with PID
     joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
     joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
     // Configure the trigger bindings
     configureBindings();
