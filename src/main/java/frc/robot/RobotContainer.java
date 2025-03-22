@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -143,7 +144,7 @@ public class RobotContainer {
             // broken change to pos -joseph
             ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick
         .b()
         .whileTrue(
@@ -248,10 +249,8 @@ public class RobotContainer {
     // algae intake
     operatorBoard.button(10).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard
-        .button(7)
-        .onTrue(m_climber.cm_open())
-        .onFalse(m_climber.cm_close()); // SOl in (climb deploy)
+
+    operator.a().onTrue(m_climber.cm_open()).onFalse(m_climber.cm_close()); // SOl in (climb deploy)
 
     operatorBoard.button(6).onTrue(cmd_ClimbSequence); // Sol out (no climber thing)
 
@@ -275,7 +274,7 @@ public class RobotContainer {
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
     sysid.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
     sysid.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
     sysid.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
@@ -290,7 +289,7 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    // return new PathPlannerAuto("R3 Two Piece");
-    return autoChooser.getSelected();
+    return new PathPlannerAuto("R3 Two Piece");
+    // return autoChooser.getSelected();
   }
 }

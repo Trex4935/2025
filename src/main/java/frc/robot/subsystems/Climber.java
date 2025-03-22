@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   public Climber() {
     climberMotor = new TalonFX(Constants.climberMotor);
-    solenoid = new Solenoid(14, PneumaticsModuleType.CTREPCM, 5);
+    solenoid = new Solenoid(50, PneumaticsModuleType.CTREPCM, 5);
 
     climberConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     climberConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -85,6 +85,7 @@ public class Climber extends SubsystemBase {
   }
 
   public Command cm_open() {
+    System.out.println("hello");
     return run(() -> climberOpen());
   }
 
