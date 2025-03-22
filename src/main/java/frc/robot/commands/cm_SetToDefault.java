@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.StateMachineConstant;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
+import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LEDSubsystem;
 
@@ -16,12 +17,14 @@ import frc.robot.subsystems.LEDSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class cm_SetToDefault extends SequentialCommandGroup {
   /** Creates a new cm_SetToDefault. */
-  public cm_SetToDefault(Elevator elevator, LEDSubsystem leds) {
+  public cm_SetToDefault(Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         StateMachine.setGlobalState(BotState.DEFAULT),
-        new cm_SetElevatorPosition(elevator).withTimeout(5),
+        new cm_SetElevatorPosition(elevator)
+            .withTimeout(1)
+            .alongWith(new cm_SetPivotAngle(coralIntake)),
         leds.cm_setLedToColor(StateMachineConstant.botState.colorDisplay));
   }
 }
