@@ -30,6 +30,6 @@ public class cm_IntakeSequence extends SequentialCommandGroup {
         new cm_SetCoralIntake(coralIntake),
 
         // Resets the state to default
-        new cm_SetToDefault(elevator, leds));
+        new cm_SetElevatorToDefault(elevator, leds));
   }
 }
