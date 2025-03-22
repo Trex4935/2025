@@ -4,11 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
@@ -23,11 +22,9 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
   public final TalonFX climberMotor;
 
-  private final Slot0Configs slot0Climber = new Slot0Configs();
+  private final TalonFXConfiguration climberConfigs = new TalonFXConfiguration();
 
-  private final MotionMagicConfigs mmConfigs = new MotionMagicConfigs();
-
-  private MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+  private PositionVoltage positionVoltage = new PositionVoltage(0).withSlot(0);
   private DutyCycleOut dutyCycleOut;
 
   private final PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
@@ -38,34 +35,30 @@ public class Climber extends SubsystemBase {
     m_pdh.setSwitchableChannel(false);
     climberMotor = new TalonFX(Constants.climberMotor);
 
-    slot0Climber.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Climber.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-    slot0Climber.kG = 0.0;
-    slot0Climber.kS = 0.0;
-    slot0Climber.kV = 0.0;
-    slot0Climber.kA = 0.0;
-    slot0Climber.kP = 0.0;
-    slot0Climber.kI = 0.0;
-    slot0Climber.kD = 0.0;
-
-    mmConfigs.MotionMagicCruiseVelocity = 0;
-    mmConfigs.MotionMagicAcceleration = 0;
-    mmConfigs.MotionMagicJerk = 0;
+    climberConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+    climberConfigs.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+    climberConfigs.Slot0.kG = 0.0;
+    climberConfigs.Slot0.kS = 0.0;
+    climberConfigs.Slot0.kV = 0.0;
+    climberConfigs.Slot0.kA = 0.0;
+    climberConfigs.Slot0.kP = 1.0;
+    climberConfigs.Slot0.kI = 0.0;
+    climberConfigs.Slot0.kD = 0.0;
 
     dutyCycleOut = new DutyCycleOut(0);
 
-    // climberMotor.getConfigurator().apply(slot0Climber);
-    // climberMotor.getConfigurator().apply(mmConfigs);
+    climberMotor.getConfigurator().apply(climberConfigs);
 
     /*
     if (Utils.isSimulation()) {
       PhysicsSim.getInstance().addTalonFX(climberMotor, 0.2);
     }
     */
+    climberMotor.setPosition(0);
   }
 
   public void moveClimberMotor(double position) {
-    climberMotor.setControl(motionMagicVoltage.withPosition(position));
+    climberMotor.setControl(positionVoltage.withPosition(position));
   }
 
   public void climberMotorDutyCycle(double dutyCycle) {

@@ -70,9 +70,9 @@ public class RobotContainer {
   public final Vision m_vision = new Vision();
   public final CoralIntake m_coralIntake = new CoralIntake();
   public final Elevator m_elevator = new Elevator();
-  public final AlgaeIntake m_AlgaeIntake = new AlgaeIntake();
+  public final AlgaeIntake m_algaeIntake = new AlgaeIntake();
   public final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
-  public final Climber m_Climber = new Climber();
+  public final Climber m_climber = new Climber();
 
   public final CommandSwerveDrivetrain drivetrain;
   private final DigitalInput drivetrainDIO = new DigitalInput(0);
@@ -109,7 +109,7 @@ public class RobotContainer {
 
     cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
-    cmd_ClimbSequence = new cm_ClimbSequence(m_Climber, 7, 2);
+    cmd_ClimbSequence = new cm_ClimbSequence(60, m_climber);
 
     // Auto Commands
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
@@ -245,8 +245,8 @@ public class RobotContainer {
     // algae intake
     operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(6).whileTrue(m_Climber.cm_open()); // SOl in (climb deploy)
-    operatorBoard.button(10).whileTrue(m_Climber.cm_close()); // Sol out (no climber thing)
+    operatorBoard.button(6).whileTrue(m_climber.cm_open()); // SOl in (climb deploy)
+    operatorBoard.button(10).whileTrue(m_climber.cm_close()); // Sol out (no climber thing)
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -260,8 +260,8 @@ public class RobotContainer {
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
 
-    sysid.leftBumper().whileTrue(m_Climber.cm_climberVelocity(0.5));
-    sysid.rightBumper().whileTrue(m_Climber.cm_climberVelocity(-0.5));
+    sysid.leftBumper().whileTrue(m_climber.cm_climberVelocity(0.5));
+    sysid.rightBumper().whileTrue(m_climber.cm_climberVelocity(-0.5));
 
     // SysID test controls
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));

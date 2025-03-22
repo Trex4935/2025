@@ -39,6 +39,5 @@ public final class Constants {
   public static final int coralPivotMotor = 6;
   public static final int canRange = 2;
 
-
   public static final double coralOffset = 0.18;
 }
