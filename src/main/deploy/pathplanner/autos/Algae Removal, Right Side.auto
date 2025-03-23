@@ -11,26 +11,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S3 to  R3"
+                  "pathName": "S2 to R2"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Default"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4 HalfSeq"
-                      }
-                    }
-                  ]
+                  "name": "Default"
                 }
               }
             ]
@@ -39,25 +26,43 @@
         {
           "type": "named",
           "data": {
-            "name": "EndSeq"
+            "name": "L4"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef 2 to Coral Station"
+            "pathName": "Reef 3 to Reef 4, Algae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Coral Intake"
+            "name": "Algae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef 4 to Reef 5, Algae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae"
           }
         }
       ]
