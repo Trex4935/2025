@@ -15,9 +15,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "L4 HalfSeq"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Default"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4 HalfSeq"
+                      }
+                    }
+                  ]
                 }
               }
             ]
