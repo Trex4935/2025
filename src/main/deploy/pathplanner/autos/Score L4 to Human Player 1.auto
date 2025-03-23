@@ -10,18 +10,7 @@
             "pathName": "Start 1 to Reef 2"
           }
         },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto L4"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
-          }
-        },
+        
         {
           "type": "path",
           "data": {
