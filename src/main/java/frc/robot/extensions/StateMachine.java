@@ -26,7 +26,7 @@ public class StateMachine {
    *     gravity feedforward.
    */
   public enum BotState {
-    DEFAULT(1, 0, 16.6, Color.kRed), // field state, default state, no game pieces
+    DEFAULT(1, 0, 18, Color.kRed), // field state, default state, no game pieces
     INTAKECORAL(6.5, 0.15, 6.9, Color.kOrange), // preparing to intake coral
     REMOVEALGAE(40, -0.5, 18, Color.kYellow), // preparing to intake algae
     STORAGE(0, 0, 0, Color.kGreen), // intaked, coral or algae in

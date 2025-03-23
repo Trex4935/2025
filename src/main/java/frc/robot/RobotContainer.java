@@ -11,7 +11,6 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -144,6 +143,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
     NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
     NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+    NamedCommands.registerCommand("Algae", cmd_AlgaeRemoval);
     NamedCommands.registerCommand("L1 HalfSeq", cmd_HalfSequenceL1);
     NamedCommands.registerCommand("L2 HalfSeq", cmd_HalfSequenceL2);
     NamedCommands.registerCommand("L3 HalfSeq", cmd_HalfSequenceL3);
@@ -241,16 +241,14 @@ public class RobotContainer {
     joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
     joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
-    /*
     joystick
-        .povLeft()
+        .povDown()
         .whileTrue(
             drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
     joystick
-        .povRight()
+        .povUp()
         .whileTrue(
             drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft)));
-    */
 
     // Configure the trigger bindings
     configureBindings();
@@ -337,7 +335,7 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto("R3 Two Piece Split Sequences");
-    // return autoChooser.getSelected();
+
+    return autoChooser.getSelected();
   }
 }
