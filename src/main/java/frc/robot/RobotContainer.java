@@ -215,6 +215,7 @@ public class RobotContainer {
     //     .whileTrue(
     //         drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
+    /*
     joystick
         .start()
         .and(joystick.leftTrigger())
@@ -225,7 +226,7 @@ public class RobotContainer {
         .and(joystick.rightTrigger())
         .whileTrue(
             drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
-
+    */
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
     autoChooser = AutoBuilder.buildAutoChooser();
