@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "S3 to R3"
+            "pathName": "S3 to  R3"
           }
         },
         {
@@ -80,6 +80,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Refernce Autos",
   "choreoAuto": false
 }

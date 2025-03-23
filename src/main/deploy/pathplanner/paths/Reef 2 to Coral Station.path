@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.574,
-        "y": 6.173
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 7.824,
-        "y": 6.173
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 5.351420454545455,
         "y": 5.180042613636362
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.0085680137663715,
+        "y": 4.812954349958727
+      },
+      "isLocked": false,
+      "linkedName": "S3"
+    },
+    {
+      "anchor": {
+        "x": 1.753338068181818,
+        "y": 7.299005681818182
+      },
       "prevControl": {
-        "x": 6.209968980330656,
-        "y": 5.692774930612831
+        "x": 1.881833263540789,
+        "y": 7.042785387464747
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "S3"
+      "linkedName": "Human Player Top"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 127.97160376105043
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": 180.0
+    "velocity": 0,
+    "rotation": -119.99999999999999
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

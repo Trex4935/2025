@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S2 to R2"
+                  "pathName": "S3 to  R3"
                 }
               },
               {
@@ -38,31 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to R4"
+            "pathName": "Reef 2 to Coral Station"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Algae"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "R4 to R5"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Algae"
+            "name": "Coral Intake"
           }
         }
       ]

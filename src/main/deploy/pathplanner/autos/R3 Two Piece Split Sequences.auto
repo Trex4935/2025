@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S3 to R3"
+                  "pathName": "S3 to  R3"
                 }
               },
               {
@@ -51,7 +51,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "S3 to Coral Station"
+            "pathName": "Reef 2 to Coral Station"
           }
         },
         {
