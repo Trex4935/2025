@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Diagonal to Reef"
+            "pathName": "Diagonal to Reef 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef to Human Player"
+            "pathName": "Reef 1 to Human Player"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": " Human Player to Reef 5"
+            "pathName": " Coral Station to Reef 5"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Test Autos",
   "choreoAuto": false
 }

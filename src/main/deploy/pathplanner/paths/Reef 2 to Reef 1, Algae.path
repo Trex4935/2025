@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.459,
-        "y": 5.587
+        "x": 5.160298295454546,
+        "y": 5.180042613636362
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.45660511363221,
-        "y": 5.155113636359481
+        "x": 5.3348011363636365,
+        "y": 5.819886363636364
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "R2 Algae"
     },
     {
       "anchor": {
-        "x": 1.4791193181776636,
-        "y": 7.149431818177662
+        "x": 3.8307528409090907,
+        "y": 5.180042613636362
       },
       "prevControl": {
-        "x": 0.49857954545039096,
-        "y": 7.839133522723118
+        "x": 3.7061079545454545,
+        "y": 5.84481534090909
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.2852671255475
+    "rotation": -59.42077312751093
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -117.40482511718939
+    "rotation": -119.98163936884934
   },
   "useDefaultConstraints": true
 }

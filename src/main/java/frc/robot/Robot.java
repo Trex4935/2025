@@ -55,6 +55,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void robotInit() {
+    // PathfindingCommand.warmupCommand().schedule();
+  }
+
+  @Override
   public void robotPeriodic() {
     // var distance = CANrange.getDistance();
 

@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "S3 to R3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "S3 to  R3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Default"
+                }
+              }
+            ]
           }
         },
         {
@@ -19,13 +32,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "S3 to Coral Station"
+            "pathName": "Reef 2 to Coral Station"
           }
         },
         {

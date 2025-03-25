@@ -11,7 +11,6 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -24,10 +23,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
-import frc.robot.commands.cm_ClimbSequence;
+import frc.robot.commands.cm_EndSequence;
 import frc.robot.commands.cm_FullSequence;
+import frc.robot.commands.cm_HalfSequence;
 import frc.robot.commands.cm_IntakeSequence;
+import frc.robot.commands.cm_PIDAutoAlign;
+import frc.robot.commands.cm_SetClimberPosition;
 import frc.robot.commands.cm_SetCoralEject;
+import frc.robot.commands.cm_SetToDefault;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.generated.TunerConstants;
@@ -89,13 +92,26 @@ public class RobotContainer {
       cmd_FullSequenceL2,
       cmd_FullSequenceL3,
       cmd_FullSequenceL4;
+  private final cm_HalfSequence cmd_HalfSequenceL1,
+      cmd_HalfSequenceL2,
+      cmd_HalfSequenceL3,
+      cmd_HalfSequenceL4;
+  private final cm_SetToDefault cmd_SetToDefault;
+  private final cm_EndSequence cmd_EndSequence;
   private final cm_IntakeSequence cmd_HumanIntake;
   private final cm_SetCoralEject cmd_SetCoralEject;
   private final cm_AlgaeRemoval cmd_AlgaeRemoval;
-  private final cm_ClimbSequence cmd_ClimbSequence;
+  private final cm_SetClimberPosition cmd_ClimbSequence;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // Determine which drivetrain we are using
+    if (drivetrainDIO.get()) {
+      drivetrain = TunerConstants.createDrivetrain();
+    } else {
+      drivetrain = TunerConstantsBOW.createDrivetrain();
+    }
+
     cmd_FullSequenceL1 =
         new cm_FullSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL2 =
@@ -104,26 +120,44 @@ public class RobotContainer {
         new cm_FullSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_FullSequenceL4 =
         new cm_FullSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL1 =
+        new cm_HalfSequence(BotState.L1, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL2 =
+        new cm_HalfSequence(BotState.L2, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL3 =
+        new cm_HalfSequence(BotState.L3, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_HalfSequenceL4 =
+        new cm_HalfSequence(BotState.L4, m_elevator, m_coralIntake, m_ledSubsystem);
+    cmd_EndSequence = new cm_EndSequence(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_HumanIntake =
         new cm_IntakeSequence(BotState.INTAKECORAL, m_elevator, m_coralIntake, m_ledSubsystem);
 
     cmd_AlgaeRemoval = new cm_AlgaeRemoval(m_elevator, m_coralIntake, m_ledSubsystem);
     cmd_SetCoralEject = new cm_SetCoralEject(m_coralIntake);
-    cmd_ClimbSequence = new cm_ClimbSequence(60, m_climber);
+    cmd_ClimbSequence = new cm_SetClimberPosition(m_climber, 200);
+    cmd_SetToDefault = new cm_SetToDefault(m_elevator, m_coralIntake, m_ledSubsystem);
 
     // Auto Commands
+    NamedCommands.registerCommand("Default", cmd_SetToDefault);
     NamedCommands.registerCommand("L1", cmd_FullSequenceL1);
     NamedCommands.registerCommand("L2", cmd_FullSequenceL2);
     NamedCommands.registerCommand("L3", cmd_FullSequenceL3);
     NamedCommands.registerCommand("L4", cmd_FullSequenceL4);
+    NamedCommands.registerCommand("Algae", cmd_AlgaeRemoval);
+    NamedCommands.registerCommand("L1 HalfSeq", cmd_HalfSequenceL1);
+    NamedCommands.registerCommand("L2 HalfSeq", cmd_HalfSequenceL2);
+    NamedCommands.registerCommand("L3 HalfSeq", cmd_HalfSequenceL3);
+    NamedCommands.registerCommand("L4 HalfSeq", cmd_HalfSequenceL4);
+    NamedCommands.registerCommand("EndSeq", cmd_EndSequence);
     NamedCommands.registerCommand("Coral Intake", cmd_HumanIntake);
-
-    // Determine which drivetrain we are using
-    if (drivetrainDIO.get()) {
-      drivetrain = TunerConstants.createDrivetrain();
-    } else {
-      drivetrain = TunerConstantsBOW.createDrivetrain();
-    }
+    NamedCommands.registerCommand(
+        "PID Align Left",
+        drivetrain.defer(
+            () -> new cm_PIDAutoAlign(drivetrain.shiftNearestReefPose(true), drivetrain)));
+    NamedCommands.registerCommand(
+        "PID Align Right",
+        drivetrain.defer(
+            () -> new cm_PIDAutoAlign(drivetrain.shiftNearestReefPose(false), drivetrain)));
 
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
@@ -144,7 +178,7 @@ public class RobotContainer {
             // broken change to pos -joseph
             ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick
         .b()
         .whileTrue(
@@ -172,15 +206,16 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick
-        .leftTrigger()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
-    joystick
-        .rightTrigger()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
+    // joystick
+    //     .leftTrigger()
+    //     .whileTrue(
+    //         drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(-Constants.coralOffset)));
+    // joystick
+    //     .rightTrigger()
+    //     .whileTrue(
+    //         drivetrain.defer(() -> drivetrain.ppAutoDriveNearestReef(Constants.coralOffset)));
 
+    /*
     joystick
         .start()
         .and(joystick.leftTrigger())
@@ -191,7 +226,7 @@ public class RobotContainer {
         .and(joystick.rightTrigger())
         .whileTrue(
             drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
-
+    */
     // m_elevator.setDefaultCommand(m_elevator.run(() -> m_elevator.setBrake()));
 
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -204,11 +239,24 @@ public class RobotContainer {
     joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
     joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
 
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
+    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+
+    joystick
+        .povDown()
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
+    joystick
+        .povUp()
+        .whileTrue(
+            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft)));
+
     // Configure the trigger bindings
     configureBindings();
     SmartDashboard.putData(m_vision);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_coralIntake);
+    SmartDashboard.putData(m_climber);
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -243,10 +291,15 @@ public class RobotContainer {
     // goes to default
     operatorBoard.button(5).onTrue(StateMachine.setGlobalState(BotState.DEFAULT).andThen());
     // algae intake
-    operatorBoard.button(7).onTrue(cmd_AlgaeRemoval);
+    operatorBoard.button(10).onTrue(cmd_AlgaeRemoval);
     // Climbs (hopefully)
-    operatorBoard.button(6).whileTrue(m_climber.cm_open()); // SOl in (climb deploy)
-    operatorBoard.button(10).whileTrue(m_climber.cm_close()); // Sol out (no climber thing)
+
+    operatorBoard
+        .button(7)
+        .onTrue(m_climber.cm_open())
+        .onFalse(m_climber.cm_close()); // SOl in (climb deploy)
+
+    operatorBoard.button(6).onTrue(cmd_ClimbSequence); // Sol out (no climber thing)
 
     // coral intake
     operatorBoard.button(9).onTrue(cmd_HumanIntake);
@@ -268,7 +321,7 @@ public class RobotContainer {
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
     sysid.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
     sysid.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
     sysid.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
@@ -283,7 +336,7 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto("R3 Two Piece");
-    // return autoChooser.getSelected();
+
+    return autoChooser.getSelected();
   }
 }

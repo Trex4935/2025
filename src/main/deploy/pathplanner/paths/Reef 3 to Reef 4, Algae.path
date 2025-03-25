@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.318181818181818,
-        "y": 5.155113636363635
+        "x": 5.999573863636365,
+        "y": 4.149644886363636
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.975329377402736,
-        "y": 4.788025372686
+        "x": 6.300383522727274,
+        "y": 4.212798295454545
       },
       "isLocked": false,
-      "linkedName": "S3"
+      "linkedName": "Center Algae"
     },
     {
       "anchor": {
-        "x": 1.753338068181818,
-        "y": 7.299005681818182
+        "x": 5.160298295454546,
+        "y": 2.8533380681818175
       },
       "prevControl": {
-        "x": 1.881833263540789,
-        "y": 7.042785387464747
+        "x": 5.717045454545455,
+        "y": 2.429545454545454
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Human Player Top"
+      "linkedName": "R4 Algae"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 127.97160376105043
+    "rotation": 120.0685828218626
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

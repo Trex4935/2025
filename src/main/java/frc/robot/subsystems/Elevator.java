@@ -49,8 +49,8 @@ public class Elevator extends SubsystemBase {
     elevatorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     elevatorConfigs.MotionMagic.MotionMagicCruiseVelocity = 150;
-    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 75;
-    elevatorConfigs.MotionMagic.MotionMagicJerk = 45;
+    elevatorConfigs.MotionMagic.MotionMagicAcceleration = 100;
+    elevatorConfigs.MotionMagic.MotionMagicJerk = 90;
 
     elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     elevatorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 70;

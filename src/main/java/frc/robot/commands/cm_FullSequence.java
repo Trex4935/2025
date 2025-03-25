@@ -25,11 +25,11 @@ public class cm_FullSequence extends SequentialCommandGroup {
         StateMachine.setGlobalState(botState),
         leds.cm_setLedToColor(botState.colorDisplay),
         new cm_SetElevatorPosition(elevator)
-            .withTimeout(5)
+            .withTimeout(2)
             .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
         new cm_SetCoralEject(coralIntake),
 
         // Resets the state to default
-        new cm_SetToDefault(elevator, leds));
+        new cm_SetElevatorToDefault(elevator, leds));
   }
 }
