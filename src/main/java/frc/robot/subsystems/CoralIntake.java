@@ -63,8 +63,8 @@ public class CoralIntake extends SubsystemBase {
     coralPivotconfigs.Commutation.AdvancedHallSupport = AdvancedHallSupportValue.Enabled;
     coralPivotconfigs.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;
 
-    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 35;
-    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 3;
+    coralPivotconfigs.MotionMagic.MotionMagicCruiseVelocity = 50;
+    coralPivotconfigs.MotionMagic.MotionMagicAcceleration = 15;
     coralPivotconfigs.MotionMagic.MotionMagicJerk = 0;
 
     coralPivotMotor.getConfigurator().apply(coralPivotconfigs);

@@ -25,6 +25,8 @@ import frc.robot.generated.TunerConstants;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+
+  private boolean disabledInit = false;
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
@@ -55,9 +57,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotInit() {
-    // PathfindingCommand.warmupCommand().schedule();
-  }
+  public void robotInit() {}
 
   @Override
   public void robotPeriodic() {
@@ -82,7 +82,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    if (disabledInit == false) {
+      Command lol =
+          m_robotContainer.drivetrain.defer(
+              () -> m_robotContainer.drivetrain.cm_driveAndAlign(false).ignoringDisable(true));
+      lol.schedule();
+      disabledInit = true;
+    }
+  }
 
   @Override
   public void disabledPeriodic() {}
