@@ -41,4 +41,5 @@ public final class Constants {
   public static final int pneumaticsModule = 50;
 
   public static final double coralOffset = 0.18;
+  public static final double stationOffset = 0.218;
 }

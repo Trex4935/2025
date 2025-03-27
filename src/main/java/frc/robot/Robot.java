@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     if (disabledInit == false) {
       Command lol =
           m_robotContainer.drivetrain.defer(
-              () -> m_robotContainer.drivetrain.cm_driveAndAlign(false).ignoringDisable(true));
+              () -> m_robotContainer.drivetrain.cm_driveAndAlignReef(false).ignoringDisable(true));
       lol.schedule();
       disabledInit = true;
     }

@@ -354,6 +354,49 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return shiftPoseRobotCentricX(targetPose, shiftAdjustment * Constants.coralOffset);
   }
 
+  public Pose2d shiftNearestStationPose(boolean leftShift) {
+    // Default to Blue alliance if none is specified
+    Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    // Add lists for poses and offsets
+    List<Pose2d> poseList =
+        ally == Alliance.Blue
+            ? Arrays.asList(AlignmentLocations.coralStationPoseListBlue)
+            : Arrays.asList(AlignmentLocations.coralStationPoseListRed);
+    List<Double> xOffsetList = new ArrayList<>();
+    List<Double> yOffsetList = new ArrayList<>();
+    List<Rotation2d> thetaOffsetList = new ArrayList<>();
+
+    // Determine necessary tag pose list and apply necessary offsets
+    for (AlignmentPose pose : AlignmentLocations.coralStationTags) {
+      xOffsetList.add(pose.offsetX);
+      yOffsetList.add(pose.offsetY);
+      thetaOffsetList.add(pose.offsetTheta);
+    }
+
+    Pose2d tagPose = this.getState().Pose.nearest(poseList);
+
+    double xOffset = xOffsetList.get(poseList.indexOf(tagPose));
+    double yOffset = yOffsetList.get(poseList.indexOf(tagPose));
+    Rotation2d heading = thetaOffsetList.get(poseList.indexOf(tagPose));
+
+    // Depending on the alliance, the offsets will either be added or subtracted
+    double addOrSubtract = (ally == Alliance.Blue ? 1 : -1);
+    Rotation2d yawOffset = (ally == Alliance.Blue ? new Rotation2d() : new Rotation2d(Math.PI));
+
+    // Gets target values from the tag poses and the offset
+    double targetX = tagPose.getX() + (addOrSubtract * xOffset);
+    double targetY = tagPose.getY() + (addOrSubtract * yOffset);
+    Rotation2d targetTheta = heading.plus(yawOffset);
+
+    // Create the target pose with the target translation and offset theta
+    Pose2d targetPose = new Pose2d(targetX, targetY, targetTheta);
+
+    double shiftAdjustment = leftShift ? 1 : -1;
+
+    return shiftPoseRobotCentricX(targetPose, shiftAdjustment * Constants.stationOffset);
+  }
+
   /**
    * Automatically drives to the closest reef pose
    *
@@ -487,9 +530,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     this.setControl(m_driveRequest.withVelocityY(shift * 0.5));
   }
 
-  public Command cm_driveAndAlign(boolean leftShift) {
+  public Command cm_driveAndAlignReef(boolean leftShift) {
     return Commands.sequence(
         ppAutoDriveNearestReef(), new cm_PIDAutoAlign(shiftNearestReefPose(leftShift), this));
+  }
+
+  public Command cm_driveAndAlignStation(boolean leftShift) {
+    return Commands.sequence(
+        ppAutoDriveNearestStation(), new cm_PIDAutoAlign(shiftNearestStationPose(leftShift), this));
   }
 
   @Override
