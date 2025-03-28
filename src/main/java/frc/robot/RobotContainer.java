@@ -243,12 +243,8 @@ public class RobotContainer {
     joystick
         .rightTrigger()
         .whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(false)));
-
-    joystick
-        .povDown()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
     joystick.povUp().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(false)));
+    joystick.povDown().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(true)));
 
     // Configure the trigger bindings
     configureBindings();
