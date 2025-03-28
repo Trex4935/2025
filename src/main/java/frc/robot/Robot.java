@@ -6,8 +6,17 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +30,9 @@ import frc.robot.generated.TunerConstants;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+  Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0));
+  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
   private Command m_autonomousCommand;
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
@@ -55,8 +67,8 @@ public class Robot extends TimedRobot {
     LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
     var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
     if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-      m_robotContainer.drivetrain.addVisionMeasurement(
-          llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+      m_robotContainer.drivetrain.addVisionMeasurement(photonPoseEstimator.update(null);
+          );
     }
   }
 
