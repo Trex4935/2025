@@ -243,6 +243,7 @@ public class RobotContainer {
     joystick
         .rightTrigger()
         .whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(false)));
+
     joystick.povUp().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(false)));
     joystick.povDown().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(true)));
 

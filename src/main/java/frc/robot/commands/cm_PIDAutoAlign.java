@@ -44,8 +44,8 @@ public class cm_PIDAutoAlign extends Command {
 
     driveRequest = new SwerveRequest.FieldCentric();
 
-    swervePIDx = new PhoenixPIDController(1, 0, 0);
-    swervePIDy = new PhoenixPIDController(1, 0, 0);
+    swervePIDx = new PhoenixPIDController(3, 0, 0);
+    swervePIDy = new PhoenixPIDController(3, 0, 0);
     swervePIDtheta = new PhoenixPIDController(0.1, 0, 0);
 
     swervePIDtheta.enableContinuousInput(-180, 180);
