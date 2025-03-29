@@ -58,9 +58,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotInit() {
-    PathfindingCommand.warmupCommand().schedule();
-  }
+  public void robotInit() {}
 
   @Override
   public void robotPeriodic() {
@@ -107,6 +105,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   /** This function is called periodically during autonomous. */

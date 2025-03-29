@@ -534,8 +534,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   }
 
   public Command cm_driveAndAlignStation(boolean leftShift) {
-    return Commands.sequence(
-        ppAutoDriveNearestStation(), new cm_PIDAutoAlign(shiftNearestStationPose(leftShift), this));
+    return new cm_PIDAutoAlign(shiftNearestStationPose(leftShift), this);
   }
 
   @Override
