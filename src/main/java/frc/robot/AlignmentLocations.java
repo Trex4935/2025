@@ -75,18 +75,19 @@ public class AlignmentLocations {
   }
 
   private static final double xReefDist = 0.3;
+  private static final double xStationDist = 0.2;
 
   // TODO: Adjust values as needed
   public static AlignmentPose coralStationLeft =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(13).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(1).get().toPose2d(),
-          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(126)), 126});
+          new double[] {xStationDist, xStationDist * Math.tan(Math.toRadians(126)), 126});
   public static AlignmentPose coralStationRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(12).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(2).get().toPose2d(),
-          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(-126)), -126});
+          new double[] {xStationDist, xStationDist * Math.tan(Math.toRadians(-126)), -126});
   public static AlignmentPose processor =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(3).get().toPose2d(),

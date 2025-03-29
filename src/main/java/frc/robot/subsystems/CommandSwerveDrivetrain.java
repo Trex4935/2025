@@ -291,7 +291,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return new Pose2d(newTranslation, heading);
   }
 
-  public Commandd ppAutoDriveNearestStation() {
+  public Command ppAutoDriveNearestStation() {
     // Default to Blue alliance if none is specified
     Alliance ally = DriverStation.getAlliance().orElse(Alliance.Blue);
 
