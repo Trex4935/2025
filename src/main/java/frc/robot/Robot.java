@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -25,6 +26,7 @@ import frc.robot.generated.TunerConstants;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
@@ -56,7 +58,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    // PathfindingCommand.warmupCommand().schedule();
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   @Override

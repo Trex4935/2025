@@ -236,20 +236,16 @@ public class RobotContainer {
     // drivetrain.shiftAlign(false)).withTimeout(0.5));
 
     // Will align with PID
-    joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
-    joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+    joystick.povLeft().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(true)));
+    joystick.povRight().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(false)));
 
-    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(true)));
-    joystick.rightTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlign(false)));
+    joystick.leftTrigger().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(true)));
+    joystick
+        .rightTrigger()
+        .whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignReef(false)));
 
-    joystick
-        .povDown()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationRight)));
-    joystick
-        .povUp()
-        .whileTrue(
-            drivetrain.defer(() -> drivetrain.ppAutoDrive(AlignmentLocations.coralStationLeft)));
+    joystick.povUp().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(false)));
+    joystick.povDown().whileTrue(drivetrain.defer(() -> drivetrain.cm_driveAndAlignStation(true)));
 
     // Configure the trigger bindings
     configureBindings();
@@ -320,11 +316,10 @@ public class RobotContainer {
     sysid.povRight().onTrue(Commands.runOnce(SignalLogger::start));
     sysid.povLeft().onTrue(Commands.runOnce(SignalLogger::stop));
 
-    sysid.y().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    // sysid.a().whileTrue(m_coralIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-
-    sysid.b().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    sysid.x().whileTrue(m_coralIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    sysid.y().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    sysid.a().whileTrue(m_elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    sysid.b().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    sysid.x().whileTrue(m_elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**
