@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.cm_AlgaeRemoval;
+import frc.robot.commands.cm_ColorCycle;
 import frc.robot.commands.cm_EndSequence;
 import frc.robot.commands.cm_FullSequence;
 import frc.robot.commands.cm_HalfSequence;
@@ -308,6 +309,8 @@ public class RobotContainer {
     operatorBoard.button(13).onTrue(cmd_FullSequenceL2);
     // shoots L1
     operatorBoard.button(14).onTrue(cmd_FullSequenceL1); // Change this to run full sequence
+
+    operator.a().onTrue(new cm_ColorCycle(m_ledSubsystem));
 
     sysid.leftBumper().whileTrue(m_climber.cm_climberVelocity(0.5));
     sysid.rightBumper().whileTrue(m_climber.cm_climberVelocity(-0.5));
