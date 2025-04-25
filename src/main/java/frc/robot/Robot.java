@@ -27,7 +27,6 @@ import frc.robot.generated.TunerConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private boolean disabledInit = false;
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
