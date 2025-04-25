@@ -8,6 +8,7 @@
  import edu.wpi.first.math.VecBuilder;
  import edu.wpi.first.math.geometry.Pose2d;
  import edu.wpi.first.math.geometry.Rotation2d;
+ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
  import edu.wpi.first.math.numbers.N3;
@@ -31,6 +32,8 @@ import java.util.List;
  public class Vision  extends SubsystemBase {
      private final PhotonCamera camera;
      private final PhotonPoseEstimator photonEstimator;
+      private final Transform2d getCamera;
+
      private Matrix<N3, N1> curStdDevs;
 
      // Simulation
@@ -40,8 +43,15 @@ import java.util.List;
      public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
      public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 
-     public Vision() {
+     public Vision(String name, Transform2d getCameraPosition) {
          camera = new PhotonCamera("kCameraName");
+
+        getCamera = new Transform2d();
+
+        camera.getLatestResult();
+
+
+
 
          photonEstimator =
                  new PhotonPoseEstimator(AlignmentLocations.fieldAprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new Transform3d());
@@ -57,7 +67,7 @@ import java.util.List;
              var cameraProp = new SimCameraProperties();
              cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(90));
              cameraProp.setCalibError(0.35, 0.10);
-             cameraProp.setFPS(15);
+             cameraProp.setFPS(30);
              cameraProp.setAvgLatencyMs(50);
              cameraProp.setLatencyStdDevMs(15);
              // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
@@ -68,6 +78,8 @@ import java.util.List;
 
              cameraSim.enableDrawWireframe(true);
          }
+
+
      }
 
      /**
