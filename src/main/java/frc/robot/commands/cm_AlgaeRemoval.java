@@ -4,25 +4,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import frc.robot.Constants.StateMachineConstant;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LEDSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class cm_AlgaeRemoval extends ParallelDeadlineGroup {
-  /** Creates a new cm_AlgaeRemoval. */
-  public cm_AlgaeRemoval(Elevator elevator, CoralIntake coralIntake) {
-    // Add the deadline command in the super() call. Add other commands using
-    // addCommands().
-    super(new cm_SetElevatorPosition(elevator));
+public class cm_AlgaeRemoval extends SequentialCommandGroup {
+  /** Creates a new cm_FullSequence. */
+  public cm_AlgaeRemoval(Elevator elevator, CoralIntake coralIntake, LEDSubsystem leds) {
+    // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+        // Sets the state
         StateMachine.setGlobalState(BotState.REMOVEALGAE),
-        coralIntake.cm_intakeCoral(StateMachineConstant.botState.coralIntakeSpeed));
+        new cm_SetPivotAngle(coralIntake).withTimeout(4),
+        new cm_MoveAndEject(elevator, coralIntake).withTimeout(3),
+        // Resets the state to default
+        new cm_SetElevatorToDefault(elevator, leds));
   }
 }

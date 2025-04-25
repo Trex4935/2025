@@ -7,25 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Forward"
+            "pathName": " Start 1 to Reef 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Backward"
+            "pathName": "Reef 3 to Human Player 2"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Move Right"
+            "name": "Coral Intake"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Test Autos",
   "choreoAuto": false
 }

@@ -74,22 +74,25 @@ public class AlignmentLocations {
     }
   }
 
+  private static final double xReefDist = 0.3;
+  private static final double xStationDist = 0.25;
+
   // TODO: Adjust values as needed
   public static AlignmentPose coralStationLeft =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(13).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(1).get().toPose2d(),
-          new double[] {0.35, 0.35 * Math.tan(Math.toRadians(126)), 126});
+          new double[] {xStationDist, xStationDist * Math.tan(Math.toRadians(126)), 126});
   public static AlignmentPose coralStationRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(12).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(2).get().toPose2d(),
-          new double[] {0.35, 0.35 * Math.tan(Math.toRadians(-126)), -126});
+          new double[] {xStationDist, xStationDist * Math.tan(Math.toRadians(-126)), -126});
   public static AlignmentPose processor =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(3).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(16).get().toPose2d(),
-          new double[] {0, -0.7, 90});
+          new double[] {0, -0.35, 90});
   public static AlignmentPose bargeOpposingView =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(4).get().toPose2d(),
@@ -104,30 +107,62 @@ public class AlignmentLocations {
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(19).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(6).get().toPose2d(),
-          new double[] {-0.35, -0.35 * Math.tan(Math.toRadians(-60)), -60});
+          new double[] {-xReefDist, -xReefDist * Math.tan(Math.toRadians(-60)), -60});
   public static AlignmentPose reefCloseMid =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(18).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(7).get().toPose2d(),
-          new double[] {-0.7, 0, 0});
+          new double[] {-xReefDist * 2, 0, 0});
   public static AlignmentPose reefCloseRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(17).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(8).get().toPose2d(),
-          new double[] {-0.35, -0.35 * Math.tan(Math.toRadians(60)), 60});
+          new double[] {-xReefDist, -xReefDist * Math.tan(Math.toRadians(60)), 60});
   public static AlignmentPose reefFarRight =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(22).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(9).get().toPose2d(),
-          new double[] {0.35, 0.35 * Math.tan(Math.toRadians(120)), 120});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(120)), 120});
   public static AlignmentPose reefFarMid =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(21).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(10).get().toPose2d(),
-          new double[] {0.7, 0, -180});
+          new double[] {xReefDist * 2, 0, -180});
   public static AlignmentPose reefFarLeft =
       new AlignmentPose(
           fieldAprilTagLayout.getTagPose(20).get().toPose2d(),
           fieldAprilTagLayout.getTagPose(11).get().toPose2d(),
-          new double[] {0.35, 0.35 * Math.tan(Math.toRadians(-120)), -120});
+          new double[] {xReefDist, xReefDist * Math.tan(Math.toRadians(-120)), -120});
+
+  public static AlignmentPose[] reefTags = {
+    reefCloseLeft, reefCloseMid, reefCloseRight, reefFarLeft, reefFarMid, reefFarRight
+  };
+
+  public static Pose2d[] reefPoseListRed = {
+    reefCloseLeft.aprilTagPoseRed,
+    reefCloseMid.aprilTagPoseRed,
+    reefCloseRight.aprilTagPoseRed,
+    reefFarLeft.aprilTagPoseRed,
+    reefFarMid.aprilTagPoseRed,
+    reefFarRight.aprilTagPoseRed
+  };
+
+  public static Pose2d[] reefPoseListBlue = {
+    reefCloseLeft.aprilTagPoseBlue,
+    reefCloseMid.aprilTagPoseBlue,
+    reefCloseRight.aprilTagPoseBlue,
+    reefFarLeft.aprilTagPoseBlue,
+    reefFarMid.aprilTagPoseBlue,
+    reefFarRight.aprilTagPoseBlue
+  };
+
+  public static AlignmentPose[] coralStationTags = {coralStationLeft, coralStationRight};
+
+  public static Pose2d[] coralStationPoseListBlue = {
+    coralStationLeft.aprilTagPoseBlue, coralStationRight.aprilTagPoseBlue
+  };
+
+  public static Pose2d[] coralStationPoseListRed = {
+    coralStationLeft.aprilTagPoseRed, coralStationRight.aprilTagPoseRed
+  };
 }

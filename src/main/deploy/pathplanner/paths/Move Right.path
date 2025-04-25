@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5855,
-        "y": 2.620999999999999
+        "x": 7.58671875,
+        "y": 2.621
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.57575,
-        "y": 3.1377500000000005
+        "x": 7.57696875,
+        "y": 3.1377500000000014
       },
       "isLocked": false,
       "linkedName": "Test Start"
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -45,7 +45,7 @@
     "rotation": -178.7269699799433
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Test Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

@@ -9,11 +9,17 @@
           "data": {
             "pathName": "Forward"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L2"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Test Autos",
   "choreoAuto": false
 }

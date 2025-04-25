@@ -38,4 +38,8 @@ public final class Constants {
   public static final int coralIntakeMotor = 8;
   public static final int coralPivotMotor = 6;
   public static final int canRange = 2;
+  public static final int pneumaticsModule = 50;
+
+  public static final double coralOffset = 0.18;
+  public static final double stationOffset = 0.218;
 }

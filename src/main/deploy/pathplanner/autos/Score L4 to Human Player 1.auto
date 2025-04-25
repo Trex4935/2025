@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start 2 to Reef 2"
+            "pathName": "Start 1 to Reef 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef 2 to Human Player 1"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Test Autos",
   "choreoAuto": false
 }

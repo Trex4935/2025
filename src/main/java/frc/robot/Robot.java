@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -25,6 +26,7 @@ import frc.robot.generated.TunerConstants;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+
   // CANrange CANrange;
   private final RobotContainer m_robotContainer;
 
@@ -44,11 +46,19 @@ public class Robot extends TimedRobot {
   }
 
   private double getYawInverted() {
-    if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+    if (DriverStation.getAlliance().isEmpty()) {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
+    }
+    if (DriverStation.getAlliance().get() == Alliance.Blue) {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
     } else {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
+  }
+
+  @Override
+  public void robotInit() {
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   @Override
@@ -59,6 +69,7 @@ public class Robot extends TimedRobot {
     // System.out.println("Distance is " + distance.refresh().toString());
 
     CommandScheduler.getInstance().run();
+
     var driveState = m_robotContainer.drivetrain.getState();
     double headingDeg = getYawInverted();
     double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);

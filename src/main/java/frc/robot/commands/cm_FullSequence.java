@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.extensions.StateMachine;
 import frc.robot.extensions.StateMachine.BotState;
 import frc.robot.subsystems.CoralIntake;
@@ -24,12 +25,11 @@ public class cm_FullSequence extends SequentialCommandGroup {
         // Sets the state
         StateMachine.setGlobalState(botState),
         leds.cm_setLedToColor(botState.colorDisplay),
-        new cm_SetElevatorPosition(elevator)
-            .withTimeout(5)
-            .alongWith(new cm_SetPivotAngle(coralIntake).withTimeout(7)),
-        new cm_SetCoralIntake(coralIntake),
+        new cm_SetElevatorPosition(elevator).alongWith(new cm_SetPivotAngle(coralIntake)),
+        new WaitCommand(0.1),
+        new cm_SetCoralEject(coralIntake),
 
         // Resets the state to default
-        new cm_SetToDefault(elevator, leds));
+        new cm_SetElevatorToDefault(elevator, leds));
   }
 }
