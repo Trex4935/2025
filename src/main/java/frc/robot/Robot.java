@@ -14,6 +14,7 @@ import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -67,8 +68,7 @@ public class Robot extends TimedRobot {
     LimelightHelpers.SetRobotOrientation("limelight-bow", headingDeg, 0, 0, 0, 0, 0);
     var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-bow");
     if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-      m_robotContainer.drivetrain.addVisionMeasurement(photonPoseEstimator.update(null);
-          );
+      m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
     }
   }
 
