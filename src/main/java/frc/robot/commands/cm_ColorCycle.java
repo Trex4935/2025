@@ -168,13 +168,15 @@ public class cm_ColorCycle extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    finalCommand.cancel();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     for (Color color : colors) {
-      Command cmd_col = m_LEDs.cm_setLedToColor(color).andThen(new WaitCommand(6));
+      Command cmd_col = m_LEDs.cm_setLedToColor(color).andThen(new WaitCommand(3));
       finalCommand.addCommands(cmd_col);
     }
     finalCommand.schedule();
