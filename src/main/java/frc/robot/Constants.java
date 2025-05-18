@@ -31,6 +31,9 @@ public final class Constants {
     }
   }
 
+  // LED constant
+  public static int ledConstant = 7;
+
   // Phoenix Tuner Motor IDs
   public static final int elevatorLeftID = 9;
   public static final int elevatorRightID = 10;
