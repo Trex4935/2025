@@ -50,9 +50,9 @@ public class Robot extends TimedRobot {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
     if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
-    } else {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
+    } else {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
     }
   }
 

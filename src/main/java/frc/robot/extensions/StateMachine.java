@@ -32,7 +32,7 @@ public class StateMachine {
     STORAGE(0, 0, 0, Color.kGreen), // intaked, coral or algae in
     L1(0, -0.5, 18, Color.kBlue), // scoring coral
     L2(13, -0.2, 18, Color.kBlue), // scoring coral
-    L3(34, -0.2, 18, Color.kBlue), // scoring coral
+    L3(36, -0.2, 18, Color.kBlue), // scoring coral
     L4(69, -0.2, 18, Color.kBlue),
     CLIMB(0, 0, 0, Color.kPink), // climbing
     EJECT(0, -0.2, 0, Color.kWhite); // everything out
