@@ -1,0 +1,26 @@
+{
+  "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "Transitory Values": {
+      "open": false
+    }
+  },
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    }
+  },
+  "NetworkTables Settings": {
+    "listenAddress": "10.49.35.1",
+    "mode": "Server",
+    "visible": false
+  },
+  "NetworkTables View": {
+    "visible": false
+  }
+}

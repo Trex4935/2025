@@ -10,8 +10,11 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -35,6 +38,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+    // PortForwarder.add(5800, "172.28.0.1", 5800);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -50,15 +54,18 @@ public class Robot extends TimedRobot {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
     if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
-    } else {
       return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble() + 180;
+    } else {
+      return m_robotContainer.drivetrain.getPigeon2().getYaw().getValueAsDouble();
     }
   }
 
   @Override
   public void robotInit() {
+    final Field2d field = new Field2d();
+
     PathfindingCommand.warmupCommand().schedule();
+    SmartDashboard.putData("Field", field);
   }
 
   @Override
@@ -67,7 +74,7 @@ public class Robot extends TimedRobot {
 
     // Refresh and print these values
     // System.out.println("Distance is " + distance.refresh().toString());
-
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     CommandScheduler.getInstance().run();
 
     var driveState = m_robotContainer.drivetrain.getState();
